@@ -1,11 +1,24 @@
 Package: hackWRF
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
+Title: Set of functions to work with WRF, NetCDF data and other stuff
+Date: 2020-03-06
+Version: 0.2.0
+Authors@R: c(
+  person(given = "Daniel",
+         family = "Schuch",
+         role = c("aut", "cre"),
+         email = "schuch@usp.br",
+         comment = c(ORCID = "0000-0001-5977-4519"))
+         )
+Maintainer: Daniel Schuch <schuch@usp.br>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 7.0.2
+Depends: R (>= 3.5)
+Imports: ncdf4, eixport, openair, graphics
+Suggests: testthat, covr
+URL: https://schuch666.github.io/hackWRF
+BugReports: https://github.com/Schuch666/hackWRF/issues

@@ -1,0 +1,140 @@
+#' Extract time series of wrf file list
+#'
+#' @description Read and write metadata information of a NetCDF inventory file
+#'
+#' @param filelist list of files to be read
+#' @param point data.frame with lat/lon
+#' @param variable variable name
+#' @param field '4d' (defoult), '3d', '2d' or '2dz' see notes
+#' @param prefix to output file, defolt is serie
+#' @param new start a new file (defoult)
+#' @param verbose display additional information
+#'
+#' @note The field argument '4d' / '2dz' is used to read a 4d/3d variable droping the 3rd dimention (z).
+#'
+#' @import ncdf4
+#' @import eixport
+#'
+#' @export
+#'
+#' @examples
+#' stations <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/stations.Rds"))
+#' files    <- dir(path = system.file("extdata",package="hackWRF"),pattern = 'wrf',full.names = TRUE)
+#' dir.create(file.path(tempdir(),"SERIE"))
+#' folder <- file.path(tempdir(),"SERIE")
+#' extract_serie(filelist = files, point = stations,prefix = paste0(folder,'/serie'))
+#'
+
+extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
+                          prefix = 'serie',new = TRUE,verbose = TRUE){
+
+  output_file  <- paste0(prefix,'.',variable,'.Rds')
+
+  if(verbose)
+    cat('extracting series of',variable,'field',field,'for',nrow(point),'points\n')
+
+  wrf   <- nc_open(filelist[1])
+  lat   <- ncvar_get(wrf,"XLAT")
+  lon   <- ncvar_get(wrf,"XLONG")
+  if(verbose)
+    cat('dim of lat/lon:',dim(lat),'\n')
+
+  if(length(dim(lat)) == 3){
+    lat   <- lat[,,1,drop = T]
+    lon   <- lon[,,1,drop = T]
+  }
+  if(length(dim(lat)) == 4){
+    lat   <- lat[,,1,1,drop = T]
+    lon   <- lon[,,1,1,drop = T]
+  }
+  if(verbose)
+    cat('used dim of lat/lon:',dim(lat),'\n')
+
+  nearest <- function(point,lat,lon){
+    for(i in 1:nrow(point)){
+      d     <- ( (lat - point$lat[i])^2 + (lon - point$lon[i])^2 )^(0.5)
+      index <- which(d == min(d), arr.ind = TRUE)
+      point$i[i] <- index[[1]]
+      point$j[i] <- index[[2]]
+    }
+    return(point)
+  }
+  stations <- nearest(point,lat,lon)
+  if(verbose){
+    print(stations)
+    cat('reading:',filelist[1],'file 1 of',length(filelist),'\n')
+  }
+
+  times   <- eixport::wrf_get(wrf$filename,name = 'time')
+  if(field == '2d')
+    contagem  = NA             # 2d Field (x,y)
+  if(field == '2dz')
+    contagem = c(-1,-1,1)      # 3d Field (x,y,z)
+  if(field == '3d')
+    contagem  = NA             # 3d Field (x,y,t)
+  if(field == '4d')
+    contagem = c(-1,-1,1,-1)   # 4d Field (x,y,z,t)
+  var     <- ncvar_get(wrf,variable,count = contagem)
+  nc_close(wrf)
+
+  serie <- as.data.frame(times)
+  if(length(times) > 1){
+    for(i in 1:nrow(point)){
+      serie[,i+1] <- var[stations$i[i],stations$j[i],]
+    }
+  }else{
+    for(i in 1:nrow(point)){
+      serie[i+1] <- var[stations$i[i],stations$j[i]]
+    }
+  }
+  names(serie) <- c("date", row.names(stations))
+
+  if(new){
+    saveRDS(serie,output_file)
+  }else{
+    old <- readRDS(output_file)
+    saveRDS(rbind(old,serie),output_file)
+  }
+
+  if(length(filelist) > 1){
+    for(i in 2:length(filelist)){
+      if(verbose)
+        cat('reading:',filelist[i],'file',i,'of',length(filelist),'\n')
+
+      wrf   <- nc_open(filelist[i])
+      lat   <- ncvar_get(wrf,"XLAT")
+      lon   <- ncvar_get(wrf,"XLONG")
+      if(length(dim(lat)) == 3){
+        lat   <- lat[,,1,drop = T]
+        lon   <- lon[,,1,drop = T]
+      }
+      if(length(dim(lat)) == 4){
+        lat   <- lat[,,1,1,drop = T]
+        lon   <- lon[,,1,1,drop = T]
+      }
+
+      stations <- nearest(point,lat,lon)
+      times    <- eixport::wrf_get(wrf$filename,name = 'time')
+      var      <- ncvar_get(wrf,variable,count = contagem)
+      nc_close(wrf)
+
+      serie <- as.data.frame(times)
+      if(length(times) > 1){
+        for(i in 1:nrow(point)){
+          serie[,i+1] <- var[stations$i[i],stations$j[i],]
+        }
+      }else{
+        for(i in 1:nrow(point)){
+          serie[i+1] <- var[stations$i[i],stations$j[i]]
+        }
+      }
+      names(serie) <- c("date", row.names(stations))
+
+      old <- readRDS(output_file)
+      saveRDS(rbind(old,serie),output_file)
+    }
+  }
+
+  if(verbose)
+    cat('output:',output_file,'\n')
+}
