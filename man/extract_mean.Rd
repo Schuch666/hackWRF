@@ -27,7 +27,7 @@ extract_mean(
 \item{verbose}{display additional information}
 }
 \description{
-Read and write metadata information of a NetCDF inventory file
+Read and calculate the mean from a list of wrf output files
 }
 \note{
 The field argument '4d' / '2dz' is used to read a 4d/3d variable droping the 3rd dimention (z).

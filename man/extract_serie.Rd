@@ -30,7 +30,7 @@ extract_serie(
 \item{verbose}{display additional information}
 }
 \description{
-Read and write metadata information of a NetCDF inventory file
+Read and extract data from a list of wrf output files and a table of lat/lon points
 }
 \note{
 The field argument '4d' / '2dz' is used to read a 4d/3d variable droping the 3rd dimention (z).

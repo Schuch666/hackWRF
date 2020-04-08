@@ -1,6 +1,6 @@
 #' Extract time series of wrf file list
 #'
-#' @description Read and write metadata information of a NetCDF inventory file
+#' @description Read and extract data from a list of wrf output files and a table of lat/lon points
 #'
 #' @param filelist list of files to be read
 #' @param point data.frame with lat/lon

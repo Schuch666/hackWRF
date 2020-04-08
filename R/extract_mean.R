@@ -1,6 +1,6 @@
 #' Extract time series of wrf file list
 #'
-#' @description Read and write metadata information of a NetCDF inventory file
+#' @description Read and calculate the mean from a list of wrf output files
 #'
 #' @param filelist list of files to be read
 #' @param variable variable name

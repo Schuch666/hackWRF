@@ -80,8 +80,9 @@ stats <- function(mo,ob,spinup = 0, scatter = F,add = F, cor="#FF000088",lim = N
   if(add){
     points(ob,mo,pch = 20, cex=1.8, col = cor, ... )
   }
-  ind <- as.data.frame(cbind(Sim  = mean(mo),
+  ind <- as.data.frame(cbind(n    = length(ob),
                              Obs  = mean(ob),
+                             Sim  = mean(mo),
                              r    = ind$r,
                              FA2  = ind$FAC2,
                              RMSE = ind$RMSE,
