@@ -28,13 +28,20 @@ Statistical evaluation
 model <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/model.Rds"))
 obs   <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/obs.Rds"))
 
-# first a test with no observed data
+# if first a test with no observed data
+# the function return an empty row
 table <- evaluate(mo = model, ob = obs, station = "VVIbes")
+
 # now a test with a few observed values
 table <- evaluate(mo = model, ob = obs, station = "Americana", table = table)
+
 # new tests with no data will be discated
 table <- evaluate(mo = model, ob = obs, station = "VVIbes", table = table)
+
+# if the station are not in the input data frame a message is displayed
+# and the function return an empty row
+table <- evaluate(mo = model, ob = obs, station = "Ibirapuera", table = table)
+
 # if the first evaluation has no data, the last call can remove the line
 table <- evaluate(mo = model, ob = obs, station = "Americana", table = table, clean = TRUE)
-
 }
