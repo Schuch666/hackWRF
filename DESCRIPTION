@@ -2,7 +2,7 @@ Package: hackWRF
 Type: Package
 Title: Set of functions to work with WRF, NetCDF data and other stuff
 Date: 2020-03-08
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: c(
   person(given = "Daniel",
          family = "Schuch",
