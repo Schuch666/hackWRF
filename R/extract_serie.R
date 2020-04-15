@@ -1,6 +1,6 @@
 #' Extract time series of wrf file list
 #'
-#' @description Read and extract data from a list of wrf output files and a table of lat/lon points
+#' @description Read and extract data from a list of wrf output files and a table of lat/lon points, points outside the domain (and points on domain boundary) are not extracteds.
 #'
 #' @param filelist list of files to be read
 #' @param point data.frame with lat/lon
@@ -60,6 +60,31 @@ extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
     return(point)
   }
   stations <- nearest(point,lat,lon)
+
+  remove_outsiders <- function(stations,lat){
+    j              <- 1
+    station_inside <- stations[j,]
+
+    for(i in 1:nrow(stations)){
+      outside        = FALSE
+      if(stations$i[i] == 1)         outside = TRUE
+      if(stations$j[i] == 1)         outside = TRUE
+      if(stations$i[i] == nrow(lat)) outside = TRUE
+      if(stations$j[i] == ncol(lat)) outside = TRUE
+
+      if(outside){
+        cat('* station',rownames(stations)[i],'ouside the domain\n')
+      }else{
+        #cat('station',rownames(stations)[i],'inside the domain\n')
+        station_inside[j,] <- stations[i,]
+        rownames(station_inside)[j] <- rownames(stations)[i]
+        j <- j + 1
+      }
+    }
+    return(station_inside)
+  }
+  stations <- remove_outsiders(stations,lat)
+
   if(verbose){
     print(stations)
     cat('reading:',filelist[1],'file 1 of',length(filelist),'\n')
@@ -79,11 +104,11 @@ extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
 
   serie <- as.data.frame(times)
   if(length(times) > 1){
-    for(i in 1:nrow(point)){
+    for(i in 1:nrow(stations)){
       serie[,i+1] <- var[stations$i[i],stations$j[i],]
     }
   }else{
-    for(i in 1:nrow(point)){
+    for(i in 1:nrow(stations)){
       serie[i+1] <- var[stations$i[i],stations$j[i]]
     }
   }
@@ -113,18 +138,19 @@ extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
         lon   <- lon[,,1,1,drop = T]
       }
 
-      stations <- nearest(point,lat,lon)
+      # stations <- nearest(point,lat,lon)
+      # stations <- remove_outsiders(stations,lat)
       times    <- eixport::wrf_get(wrf$filename,name = 'time')
       var      <- ncvar_get(wrf,variable,count = contagem)
       nc_close(wrf)
 
       serie <- as.data.frame(times)
       if(length(times) > 1){
-        for(i in 1:nrow(point)){
+        for(i in 1:nrow(stations)){
           serie[,i+1] <- var[stations$i[i],stations$j[i],]
         }
       }else{
-        for(i in 1:nrow(point)){
+        for(i in 1:nrow(stations)){
           serie[i+1] <- var[stations$i[i],stations$j[i]]
         }
       }

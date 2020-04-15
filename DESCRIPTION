@@ -1,8 +1,8 @@
 Package: hackWRF
 Type: Package
-Title: Set of functions to work with WRF, NetCDF data and other stuff
-Date: 2020-03-08
-Version: 0.3.0
+Title: Functions to work with WRF, NetCDF and model evaluation
+Date: 2020-04-15
+Version: 0.3.1
 Authors@R: c(
   person(given = "Daniel",
          family = "Schuch",
@@ -11,8 +11,7 @@ Authors@R: c(
          comment = c(ORCID = "0000-0001-5977-4519"))
          )
 Maintainer: Daniel Schuch <schuch@usp.br>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: Functions to extract data from WRF output file lists, evaluation of results and utilities.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

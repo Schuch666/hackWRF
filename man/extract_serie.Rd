@@ -30,7 +30,7 @@ extract_serie(
 \item{verbose}{display additional information}
 }
 \description{
-Read and extract data from a list of wrf output files and a table of lat/lon points
+Read and extract data from a list of wrf output files and a table of lat/lon points, points outside the domain (and points on domain boundary) are not extracteds.
 }
 \note{
 The field argument '4d' / '2dz' is used to read a 4d/3d variable droping the 3rd dimention (z).
