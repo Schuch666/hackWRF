@@ -1,10 +1,12 @@
 # hackWRF
-An R-package with functions to deal with WRF outpus and processing.
+An R-package with functions to work with WRF, NetCDF and model evaluation.
 
 The functions include:
 - `meta()` a function to read and write metadata on NetCDF files;
 - `export_serie()` and `export_mean()` that export output for a data.table (.Rds) or NetCDF (.nc) files;
-- `stats()` a custon wraper to the `openair::modStats()` with some customisation.
+- `evaluate()` a geral function to evaluate model results performing some tests and pairing the data;
+- `stats()` a custon wraper to the `openair::modStats()` with some customisation;
+- `ccbind()` and `crbind()` conditional `cbind()` and conditional `rbind()`;
 - `last()` but not least, a fnunctions to return the last member of a vector.
 
 ### System dependencies

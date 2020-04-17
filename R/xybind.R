@@ -1,10 +1,10 @@
-#' @title  Combine R Objects by Columns or Rows
+#' @title Combine R Objects by Columns or Rows
 #'
 #' @description This function perform a conditional cbind or rbind.
 #'
 #' @param x first element to combine
 #' @param y second element to combine
-#' @param bind condition for combine x and y or return only x
+#' @param bind condition (TRUE or FALSE) for combine x and y or return only x
 #' @param message message in case of bind is false (no binding)
 #'
 #' @examples

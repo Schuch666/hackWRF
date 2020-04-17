@@ -3,6 +3,7 @@
 #' @description This function return the last member of a vector
 #'
 #' @param x vector
+#' @return last element
 #'
 #' @export
 #'

@@ -19,10 +19,13 @@ evaluate(mo, ob, station, table = NULL, clean = FALSE, verbose = TRUE, ...)
 
 \item{verbose}{display additional information}
 
-\item{...}{arguments to be passing to stats}
+\item{...}{arguments to be passing to stats and plot}
 }
 \description{
-Statistical evaluation
+Statistical evaluation from 2 data.frames. The input data.frames (model and observation)
+must contain a date collum (with POSIXlt data) and also contains the same station (or polutant) name.
+The function test and combine the time pairs and perform some basic tests.
+If a data.frame is provided to table argument a crbind is performed with a new row.
 }
 \examples{
 model <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/model.Rds"))
@@ -31,17 +34,22 @@ obs   <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/obs.Rds"))
 # if first a test with no observed data
 # the function return an empty row
 table <- evaluate(mo = model, ob = obs, station = "VVIbes")
+print(table)
 
 # now a test with a few observed values
 table <- evaluate(mo = model, ob = obs, station = "Americana", table = table)
+print(table)
 
 # new tests with no data will be discated
 table <- evaluate(mo = model, ob = obs, station = "VVIbes", table = table)
+print(table)
 
 # if the station are not in the input data frame a message is displayed
 # and the function return an empty row
 table <- evaluate(mo = model, ob = obs, station = "Ibirapuera", table = table)
+print(table)
 
 # if the first evaluation has no data, the last call can remove the line
 table <- evaluate(mo = model, ob = obs, station = "Americana", table = table, clean = TRUE)
+print(table)
 }

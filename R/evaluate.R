@@ -1,6 +1,9 @@
 #' Model statistical evaluation
 #'
-#' @description Statistical evaluation
+#' @description Statistical evaluation from 2 data.frames. The input data.frames (model and observation)
+#' must contain a date collum (with POSIXlt data) and also contains the same station (or polutant) name.
+#' The function test and combine the time pairs and perform some basic tests.
+#' If a data.frame is provided to table argument a crbind is performed with a new row.
 #'
 #' @param mo model data.frame
 #' @param ob observed data.frame
@@ -8,7 +11,7 @@
 #' @param table a data.frame with output from evaluate or stats
 #' @param clean remove rows with zero observations
 #' @param verbose display additional information
-#' @param ... arguments to be passing to stats
+#' @param ... arguments to be passing to stats and plot
 #'
 #' @export
 #'
@@ -19,19 +22,24 @@
 #' # if first a test with no observed data
 #' # the function return an empty row
 #' table <- evaluate(mo = model, ob = obs, station = "VVIbes")
+#' print(table)
 #'
 #' # now a test with a few observed values
 #' table <- evaluate(mo = model, ob = obs, station = "Americana", table = table)
+#' print(table)
 #'
 #' # new tests with no data will be discated
 #' table <- evaluate(mo = model, ob = obs, station = "VVIbes", table = table)
+#' print(table)
 #'
 #' # if the station are not in the input data frame a message is displayed
 #' # and the function return an empty row
 #' table <- evaluate(mo = model, ob = obs, station = "Ibirapuera", table = table)
+#' print(table)
 #'
 #' # if the first evaluation has no data, the last call can remove the line
 #' table <- evaluate(mo = model, ob = obs, station = "Americana", table = table, clean = TRUE)
+#' print(table)
 
 evaluate <- function(mo, ob, station, table = NULL, clean = FALSE ,verbose = TRUE, ...){
   if(!station %in% names(ob)){
@@ -105,16 +113,3 @@ evaluate <- function(mo, ob, station, table = NULL, clean = FALSE ,verbose = TRU
     return(RESULT)
   }
 }
-
-# test <- evaluate(station = "VVIbes")
-# test <- evaluate(station = "Americana", table = test)
-# test <- evaluate(station = "Americana", table = test)
-# test <- evaluate(station = "VVIbes", table = test)
-# test <- evaluate(station = "VVIbes", table = test)
-# test <- evaluate(station = "VVIbes", table = test, clean = TRUE)
-#
-# ex_model <- model[1:240,c(1,2,12,22)]
-# ex_data  <- observed[1:240,c(1,2,12,20)]
-#
-# saveRDS(ex_model,'C:/Users/under/Documents/R-Packages/hackWRF/data/model.Rds')
-# saveRDS(ex_data, 'C:/Users/under/Documents/R-Packages/hackWRF/data/obs.Rds')

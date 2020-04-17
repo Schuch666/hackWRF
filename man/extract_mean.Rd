@@ -2,7 +2,7 @@
 % Please edit documentation in R/extract_mean.R
 \name{extract_mean}
 \alias{extract_mean}
-\title{Extract time series of wrf file list}
+\title{Creata a NetCDF file with the surface mean}
 \usage{
 extract_mean(
   filelist,
@@ -18,16 +18,16 @@ extract_mean(
 
 \item{variable}{variable name}
 
-\item{field}{'4d' (defoult), '3d', '2d' or '2dz' see notes}
+\item{field}{'4d' (default), '3d', '2d' or '2dz' see notes}
 
 \item{prefix}{to output file, defolt is serie}
 
-\item{units}{units on netcdf file (defoult is ppmv)}
+\item{units}{units on netcdf file (default is ppmv)}
 
 \item{verbose}{display additional information}
 }
 \description{
-Read and calculate the mean from a list of wrf output files
+Read and calculate the mean value of a variable from a list of wrf output files.
 }
 \note{
 The field argument '4d' / '2dz' is used to read a 4d/3d variable droping the 3rd dimention (z).

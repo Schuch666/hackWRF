@@ -1,12 +1,12 @@
-#' Extract time series of wrf file list
+#' Creata a NetCDF file with the surface mean
 #'
-#' @description Read and calculate the mean from a list of wrf output files
+#' @description Read and calculate the mean value of a variable from a list of wrf output files.
 #'
 #' @param filelist list of files to be read
 #' @param variable variable name
-#' @param field '4d' (defoult), '3d', '2d' or '2dz' see notes
+#' @param field '4d' (default), '3d', '2d' or '2dz' see notes
 #' @param prefix to output file, defolt is serie
-#' @param units units on netcdf file (defoult is ppmv)
+#' @param units units on netcdf file (default is ppmv)
 #' @param verbose display additional information
 #'
 #' @note The field argument '4d' / '2dz' is used to read a 4d/3d variable droping the 3rd dimention (z).

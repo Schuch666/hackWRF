@@ -1,6 +1,6 @@
 #' Extract time series of wrf file list
 #'
-#' @description Read and extract data from a list of wrf output files and a table of lat/lon points, points outside the domain (and points on domain boundary) are not extracteds.
+#' @description Read and extract data from a list of wrf output files and a table of lat/lon points based on the distance of the points and the center of model grid points, points outside the domain (and points on domain boundary) are not extracteds.
 #'
 #' @param filelist list of files to be read
 #' @param point data.frame with lat/lon
@@ -10,7 +10,7 @@
 #' @param new start a new file (defoult)
 #' @param verbose display additional information
 #'
-#' @note The field argument '4d' / '2dz' is used to read a 4d/3d variable droping the 3rd dimention (z).
+#' @note The field argument '4d' or '2dz' is used to read a 4d/3d variable droping the 3rd dimention (z).
 #'
 #' @import ncdf4
 #' @import eixport

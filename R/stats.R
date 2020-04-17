@@ -1,4 +1,4 @@
-#' Calculate evaluation statistics
+#' Calculate evaluation statistics from 2 vectors
 #'
 #' @description Calculate statistical indexes
 #'

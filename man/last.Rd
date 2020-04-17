@@ -9,6 +9,9 @@ last(x)
 \arguments{
 \item{x}{vector}
 }
+\value{
+last element
+}
 \description{
 This function return the last member of a vector
 }

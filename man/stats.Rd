@@ -2,7 +2,7 @@
 % Please edit documentation in R/stats.R
 \name{stats}
 \alias{stats}
-\title{Calculate evaluation statistics}
+\title{Calculate evaluation statistics from 2 vectors}
 \usage{
 stats(
   mo,

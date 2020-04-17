@@ -14,7 +14,7 @@ crbind(x, y, bind = TRUE, message = NA)
 
 \item{y}{second element to combine}
 
-\item{bind}{condition for combine x and y or return only x}
+\item{bind}{condition (TRUE or FALSE) for combine x and y or return only x}
 
 \item{message}{message in case of bind is false (no binding)}
 }
