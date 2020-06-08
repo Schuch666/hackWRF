@@ -89,7 +89,7 @@ stats <- function(mo,ob,spinup = 0, scatter = F,add = F, cor="#FF000088",lim = N
                              MB   = ind$MB,
                              `MFB (%)` = ind$MFB,
                              `MFE (%)` = ind$MFE,
-                             NMB  = ind$NMB,
-                             NME  = ind$NME))
+                             `NMB (%)` = 100 * ind$NMB,
+                             `NME (%)` = 100 * ind$NME))
   return(ind)
 }
