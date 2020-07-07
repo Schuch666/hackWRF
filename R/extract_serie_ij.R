@@ -1,14 +1,13 @@
-#' Extract time series of wrf file list of lat/lon
+#' Extract time series of wrf file list of ij
 #'
-#' @description Read and extract data from a list of wrf output files and a table of lat/lon points based on the distance of the points and the center of model grid points, points outside the domain (and points on domain boundary) are not extracteds.
+#' @description Read and extract data from a list of wrf output files and a table of i and j points of model grid.
 #'
 #' @param filelist list of files to be read
-#' @param point data.frame with lat/lon
+#' @param point data.frame with i and j position
 #' @param variable variable name
 #' @param field '4d' (defoult), '3d', '2d' or '2dz' see notes
 #' @param prefix to output file, defolt is serie
 #' @param new start a new file (defoult)
-#' @param return return tha data.frame of nearest points instead of extract the serie
 #' @param verbose display additional information
 #'
 #' @note The field argument '4d' or '2dz' is used to read a 4d/3d variable droping the 3rd dimention (z).
@@ -26,8 +25,8 @@
 #' extract_serie(filelist = files, point = stations,prefix = paste0(folder,'/serie'))
 #'
 
-extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
-                          prefix = 'serie',new = TRUE, return.nearest = F, verbose = TRUE){
+extract_serie_ij <- function(filelist, point, variable = 'o3',field = '4d',
+                             prefix = 'serie',new = TRUE,verbose = TRUE){
 
   output_file  <- paste0(prefix,'.',variable,'.Rds')
 
@@ -49,66 +48,7 @@ extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
     lon   <- lon[,,1,1,drop = T]
   }
   if(verbose)
-    cat('used dim of lat/lon:',dim(lat),'\n')
-
-  nearest <- function(point,lat,lon){
-    for(i in 1:nrow(point)){
-      d <- ( (lat - point$lat[i])^2 + (lon - point$lon[i])^2 )^(0.5)
-
-      # d <- ( (lat/2 - point$lat[i]/2)^2 + cos(pi * point$lat[i] / 180)^2 * (lon/2 - point$lon[i]/2)^2 )^(0.5)
-
-      # ponto1 <- c(lon[1],lat[1])
-      # ponto2 <- c(point$lat[i],point$lon[i])
-      # print(ponto1)
-      # print(ponto2)
-      # d      <- geosphere::distHaversine(p1 = ponto1, p2 = ponto2)
-
-      # d <- lat
-      # for(j in 1:ncol(d)){
-      #   for(k in 1:nrow(d)){
-      #     d[j,k] <- ( (lat[j,k]/2 - point$lat[i]/2)^2 + cos(lat[j,k]) * cos(point$lat[i]) * (lon[j,k]/2 - point$lon[i]/2)^2 )^(0.5)
-      #   }
-      # }
-
-      # cos_lat <- lat
-      # for(i in 1:ncol(lat)){
-      #   for(j in 1:nrow(lat)){
-      #     cos_lat <- cos(lat[i,j])
-      #   }
-      # }
-      # d <- ( (lat/2 - point$lat[i]/2)^2 + cos_lat * cos(point$lat[i]) * (lon/2 - point$lon[i]/2)^2 )^(0.5)
-
-      index <- which(d == min(d), arr.ind = TRUE)
-      point$i[i] <- index[[1]]
-      point$j[i] <- index[[2]]
-    }
-    return(point)
-  }
-  stations <- nearest(point,lat,lon)
-
-  remove_outsiders <- function(stations,lat){
-    j              <- 1
-    station_inside <- stations[j,]
-
-    for(i in 1:nrow(stations)){
-      outside        = FALSE
-      if(stations$i[i] == 1)         outside = TRUE
-      if(stations$j[i] == 1)         outside = TRUE
-      if(stations$i[i] == nrow(lat)) outside = TRUE
-      if(stations$j[i] == ncol(lat)) outside = TRUE
-
-      if(outside){
-        cat('* station',rownames(stations)[i],'ouside the domain\n')
-      }else{
-        #cat('station',rownames(stations)[i],'inside the domain\n')
-        station_inside[j,] <- stations[i,]
-        rownames(station_inside)[j] <- rownames(stations)[i]
-        j <- j + 1
-      }
-    }
-    return(station_inside)
-  }
-  stations <- remove_outsiders(stations,lat)
+    cat('using i & j to extract points:\n')
 
   model_lat_lon <- function(point,lat,lon){
     for(i in 1:nrow(point)){
@@ -118,11 +58,7 @@ extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
     return(point)
   }
 
-  stations <- model_lat_lon(stations,lat,lon)
-
-  if(return.nearest){
-    return(stations)
-  }
+  stations <- model_lat_lon(point,lat,lon)
 
   if(verbose){
     print(stations)
@@ -138,6 +74,7 @@ extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
     contagem  = NA             # 3d Field (x,y,t)
   if(field == '4d')
     contagem = c(-1,-1,1,-1)   # 4d Field (x,y,z,t)
+
   var     <- ncvar_get(wrf,variable,count = contagem)
   nc_close(wrf)
 
