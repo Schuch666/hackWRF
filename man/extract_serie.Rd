@@ -28,9 +28,9 @@ extract_serie(
 
 \item{new}{start a new file (defoult)}
 
-\item{verbose}{display additional information}
+\item{return.nearest}{return tha data.frame of nearest points instead of extract the serie}
 
-\item{return}{return tha data.frame of nearest points instead of extract the serie}
+\item{verbose}{display additional information}
 }
 \description{
 Read and extract data from a list of wrf output files and a table of lat/lon points based on the distance of the points and the center of model grid points, points outside the domain (and points on domain boundary) are not extracteds.

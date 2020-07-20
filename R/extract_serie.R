@@ -8,7 +8,7 @@
 #' @param field '4d' (defoult), '3d', '2d' or '2dz' see notes
 #' @param prefix to output file, defolt is serie
 #' @param new start a new file (defoult)
-#' @param return return tha data.frame of nearest points instead of extract the serie
+#' @param return.nearest return tha data.frame of nearest points instead of extract the serie
 #' @param verbose display additional information
 #'
 #' @note The field argument '4d' or '2dz' is used to read a 4d/3d variable droping the 3rd dimention (z).
