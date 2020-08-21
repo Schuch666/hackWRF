@@ -37,21 +37,19 @@ stats <- function(mo,ob,spinup = 0, scatter = F,add = F, cor="#FF000088",lim = N
   ob  <- ob[!is.na(mo)]
 
   MFBE <- function(mo,ob){
-    MFB  <- 0.0
-    MFE  <- 0.0
-    NME  <- 0.0
-    MAGE <- 0.0
+    MFB <- 0.0
+    MFE <- 0.0
+    NME <- 0.0
     for(i in 1:length(ob)){
-      if(mo[i] - ob[i] != 0){                             # evitar divisão por zero
-        MFB = MFB   +  (mo[i] - ob[i]) / (mo[i] + ob[i])
+      if(mo[i] - ob[i] != 0){
+        MFB = MFB +    (mo[i] - ob[i]) / (mo[i] + ob[i])
         MFE = MFE + abs(mo[i] - ob[i]) / (mo[i] + ob[i])
-        MAGE= MAGE +abs(mo[i] - ob[i])
+        NME = NME + abs(mo[i] - ob[i])
       }
     }
-    MFB  = MFB * 200 / length(ob)
-    MFE  = MFE * 200 / length(ob)
-    MAGE = MAGE / length(ob)
-    NME  = MAGE / mean(ob,na.rm = T)
+    MFB = MFB * 200 / length(ob)
+    MFE = MFE * 200 / length(ob)
+    NME = NME * 100 / sum(ob,na.rm = T)
     out <- cbind(MFB,MFE,NME)
     return(as.data.frame(out))
   }
@@ -89,7 +87,7 @@ stats <- function(mo,ob,spinup = 0, scatter = F,add = F, cor="#FF000088",lim = N
                              MB   = ind$MB,
                              `MFB (%)` = ind$MFB,
                              `MFE (%)` = ind$MFE,
-                             `NMB (%)` = 100 * ind$NMB,
-                             `NME (%)` = 100 * ind$NME))
+                             `NMB (%)` = ind$NMB,
+                             `NME (%)` = ind$NME))
   return(ind)
 }
