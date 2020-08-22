@@ -126,7 +126,7 @@ extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
 
   if(verbose){
     print(stations)
-    cat('reading:',filelist[1],'file 1 of',length(filelist),'\n')
+    cat('reading',variable,':',filelist[1],'file 1 of',length(filelist),'\n')
   }
 
   times   <- eixport::wrf_get(wrf$filename,name = 'time')
@@ -163,7 +163,7 @@ extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
   if(length(filelist) > 1){
     for(i in 2:length(filelist)){
       if(verbose)
-        cat('reading:',filelist[i],'file',i,'of',length(filelist),'\n')
+        cat('reading',variable,':',filelist[i],'file',i,'of',length(filelist),'\n')
 
       wrf   <- nc_open(filelist[i])
       lat   <- ncvar_get(wrf,"XLAT")
