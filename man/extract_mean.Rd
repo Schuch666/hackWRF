@@ -10,6 +10,7 @@ extract_mean(
   field = "4d",
   prefix = "mean",
   units = "ppmv",
+  meta = T,
   verbose = TRUE
 )
 }
@@ -23,6 +24,8 @@ extract_mean(
 \item{prefix}{to output file, defolt is serie}
 
 \item{units}{units on netcdf file (default is ppmv)}
+
+\item{meta}{use Times, XLONG and XLAT data (only work with 2d variable for file)}
 
 \item{verbose}{display additional information}
 }
