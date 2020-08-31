@@ -28,12 +28,12 @@
 extract_serie_ij <- function(filelist, point, variable = 'o3',field = '4d',
                              prefix = 'serie',new = TRUE,verbose = TRUE){
 
-  if(!exists(point$i)){
-    stop('i not found in point, use extract_serie instead')
-  }
-  if(!exists(point$j)){
-    stop('j not found in point, use extract_serie instead')
-  }
+  # if(!exists(point$i)){
+  #   stop('i not found in point, use extract_serie instead')
+  # }
+  # if(!exists(point$j)){
+  #   stop('j not found in point, use extract_serie instead')
+  # }
 
   output_file  <- paste0(prefix,'.',variable,'.Rds')
 
