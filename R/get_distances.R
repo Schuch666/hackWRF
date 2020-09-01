@@ -6,8 +6,10 @@
 #' @param long2 Longitude in decimals
 #' @return A numeric vector with the distance in kilometers.
 #'
-#' source: https://github.com/gustavobio/brclimate/blob/master/R/get_distances.R
-
+#' #' source: https://github.com/gustavobio/brclimate/blob/master/R/get_distances.R
+#'
+#' @export
+#'
 get_distances <- function(lat1, long1, lat2, long2) {
   deg2rad <- function(deg) {
     return(deg * (pi/180))

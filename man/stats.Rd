@@ -12,6 +12,8 @@ stats(
   add = F,
   cor = "#FF000088",
   lim = NA,
+  cutoff = 0,
+  verbose = T,
   ...
 )
 }

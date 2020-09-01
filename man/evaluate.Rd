@@ -4,7 +4,17 @@
 \alias{evaluate}
 \title{Model statistical evaluation}
 \usage{
-evaluate(mo, ob, station, table = NULL, clean = FALSE, verbose = TRUE, ...)
+evaluate(
+  mo,
+  ob,
+  station,
+  table = NULL,
+  clean = FALSE,
+  summaryze = FALSE,
+  verbose = TRUE,
+  cutoff = 0,
+  ...
+)
 }
 \arguments{
 \item{mo}{model data.frame}
@@ -16,6 +26,8 @@ evaluate(mo, ob, station, table = NULL, clean = FALSE, verbose = TRUE, ...)
 \item{table}{a data.frame with output from evaluate or stats}
 
 \item{clean}{remove rows with zero observations}
+
+\item{summaryze}{add a last line with the the average values and format the table}
 
 \item{verbose}{display additional information}
 

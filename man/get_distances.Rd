@@ -18,7 +18,7 @@ get_distances(lat1, long1, lat2, long2)
 \value{
 A numeric vector with the distance in kilometers.
 
-ref:
+#' source: https://github.com/gustavobio/brclimate/blob/master/R/get_distances.R
 }
 \description{
 Get the distance in kilometers between two points.

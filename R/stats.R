@@ -22,11 +22,11 @@
 #' stats(mo = model, ob = data, scatter = TRUE)
 #'
 
-stats <- function(mo,ob,spinup = 0, scatter = F,add = F, cor="#FF000088",lim = NA, ...){
+stats <- function(mo,ob,spinup = 0, scatter = F,add = F, cor="#FF000088",lim = NA,cutoff = 0, verbose = T, ...){
 
   if(spinup != 0){
-    mo <- mo[spinup:length(mo)]
-    ob <- ob[spinup:length(ob)]
+    mo <- mo[(spinup+1):length(mo)]
+    ob <- ob[(spinup+1):length(ob)]
   }
   if(length(mo) != length(ob))
     stop("mo and ob need to have the same length!") #nocov
@@ -35,6 +35,13 @@ stats <- function(mo,ob,spinup = 0, scatter = F,add = F, cor="#FF000088",lim = N
   ob  <- ob[!is.na(ob)]
   mo  <- mo[!is.na(mo)]
   ob  <- ob[!is.na(mo)]
+
+  if(cutoff > 0 ){
+    cat('using',cutoff,'for scutoff\n')
+
+    mo  <- mo[ob >= cutoff]
+    ob  <- ob[ob >= cutoff]
+  }
 
   MFBE <- function(mo,ob){
     MFB <- 0.0
@@ -58,6 +65,7 @@ stats <- function(mo,ob,spinup = 0, scatter = F,add = F, cor="#FF000088",lim = N
   ind  <- openair::modStats(DATA,mod = "WRF",
                             obs = "observado",
                             statistic = c("n", "FAC2","MB","RMSE", "r","NMB"))
+  ind$NMB <- ind$NMB * 100 # to transform in %
   ind <- cbind(ind,MFBE(DATA$WRF,DATA$observado))
   if(is.na(lim)){
     limites <- range(c(mo,ob),na.rm = T)

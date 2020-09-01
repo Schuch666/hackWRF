@@ -2,10 +2,12 @@
 
 export(ccbind)
 export(crbind)
+export(displace)
 export(evaluate)
 export(extract_mean)
 export(extract_serie)
 export(extract_serie_ij)
+export(get_distances)
 export(last)
 export(meta)
 export(stats)

@@ -10,6 +10,7 @@
 #' @param station name of the station
 #' @param table a data.frame with output from evaluate or stats
 #' @param clean remove rows with zero observations
+#' @param summaryze add a last line with the the average values and format the table
 #' @param verbose display additional information
 #' @param ... arguments to be passing to stats and plot
 #'
@@ -41,7 +42,30 @@
 #' table <- evaluate(mo = model, ob = obs, station = "Americana", table = table, clean = TRUE)
 #' print(table)
 
-evaluate <- function(mo, ob, station, table = NULL, clean = FALSE ,verbose = TRUE, ...){
+evaluate <- function(mo, ob, station, table = NULL, clean = FALSE ,summaryze = FALSE, verbose = TRUE, cutoff = 0, ...){
+  if(summaryze){
+    cat('creating the summary\n')
+
+    summa <- 1:11
+
+    for(i in 1:11){
+      summa[i] <- mean(table[,i],na.rm = T)
+    }
+    table          <- rbind(table,'GERAL' = summa)
+    table$n         = as.integer(table$n)
+    table$Obs       = round(table$Obs,2)
+    table$Sim       = round(table$Sim,2)
+    table$r         = round(table$r,2)
+    table$FA2       = round(table$FA2,2)
+    table$RMSE      = round(table$RMSE,2)
+    table$MB        = round(table$MB,2)
+    table$`MFB (%)` = round(table$`MFB (%)`,2)
+    table$`MFE (%)` = round(table$`MFE (%)`,2)
+    table$`NMB (%)` = round(table$`NMB (%)`,2)
+    table$`NME (%)` = round(table$`NME (%)`,2)
+
+    return(table)
+  }
   if(!station %in% names(ob)){
     cat(station,'not found in observation input\n')
     RESULT <- stats((1:199)/100,(1:199)/100)
@@ -85,7 +109,7 @@ evaluate <- function(mo, ob, station, table = NULL, clean = FALSE ,verbose = TRU
   if(length(B[!is.na(B)]) > 8){
     if(verbose)
       cat(station,'has',length(B[!is.na(B)]),'valid observations\n')
-    RESULT <- stats(A,B, ...)
+    RESULT <- stats(A,B, cutoff=cutoff, ...)
     row.names(RESULT) <- station
   }else{
     if(verbose)
