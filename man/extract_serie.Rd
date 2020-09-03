@@ -45,7 +45,7 @@ stations <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/inmet_2015
 cat('Example 2: METAR stations of Brazil\n')
 stations <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/metar-br.Rds"))
 
-cat('Example 3: AIR QUALITY stations of Brazilian Environmental Agencies: CETESB (SP), RAMQAr (ES) and SMAC (RJ)\n')
+cat('Example 3: Brazilian Air QUality: CETESB (SP), RAMQAr (ES) and SMAC (RJ)\n')
 stations <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/stations.Rds"))
 
 files    <- dir(path = system.file("extdata",package="hackWRF"),pattern = 'wrf',full.names = TRUE)

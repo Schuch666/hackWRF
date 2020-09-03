@@ -31,6 +31,8 @@ evaluate(
 
 \item{verbose}{display additional information}
 
+\item{cutoff}{minimum valid value for observation}
+
 \item{...}{arguments to be passing to stats and plot}
 }
 \description{

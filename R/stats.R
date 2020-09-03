@@ -9,6 +9,8 @@
 #' @param add set TRUE to add the points to a scatter plot
 #' @param cor color of scatterplot dots
 #' @param lim scatter plot limits
+#' @param cutoff minimum valid value for observation
+#' @param verbose display additional information
 #' @param ... extra arguments passed to scatter plot
 #'
 #' @importFrom openair modStats

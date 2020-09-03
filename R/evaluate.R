@@ -11,6 +11,7 @@
 #' @param table a data.frame with output from evaluate or stats
 #' @param clean remove rows with zero observations
 #' @param summaryze add a last line with the the average values and format the table
+#' @param cutoff minimum valid value for observation
 #' @param verbose display additional information
 #' @param ... arguments to be passing to stats and plot
 #'
