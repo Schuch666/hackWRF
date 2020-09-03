@@ -46,9 +46,10 @@ evaluate <- function(mo, ob, station, table = NULL, clean = FALSE ,summaryze = F
   if(summaryze){
     cat('creating the summary\n')
 
-    summa <- 1:11
+    summa    <- 1:11
+    summa[1] <- nrow(table)
 
-    for(i in 1:11){
+    for(i in 2:11){
       summa[i] <- mean(table[,i],na.rm = T)
     }
     table          <- rbind(table,'GERAL' = summa)
