@@ -47,10 +47,10 @@ evaluate <- function(mo, ob, station, table = NULL, clean = FALSE ,summaryze = F
   if(summaryze){
     cat('creating the summary\n')
 
-    summa    <- 1:11
+    summa    <- 1:ncol(table)
     summa[1] <- nrow(table)
 
-    for(i in 2:11){
+    for(i in 2:ncol(table)){
       summa[i] <- mean(table[,i],na.rm = T)
     }
     table          <- rbind(table,'GERAL' = summa)
@@ -65,6 +65,9 @@ evaluate <- function(mo, ob, station, table = NULL, clean = FALSE ,summaryze = F
     table$`MFE (%)` = round(table$`MFE (%)`,2)
     table$`NMB (%)` = round(table$`NMB (%)`,2)
     table$`NME (%)` = round(table$`NME (%)`,2)
+    table$ME        = round(table$ME,2)
+    table$IOA       = round(table$IOA,2)
+    table$GE        = round(table$GE,2)
 
     return(table)
   }
