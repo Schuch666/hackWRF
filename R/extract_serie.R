@@ -9,6 +9,7 @@
 #' @param prefix to output file, defolt is serie
 #' @param new start a new file (defoult)
 #' @param return.nearest return tha data.frame of nearest points instead of extract the serie
+#' @param fast faster calculation of grid distances but less precise
 #' @param verbose display additional information
 #'
 #' @note The field argument '4d' or '2dz' is used to read a 4d/3d variable droping the 3rd dimention (z).
@@ -35,7 +36,7 @@
 #'
 
 extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
-                          prefix = 'serie',new = TRUE, return.nearest = F, verbose = TRUE){
+                          prefix = 'serie',new = TRUE, return.nearest = F, fast = F,verbose = TRUE){
 
   output_file  <- paste0(prefix,'.',variable,'.Rds')
 
@@ -59,32 +60,25 @@ extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
   if(verbose)
     cat('used dim of lat/lon:',dim(lat),'\n')
 
-  nearest <- function(point,lat,lon){
+  nearest <- function(point,lat,lon,fast){
+    if(verbose)
+      cat('calculating distances...\n')
+
     for(i in 1:nrow(point)){
-      d <- ( (lat - point$lat[i])^2 + (lon - point$lon[i])^2 )^(0.5)
-
-      # d <- ( (lat/2 - point$lat[i]/2)^2 + cos(pi * point$lat[i] / 180)^2 * (lon/2 - point$lon[i]/2)^2 )^(0.5)
-
-      # ponto1 <- c(lon[1],lat[1])
-      # ponto2 <- c(point$lat[i],point$lon[i])
-      # print(ponto1)
-      # print(ponto2)
-      # d      <- geosphere::distHaversine(p1 = ponto1, p2 = ponto2)
-
-      # d <- lat
-      # for(j in 1:ncol(d)){
-      #   for(k in 1:nrow(d)){
-      #     d[j,k] <- ( (lat[j,k]/2 - point$lat[i]/2)^2 + cos(lat[j,k]) * cos(point$lat[i]) * (lon[j,k]/2 - point$lon[i]/2)^2 )^(0.5)
-      #   }
-      # }
-
-      # cos_lat <- lat
-      # for(i in 1:ncol(lat)){
-      #   for(j in 1:nrow(lat)){
-      #     cos_lat <- cos(lat[i,j])
-      #   }
-      # }
-      # d <- ( (lat/2 - point$lat[i]/2)^2 + cos_lat * cos(point$lat[i]) * (lon/2 - point$lon[i]/2)^2 )^(0.5)
+      # OLD CODE
+      if(fast){
+        d <- ( (lat - point$lat[i])^2 + (lon - point$lon[i])^2 )^(0.5)
+      }else{
+        d <- lat                # to d get dimmention of lat
+        for(k in 1:nrow(d)){    # using NEW CODE
+          for(l in 1:ncol(d)){
+            d[k,l] <- get_distances(lat1  = point$lat[i],
+                                    long1 = point$lon[i],
+                                    lat2  = lat[k,l],
+                                    long2 = lon[k,l])
+          }
+        }
+      }
 
       index <- which(d == min(d), arr.ind = TRUE)
       point$i[i] <- index[[1]]
@@ -92,7 +86,7 @@ extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
     }
     return(point)
   }
-  stations <- nearest(point,lat,lon)
+  stations <- nearest(point,lat,lon,fast)
 
   remove_outsiders <- function(stations,lat){
     j              <- 1
@@ -137,7 +131,7 @@ extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
     cat('reading',variable,':',filelist[1],'file 1 of',length(filelist),'\n')
   }
 
-  times   <- eixport::wrf_get(wrf$filename,name = 'time')
+  times   <- eixport::wrf_get(wrf$filename,name = 'time',verbose = F)
   if(field == '2d')
     contagem  = NA             # 2d Field (x,y)
   if(field == '2dz')
@@ -185,7 +179,7 @@ extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
         lon   <- lon[,,1,1,drop = T]
       }
 
-      # stations <- nearest(point,lat,lon)
+      # stations <- nearest(point,lat,lon,fast)
       # stations <- remove_outsiders(stations,lat)
       times    <- eixport::wrf_get(wrf$filename,name = 'time')
       var      <- ncvar_get(wrf,variable,count = contagem)

@@ -12,6 +12,7 @@ extract_serie(
   prefix = "serie",
   new = TRUE,
   return.nearest = F,
+  fast = F,
   verbose = TRUE
 )
 }
@@ -29,6 +30,8 @@ extract_serie(
 \item{new}{start a new file (defoult)}
 
 \item{return.nearest}{return tha data.frame of nearest points instead of extract the serie}
+
+\item{fast}{faster calculation of grid distances but less precise}
 
 \item{verbose}{display additional information}
 }
