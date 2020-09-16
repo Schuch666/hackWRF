@@ -56,17 +56,18 @@ stats <- function(mo,ob,spinup = 0, scatter = F,add = F, cor="#FF000088",lim = N
         NME = NME + abs(mo[i] - ob[i])
       }
     }
+    ME  = NME * 1.0 / length(ob)
     MFB = MFB * 200 / length(ob)
     MFE = MFE * 200 / length(ob)
     NME = NME * 100 / sum(ob,na.rm = T)
-    out <- cbind(MFB,MFE,NME)
+    out <- cbind(MFB,MFE,NME,ME)
     return(as.data.frame(out))
   }
   DATA <- cbind(WRF = mo, observado = ob)
   DATA <- as.data.frame(DATA)
   ind  <- openair::modStats(DATA,mod = "WRF",
                             obs = "observado",
-                            statistic = c("n", "FAC2","MB","RMSE", "r","NMB"))
+                            statistic = c("n", "FAC2","MB","RMSE", "r","NMB","IOA","MGE"))
   ind$NMB <- ind$NMB * 100 # to transform in %
   ind <- cbind(ind,MFBE(DATA$WRF,DATA$observado))
   if(is.na(lim)){
@@ -88,13 +89,16 @@ stats <- function(mo,ob,spinup = 0, scatter = F,add = F, cor="#FF000088",lim = N
   if(add){
     points(ob,mo,pch = 20, cex=1.8, col = cor, ... )
   }
-  ind <- as.data.frame(cbind(n    = length(ob),
-                             Obs  = mean(ob),
-                             Sim  = mean(mo),
-                             r    = ind$r,
-                             FA2  = ind$FAC2,
-                             RMSE = ind$RMSE,
-                             MB   = ind$MB,
+  ind <- as.data.frame(cbind(n         = length(ob),
+                             Obs       = mean(ob),
+                             Sim       = mean(mo),
+                             r         = ind$r,
+                             IOA       = ind$IOA,
+                             FA2       = ind$FAC2,
+                             RMSE      = ind$RMSE,
+                             MB        = ind$MB,
+                             ME        = ind$ME ,
+                             GE        = ind$MGE,
                              `MFB (%)` = ind$MFB,
                              `MFE (%)` = ind$MFE,
                              `NMB (%)` = ind$NMB,
