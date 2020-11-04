@@ -1,7 +1,7 @@
 #' Model statistical evaluation
 #'
 #' @description Statistical evaluation from 2 data.frames. The input data.frames (model and observation)
-#' must contain a date collum (with POSIXlt data) and also contains the same station (or polutant) name.
+#' must contain a date collum (with POSIXlt data) and also contains the same station (or pollutant) name.
 #' The function test and combine the time pairs and perform some basic tests.
 #' If a data.frame is provided to table argument a crbind is performed with a new row.
 #'
@@ -11,6 +11,7 @@
 #' @param table a data.frame with output from evaluate or stats
 #' @param clean remove rows with zero observations
 #' @param summaryze add a last line with the the average values and format the table
+#' @param formete works only with summaryzee, format the output for 2 digit (default)
 #' @param cutoff minimum valid value for observation
 #' @param verbose display additional information
 #' @param ... arguments to be passing to stats and plot
@@ -43,7 +44,8 @@
 #' table <- evaluate(mo = model, ob = obs, station = "Americana", table = table, clean = TRUE)
 #' print(table)
 
-evaluate <- function(mo, ob, station, table = NULL, clean = FALSE ,summaryze = FALSE, verbose = TRUE, cutoff = 0, ...){
+evaluate <- function(mo, ob, station, table = NULL, clean = FALSE, cutoff = 0,
+                     summaryze = FALSE, formate = T, verbose = TRUE, ...){
   if(summaryze){
     cat('creating the summary\n')
 
@@ -54,20 +56,22 @@ evaluate <- function(mo, ob, station, table = NULL, clean = FALSE ,summaryze = F
       summa[i] <- mean(table[,i],na.rm = T)
     }
     table          <- rbind(table,'GERAL' = summa)
-    table$n         = as.integer(table$n)
-    table$Obs       = round(table$Obs,2)
-    table$Sim       = round(table$Sim,2)
-    table$r         = round(table$r,2)
-    table$FA2       = round(table$FA2,2)
-    table$RMSE      = round(table$RMSE,2)
-    table$MB        = round(table$MB,2)
-    table$`MFB (%)` = round(table$`MFB (%)`,2)
-    table$`MFE (%)` = round(table$`MFE (%)`,2)
-    table$`NMB (%)` = round(table$`NMB (%)`,2)
-    table$`NME (%)` = round(table$`NME (%)`,2)
-    table$ME        = round(table$ME,2)
-    table$IOA       = round(table$IOA,2)
-    table$GE        = round(table$GE,2)
+    if(formate){
+      table$n         = as.integer(table$n)
+      table$Obs       = round(table$Obs,2)
+      table$Sim       = round(table$Sim,2)
+      table$r         = round(table$r,2)
+      table$FA2       = round(table$FA2,2)
+      table$RMSE      = round(table$RMSE,2)
+      table$MB        = round(table$MB,2)
+      table$`MFB (%)` = round(table$`MFB (%)`,2)
+      table$`MFE (%)` = round(table$`MFE (%)`,2)
+      table$`NMB (%)` = round(table$`NMB (%)`,2)
+      table$`NME (%)` = round(table$`NME (%)`,2)
+      table$ME        = round(table$ME,2)
+      table$IOA       = round(table$IOA,2)
+      table$GE        = round(table$GE,2)
+    }
 
     return(table)
   }

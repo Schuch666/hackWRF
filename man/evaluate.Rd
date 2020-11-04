@@ -10,9 +10,10 @@ evaluate(
   station,
   table = NULL,
   clean = FALSE,
-  summaryze = FALSE,
-  verbose = TRUE,
   cutoff = 0,
+  summaryze = FALSE,
+  formate = T,
+  verbose = TRUE,
   ...
 )
 }
@@ -27,17 +28,19 @@ evaluate(
 
 \item{clean}{remove rows with zero observations}
 
+\item{cutoff}{minimum valid value for observation}
+
 \item{summaryze}{add a last line with the the average values and format the table}
 
 \item{verbose}{display additional information}
 
-\item{cutoff}{minimum valid value for observation}
-
 \item{...}{arguments to be passing to stats and plot}
+
+\item{formete}{works only with summaryzee, format the output for 2 digit (default)}
 }
 \description{
 Statistical evaluation from 2 data.frames. The input data.frames (model and observation)
-must contain a date collum (with POSIXlt data) and also contains the same station (or polutant) name.
+must contain a date collum (with POSIXlt data) and also contains the same station (or pollutant) name.
 The function test and combine the time pairs and perform some basic tests.
 If a data.frame is provided to table argument a crbind is performed with a new row.
 }
