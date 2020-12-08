@@ -32,11 +32,11 @@ stats(
 
 \item{lim}{scatter plot limits}
 
-\item{cutoff}{minimum valid value for observation}
-
 \item{verbose}{display additional information}
 
 \item{...}{extra arguments passed to scatter plot}
+
+\item{cutoffminimum}{(optionally the maximum) valid value for observation}
 }
 \description{
 Calculate statistical indexes

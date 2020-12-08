@@ -28,15 +28,15 @@ evaluate(
 
 \item{clean}{remove rows with zero observations}
 
-\item{cutoff}{minimum valid value for observation}
+\item{cutoff}{minimum (optionally the maximum) valid value for observation}
 
 \item{summaryze}{add a last line with the the average values and format the table}
+
+\item{formate}{works only with summaryzee, format the output for 2 digit (default)}
 
 \item{verbose}{display additional information}
 
 \item{...}{arguments to be passing to stats and plot}
-
-\item{formete}{works only with summaryzee, format the output for 2 digit (default)}
 }
 \description{
 Statistical evaluation from 2 data.frames. The input data.frames (model and observation)

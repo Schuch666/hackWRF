@@ -9,7 +9,7 @@
 #' @param add set TRUE to add the points to a scatter plot
 #' @param cor color of scatterplot dots
 #' @param lim scatter plot limits
-#' @param cutoff minimum valid value for observation
+#' @param cutoffminimum (optionally the maximum) valid value for observation
 #' @param verbose display additional information
 #' @param ... extra arguments passed to scatter plot
 #'
@@ -38,11 +38,17 @@ stats <- function(mo,ob,spinup = 0, scatter = F,add = F, cor="#FF000088",lim = N
   mo  <- mo[!is.na(mo)]
   ob  <- ob[!is.na(mo)]
 
-  if(cutoff > 0 ){
-    cat('using',cutoff,'for scutoff\n')
+  if(cutoff[1] > 0 ){
+    cat('using',cutoff[1],'for min cutoff\n')
 
-    mo  <- mo[ob >= cutoff]
-    ob  <- ob[ob >= cutoff]
+    mo  <- mo[ob >= cutoff[1]]
+    ob  <- ob[ob >= cutoff[1]]
+  }
+  if(length(cutoff)>1){
+    cat('using',cutoff[2],'for max cutoff\n')
+
+    mo  <- mo[ob < cutoff[2]]
+    ob  <- ob[ob < cutoff[2]]
   }
 
   MFBE <- function(mo,ob){

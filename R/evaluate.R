@@ -11,8 +11,8 @@
 #' @param table a data.frame with output from evaluate or stats
 #' @param clean remove rows with zero observations
 #' @param summaryze add a last line with the the average values and format the table
-#' @param formete works only with summaryzee, format the output for 2 digit (default)
-#' @param cutoff minimum valid value for observation
+#' @param formate works only with summaryzee, format the output for 2 digit (default)
+#' @param cutoff minimum (optionally the maximum) valid value for observation
 #' @param verbose display additional information
 #' @param ... arguments to be passing to stats and plot
 #'
