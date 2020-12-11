@@ -20,7 +20,7 @@
 #' @export
 #'
 #' @examples
-#' # sample shapefile for filter
+#' # sample shapefile for Brazil and Brazilian regions
 #' BR         <- sf::read_sf(paste0(system.file("extdata",package="hackWRF"),"/BR.shp"))
 #' BR_regions <- sf::read_sf(paste0(system.file("extdata",package="hackWRF"),"/BR_regions.shp"))
 #'
@@ -36,6 +36,12 @@
 #' # check using the midwest region from BR_regions
 #' midwest <- BR_regions[2,]
 #' summary_emission(file = file,mask = midwest)
+#'
+#' # opening map for Metropolitan area of Sao Paulo
+#' masp <- sf::read_sf(paste0(system.file("extdata",package="hackWRF"),"/RMSP.shp"))
+#' # comnining the citis into a mask
+#' masp <- sf::st_combine(sf::st_union(masp))
+#' summary_emission(file = file,mask = masp)
 #' }
 #'
 summary_emission <- function(file,
@@ -48,6 +54,7 @@ summary_emission <- function(file,
                              verbose = F){
 
   make_mask <- function(r,s){
+    s <- sf::as_Spatial(s)
     return(raster::mask(r,s))
   }
 
@@ -87,13 +94,7 @@ summary_emission <- function(file,
                       stringsAsFactors = F)
 
   for(i in var){
-    if(is.null(mask)){
-      emiss_val  <- ncdf4::ncvar_get(nc = em, varid = i)
-    }else{
-      emiss_val  <- eixport::wrf_get(file,i,as_raster = T)
-      emiss_val  <- make_mask(emiss_val,mask)
-      emiss_val  <- raster::as.array(emiss_val)
-    }
+    emiss_val  <- ncdf4::ncvar_get(nc = em, varid = i)
 
     media      <- mean(emiss_val, na.rm = T)
     maximo     <- max(emiss_val,  na.rm = T)
@@ -111,6 +112,11 @@ summary_emission <- function(file,
       table[table$pollutant == i,]$mw     <- '-'
       table[table$pollutant == i,]$total  <- set_units(0,'t year-1')
     }else{
+      if(!is.null(mask)){
+        emiss_val  <- eixport::wrf_get(file,i,as_raster = T)
+        emiss_val  <- make_mask(emiss_val,mask)
+        emiss_val  <- raster::as.array(emiss_val)
+      }
       if(emiss_unit$value == "mol km^-2 hr^-1"){
         mw    <- MW$g_mol[MW$group == i]
         if(verbose)

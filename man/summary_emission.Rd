@@ -42,7 +42,7 @@ Calculate the summary for each specie of gas and aerosol in a given emission fil
 If the mask argument is provided, only the inner region of the shapefile is used to determine the total emissions.
 }
 \examples{
-# sample shapefile for filter
+# sample shapefile for Brazil and Brazilian regions
 BR         <- sf::read_sf(paste0(system.file("extdata",package="hackWRF"),"/BR.shp"))
 BR_regions <- sf::read_sf(paste0(system.file("extdata",package="hackWRF"),"/BR_regions.shp"))
 
@@ -58,6 +58,12 @@ summary_emission(file = file,mask = BR)
 # check using the midwest region from BR_regions
 midwest <- BR_regions[2,]
 summary_emission(file = file,mask = midwest)
+
+# opening map for Metropolitan area of Sao Paulo
+masp <- sf::read_sf(paste0(system.file("extdata",package="hackWRF"),"/RMSP.shp"))
+# comnining the citis into a mask
+masp <- sf::st_combine(sf::st_union(masp))
+summary_emission(file = file,mask = masp)
 }
 
 }
