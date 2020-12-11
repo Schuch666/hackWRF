@@ -11,4 +11,9 @@
 #' a <- 1:666
 #' print(last(a))
 #'
-last <- function(x) { return( x[length(x)] ) }
+last <- function(x) {
+  if(class(x) == "data.frame"){
+    return( x[nrow(x),] )
+  }
+  return( x[length(x)] )
+}

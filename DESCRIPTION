@@ -1,23 +1,23 @@
 Package: hackWRF
 Type: Package
 Title: Functions to work with WRF, NetCDF and model evaluation
-Date: 2020-04-17
-Version: 0.4.2
+Date: 2020-12-10
+Version: 0.4.3
 Authors@R: c(
   person(given = "Daniel",
          family = "Schuch",
          role = c("aut", "cre"),
-         email = "schuch@usp.br",
+         email = "d.schuch@northeastern.edu",
          comment = c(ORCID = "0000-0001-5977-4519"))
          )
-Maintainer: Daniel Schuch <schuch@usp.br>
+Maintainer: Daniel Schuch <d.schuch@northeastern.edu>
 Description: Functions to extract data from WRF output file lists, evaluation of results and utilities.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
 Depends: R (>= 3.5)
-Imports: ncdf4, eixport, openair, graphics
+Imports: ncdf4, eixport, openair, graphics, units, sf, raster
 Suggests: testthat, covr
 URL: https://schuch666.github.io/hackWRF
 BugReports: https://github.com/Schuch666/hackWRF/issues

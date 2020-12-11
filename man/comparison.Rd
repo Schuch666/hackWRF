@@ -7,16 +7,20 @@
 comparison(tabA, tabB, verbose = T)
 }
 \arguments{
-\item{tabA}{model}
+\item{tabA}{Table A, from evaluate}
 
-\item{tabB}{observed data}
+\item{tabB}{Table B, from evaluate}
 
-\item{clean}{remove rows with zero observations}
-
-\item{summaryze}{add a last line with the the average values and format the table}
+\item{verbose}{display additional information}
+}
+\value{
+Table A containing only the row.names in table B
 }
 \description{
 Filter table A to perform a fair comparison with table B using row.names
+}
+\note{
+to perform a comparison check both tables using comparison(A,B) and comparison(B,A)
 }
 \examples{
 model <- 1:10
@@ -38,4 +42,5 @@ for(i in 2:5){
 row.names(B) <- c('a0','a1','z0','z1','z2')
 
 comparison(A,B)
+comparison(B,A)
 }
