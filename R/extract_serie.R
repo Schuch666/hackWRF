@@ -32,7 +32,8 @@
 #' files    <- dir(path = system.file("extdata",package="hackWRF"),pattern = 'wrf',full.names = TRUE)
 #' dir.create(file.path(tempdir(),"SERIE"))
 #' folder <- file.path(tempdir(),"SERIE")
-#' extract_serie(filelist = files, point = stations,prefix = paste0(folder,'/serie'))
+#' # extract data for 3 locations
+#' extract_serie(filelist = files, point = stations[1:3,],prefix = paste0(folder,'/serie'))
 #'
 
 extract_serie <- function(filelist, point, variable = 'o3',field = '4d',

@@ -40,6 +40,7 @@ stations <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/stations.R
 files    <- dir(path = system.file("extdata",package="hackWRF"),pattern = 'wrf',full.names = TRUE)
 dir.create(file.path(tempdir(),"SERIE"))
 folder <- file.path(tempdir(),"SERIE")
-extract_serie(filelist = files, point = stations,prefix = paste0(folder,'/serie'))
+# extract data for 3 locations
+extract_serie(filelist = files, point = stations[1:3,],prefix = paste0(folder,'/serie'))
 
 }

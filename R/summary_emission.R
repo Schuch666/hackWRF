@@ -154,10 +154,6 @@ summary_emission <- function(file,
 
   table$total_units <- rep('Kt/year',nrow(table))
 
-  # to check with Mario script
-  # table$mario       <- table$total/365  # to match Mario script
-  # table$mario_units <- rep('Kt/day',nrow(table))
-
   if(pm){
     total_pm   <- sum(table[table$units == 'ug m^-2 s^-1',]$total) # all emissions for aerosol
     pm25       <- table[table$units == 'ug m^-2 s^-1',]$pollutant  # selecting all aerosol
