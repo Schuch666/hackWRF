@@ -1,8 +1,8 @@
-#' Get the last element of a vector
+#' Get the last element of a vector of data.frame
 #'
-#' @description This function return the last member of a vector
+#' @description This function return the last member of the input
 #'
-#' @param x vector
+#' @param x vector or data.frame
 #' @return last element
 #'
 #' @export
@@ -12,7 +12,7 @@
 #' print(last(a))
 #'
 last <- function(x) {
-  if(class(x) == "data.frame"){
+  if(is.data.frame(x)){
     return( x[nrow(x),] )
   }
   return( x[length(x)] )

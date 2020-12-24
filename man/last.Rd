@@ -2,18 +2,18 @@
 % Please edit documentation in R/last.R
 \name{last}
 \alias{last}
-\title{Get the last element of a vector}
+\title{Get the last element of a vector of data.frame}
 \usage{
 last(x)
 }
 \arguments{
-\item{x}{vector}
+\item{x}{vector or data.frame}
 }
 \value{
 last element
 }
 \description{
-This function return the last member of a vector
+This function return the last member of the input
 }
 \examples{
 a <- 1:666

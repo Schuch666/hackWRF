@@ -1,7 +1,7 @@
 Package: hackWRF
 Type: Package
 Title: Functions to work with WRF, NetCDF and model evaluation
-Date: 2020-12-10
+Date: 2020-12-23
 Version: 0.4.3
 Authors@R: c(
   person(given = "Daniel",
@@ -17,7 +17,7 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
 Depends: R (>= 3.5)
-Imports: ncdf4, eixport, openair, graphics, units, sf, raster
+Imports: utils, ncdf4, eixport, openair, graphics, units, sf, raster
 Suggests: testthat, covr
 URL: https://schuch666.github.io/hackWRF
 BugReports: https://github.com/Schuch666/hackWRF/issues

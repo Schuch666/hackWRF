@@ -11,9 +11,12 @@
 #' @param mask sf object MULTIPOLYGON from a shapefile, see notes and example
 #' @param verbose display additional information
 #'
-#' @return a data.frame containing the polutant name, minimum, average, maximum, units, molar weight and total (in kt/year)
+#' @return a data.frame containing the pollutant name, minimum, average, maximum, units, molar weight and total (in kt/year)
 #'
 #' @import ncdf4 units sf raster eixport
+#' @importFrom utils choose.files
+#'
+#' @note Molar mass for PAR is estimated considering weighted average of: Propane 11\%, Butanes 18\%, Pentanes 9\%, Hexanes and higher alkanes 39\%, Acetylene 5\%, Benzene 11\%, Esters 3\%, Ethers 4\%) divided by the number of carbons (1.5 for propane, 4 for Butanes, 5 for pentanes, 5.86 for Hexanes and 1 for the others).
 #'
 #' @note If the mask argument is provided, only the inner region of the shapefile is used to determine the total emissions.
 #'
@@ -44,7 +47,7 @@
 #' summary_emission(file = file,mask = masp)
 #' }
 #'
-summary_emission <- function(file,
+summary_emission <- function(file = choose.files(),
                              chem_opt = 'cb05',
                              remove_zeros = TRUE,
                              remove_dim = TRUE,
