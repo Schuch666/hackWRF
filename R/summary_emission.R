@@ -57,6 +57,7 @@ summary_emission <- function(file = choose.files(),
                              verbose = F){
 
   make_mask <- function(r,s){
+    s <- sf::st_transform(s,crs = raster::crs(r))
     s <- sf::as_Spatial(s)
     return(raster::mask(r,s))
   }
@@ -116,8 +117,8 @@ summary_emission <- function(file = choose.files(),
       table[table$pollutant == i,]$total  <- set_units(0,'t year-1')
     }else{
       if(!is.null(mask)){
-        emiss_val  <- eixport::wrf_get(file,i,as_raster = T)
-        emiss_val  <- make_mask(emiss_val,mask)
+        emiss_val  <- eixport::wrf_raster(file,i)
+        emiss_val  <- suppressWarnings( make_mask(emiss_val,mask) )
         emiss_val  <- raster::as.array(emiss_val)
       }
       if(emiss_unit$value == "mol km^-2 hr^-1"){
