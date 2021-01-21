@@ -7,12 +7,15 @@
 #' @param variable variable name
 #' @param field '4d' (defoult), '3d', '2d' or '2dz' see notes
 #' @param prefix to output file, defolt is serie
-#' @param new start a new file (defoult)
-#' @param return.nearest return tha data.frame of nearest points instead of extract the serie
+#' @param new TRUE, FALSE of 'check' see notes
+#' @param return.nearest return the data.frame of nearest points instead of extract the serie
 #' @param fast faster calculation of grid distances but less precise
+#' @param use_ij logical, use i and j from input instead of calculate
 #' @param verbose display additional information
 #'
 #' @note The field argument '4d' or '2dz' is used to read a 4d/3d variable droping the 3rd dimention (z).
+#'
+#' @note new = TRUE create a new file, new = FALSE append the data in a old file, and new = 'check' check if the file exist and append if the file exist and create if the file doesnt exist
 #'
 #' @import ncdf4
 #' @import eixport
@@ -26,7 +29,7 @@
 #' cat('Example 2: METAR stations of Brazil\n')
 #' stations <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/metar-br.Rds"))
 #'
-#' cat('Example 3: Brazilian Air QUality: CETESB (SP), RAMQAr (ES) and SMAC (RJ)\n')
+#' cat('Example 3: Brazilian Air Quality: CETESB (SP), RAMQAr (ES) and SMAC (RJ)\n')
 #' stations <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/stations.Rds"))
 #'
 #' files    <- dir(path = system.file("extdata",package="hackWRF"),pattern = 'wrf',full.names = TRUE)
@@ -37,9 +40,14 @@
 #'
 
 extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
-                          prefix = 'serie',new = TRUE, return.nearest = F, fast = F,verbose = TRUE){
+                          prefix = 'serie',new = 'check', return.nearest = FALSE,
+                          fast = FALSE, use_ij = FALSE,verbose = TRUE){
 
   output_file  <- paste0(prefix,'.',variable,'.Rds')
+
+  if(new == 'check'){
+    new = !file.exists(output_file)
+  }
 
   if(verbose)
     cat('extracting series of',variable,'field',field,'for',nrow(point),'points\n')
@@ -61,33 +69,39 @@ extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
   if(verbose)
     cat('used dim of lat/lon:',dim(lat),'\n')
 
-  nearest <- function(point,lat,lon,fast){
+  if(use_ij){
+    stations <- point
     if(verbose)
-      cat('calculating distances...\n')
+      cat('using i & j to extract points:\n')
+  }else{
+    nearest <- function(point,lat,lon,fast){
+      if(verbose)
+        cat('calculating distances...\n')
 
-    for(i in 1:nrow(point)){
-      # OLD CODE
-      if(fast){
-        d <- ( (lat - point$lat[i])^2 + (lon - point$lon[i])^2 )^(0.5)
-      }else{
-        d <- lat                # to d get dimmention of lat
-        for(k in 1:nrow(d)){    # using NEW CODE
-          for(l in 1:ncol(d)){
-            d[k,l] <- get_distances(lat1  = point$lat[i],
-                                    long1 = point$lon[i],
-                                    lat2  = lat[k,l],
-                                    long2 = lon[k,l])
+      for(i in 1:nrow(point)){
+        # OLD CODE
+        if(fast){
+          d <- ( (lat - point$lat[i])^2 + (lon - point$lon[i])^2 )^(0.5)
+        }else{
+          d <- lat                # to d get dimmention of lat
+          for(k in 1:nrow(d)){    # using NEW CODE
+            for(l in 1:ncol(d)){
+              d[k,l] <- get_distances(lat1  = point$lat[i],
+                                      long1 = point$lon[i],
+                                      lat2  = lat[k,l],
+                                      long2 = lon[k,l])
+            }
           }
         }
-      }
 
-      index <- which(d == min(d), arr.ind = TRUE)
-      point$i[i] <- index[[1]]
-      point$j[i] <- index[[2]]
+        index <- which(d == min(d), arr.ind = TRUE)
+        point$i[i] <- index[[1]]
+        point$j[i] <- index[[2]]
+      }
+      return(point)
     }
-    return(point)
+    stations <- nearest(point,lat,lon,fast)
   }
-  stations <- nearest(point,lat,lon,fast)
 
   remove_outsiders <- function(stations,lat){
     j              <- 1

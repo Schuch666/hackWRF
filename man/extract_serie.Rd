@@ -10,9 +10,10 @@ extract_serie(
   variable = "o3",
   field = "4d",
   prefix = "serie",
-  new = TRUE,
-  return.nearest = F,
-  fast = F,
+  new = "check",
+  return.nearest = FALSE,
+  fast = FALSE,
+  use_ij = FALSE,
   verbose = TRUE
 )
 }
@@ -27,11 +28,13 @@ extract_serie(
 
 \item{prefix}{to output file, defolt is serie}
 
-\item{new}{start a new file (defoult)}
+\item{new}{TRUE, FALSE of 'check' see notes}
 
-\item{return.nearest}{return tha data.frame of nearest points instead of extract the serie}
+\item{return.nearest}{return the data.frame of nearest points instead of extract the serie}
 
 \item{fast}{faster calculation of grid distances but less precise}
+
+\item{use_ij}{logical, use i and j from input instead of calculate}
 
 \item{verbose}{display additional information}
 }
@@ -40,6 +43,8 @@ Read and extract data from a list of wrf output files and a table of lat/lon poi
 }
 \note{
 The field argument '4d' or '2dz' is used to read a 4d/3d variable droping the 3rd dimention (z).
+
+new = TRUE create a new file, new = FALSE append the data in a old file, and new = 'check' check if the file exist and append if the file exist and create if the file doesnt exist
 }
 \examples{
 cat('Example 1: INMET stations for 2015\n')
@@ -48,7 +53,7 @@ stations <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/inmet_2015
 cat('Example 2: METAR stations of Brazil\n')
 stations <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/metar-br.Rds"))
 
-cat('Example 3: Brazilian Air QUality: CETESB (SP), RAMQAr (ES) and SMAC (RJ)\n')
+cat('Example 3: Brazilian Air Quality: CETESB (SP), RAMQAr (ES) and SMAC (RJ)\n')
 stations <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/stations.Rds"))
 
 files    <- dir(path = system.file("extdata",package="hackWRF"),pattern = 'wrf',full.names = TRUE)
