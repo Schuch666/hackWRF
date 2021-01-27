@@ -4,6 +4,7 @@
 #'
 #' @param tabA Table A, from evaluate
 #' @param tabB Table B, from evaluate
+#' @param Use_names list of names to be used instead of Table B
 #' @param verbose display additional information
 #'
 #' @note to perform a comparison check both tables using comparison(A,B) and comparison(B,A)
@@ -34,7 +35,13 @@
 #' comparison(A,B)
 #' comparison(B,A)
 
-comparison <- function(tabA, tabB,verbose = T){
+comparison <- function(tabA, tabB, use_names, verbose = T){
+
+  if(!missing(use_names)){
+    tabB  <- data.frame(NAs = rep(NA,length(use_names)),
+                        row.names = use_names,
+                        stringsAsFactors = T)
+  }
 
   A <- row.names(tabA)
   B <- row.names(tabB)
