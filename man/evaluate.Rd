@@ -9,6 +9,7 @@ evaluate(
   ob,
   station,
   table = NULL,
+  wd = FALSE,
   clean = FALSE,
   cutoff = 0,
   summaryze = FALSE,
@@ -25,6 +26,8 @@ evaluate(
 \item{station}{name of the station}
 
 \item{table}{a data.frame with output from evaluate or stats}
+
+\item{wd}{default is FALSE, see notes}
 
 \item{clean}{remove rows with zero observations}
 
@@ -43,6 +46,9 @@ Statistical evaluation from 2 data.frames. The input data.frames (model and obse
 must contain a date collum (with POSIXlt data) and also contains the same station (or pollutant) name.
 The function test and combine the time pairs and perform some basic tests.
 If a data.frame is provided to table argument a crbind is performed with a new row.
+}
+\note{
+for wind direction some the ME and MB are calculated using Mughal et al. (2017)
 }
 \examples{
 model <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/model.Rds"))
@@ -69,4 +75,11 @@ print(table)
 # if the first evaluation has no data, the last call can remove the line
 table <- evaluate(mo = model, ob = obs, station = "Americana", table = table, clean = TRUE)
 print(table)
+}
+\references{
+Mughal MO, Lynch M, Yu F, McGann B, Jeanneret F, Sutton J (2017)
+Wind modeling, validation and sensitivity study using Weather
+Research and Forecasting model in complex terrain. Environ
+Model Softw 90:107–125. https://doi.org/10.1016/j.envsoft.2017.
+01.009
 }

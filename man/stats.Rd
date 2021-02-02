@@ -8,6 +8,7 @@ stats(
   mo,
   ob,
   spinup = 0,
+  wd = FALSE,
   scatter = F,
   add = F,
   cor = "#FF000088",

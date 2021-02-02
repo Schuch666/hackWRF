@@ -4,7 +4,7 @@
 \alias{comparison}
 \title{Filter table A to perform a fair comparison with table B}
 \usage{
-comparison(tabA, tabB, verbose = T)
+comparison(tabA, tabB, use_names, verbose = T)
 }
 \arguments{
 \item{tabA}{Table A, from evaluate}
@@ -12,6 +12,8 @@ comparison(tabA, tabB, verbose = T)
 \item{tabB}{Table B, from evaluate}
 
 \item{verbose}{display additional information}
+
+\item{Use_names}{list of names to be used instead of Table B}
 }
 \value{
 Table A containing only the row.names in table B

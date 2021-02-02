@@ -9,12 +9,23 @@
 #' @param ob observed data.frame
 #' @param station name of the station
 #' @param table a data.frame with output from evaluate or stats
+#' @param wd default is FALSE, see notes
 #' @param clean remove rows with zero observations
 #' @param summaryze add a last line with the the average values and format the table
 #' @param formate works only with summaryzee, format the output for 2 digit (default)
 #' @param cutoff minimum (optionally the maximum) valid value for observation
 #' @param verbose display additional information
 #' @param ... arguments to be passing to stats and plot
+#'
+#' @note for wind direction some the ME and MB are calculated using Mughal et al. (2017)
+#'
+#' @references
+#'
+#' Mughal MO, Lynch M, Yu F, McGann B, Jeanneret F, Sutton J (2017)
+#' Wind modeling, validation and sensitivity study using Weather
+#' Research and Forecasting model in complex terrain. Environ
+#' Model Softw 90:107–125. https://doi.org/10.1016/j.envsoft.2017.
+#' 01.009
 #'
 #' @export
 #'
@@ -44,7 +55,7 @@
 #' table <- evaluate(mo = model, ob = obs, station = "Americana", table = table, clean = TRUE)
 #' print(table)
 
-evaluate <- function(mo, ob, station, table = NULL, clean = FALSE, cutoff = 0,
+evaluate <- function(mo, ob, station, table = NULL, wd = FALSE, clean = FALSE, cutoff = 0,
                      summaryze = FALSE, formate = T, verbose = TRUE, ...){
   if(summaryze){
     cat('creating the summary\n')
@@ -118,7 +129,7 @@ evaluate <- function(mo, ob, station, table = NULL, clean = FALSE, cutoff = 0,
   if(length(B[!is.na(B)]) > 8){
     if(verbose)
       cat(station,'has',length(B[!is.na(B)]),'valid observations\n')
-    RESULT <- stats(A,B, cutoff=cutoff, ...)
+    RESULT <- stats(A,B, cutoff=cutoff, wd = wd, ...)
     row.names(RESULT) <- station
   }else{
     if(verbose)

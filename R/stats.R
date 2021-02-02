@@ -24,7 +24,7 @@
 #' stats(mo = model, ob = data, scatter = TRUE)
 #'
 
-stats <- function(mo,ob,spinup = 0, scatter = F,add = F, cor="#FF000088",lim = NA,cutoff = 0, verbose = T, ...){
+stats <- function(mo,ob,spinup = 0, wd = FALSE, scatter = F,add = F, cor="#FF000088",lim = NA,cutoff = 0, verbose = T, ...){
 
   if(spinup != 0){
     mo <- mo[(spinup+1):length(mo)]
@@ -75,7 +75,38 @@ stats <- function(mo,ob,spinup = 0, scatter = F,add = F, cor="#FF000088",lim = N
                             obs = "observado",
                             statistic = c("n", "FAC2","MB","RMSE", "r","NMB","IOA","MGE"))
   ind$NMB <- ind$NMB * 100 # to transform in %
-  ind <- cbind(ind,MFBE(DATA$WRF,DATA$observado))
+  ind     <- cbind(ind,MFBE(DATA$WRF,DATA$observado))
+  print(ind)
+
+  MBME <- function(mo,ob){
+    MB <- 0.0
+    ME <- 0.0
+    for(i in 1:length(ob)){
+      if(mo[i] - ob[i] != 0){
+        if(abs(mo[i] - ob[i]) > 180){
+          a = abs(1 - (360 / abs(mo[i] - ob[i]) ) )
+        }else{
+          a = 1
+        }
+        MB = MB +    (mo[i] - ob[i]) * a
+        ME = ME + abs(mo[i] - ob[i]) * a
+      }
+    }
+    MB  =  MB / length(ob)
+    ME  =  ME / length(ob)
+    out <- cbind(MB,ME)
+    return(as.data.frame(out))
+  }
+
+  if(wd){
+    cat('using Mughal et al. (2017) for MB and ME for wind speed\n')
+    ws_stats <- MBME(DATA$WRF,DATA$observado)
+    print(ws_stats)
+    ind$MB   =  ws_stats$MB
+    ind$ME   =  ws_stats$ME
+  }
+  print(ind)
+
   if(is.na(lim)){
     limites <- range(c(mo,ob),na.rm = T)
   }else{
