@@ -76,7 +76,6 @@ stats <- function(mo,ob,spinup = 0, wd = FALSE, scatter = F,add = F, cor="#FF000
                             statistic = c("n", "FAC2","MB","RMSE", "r","NMB","IOA","MGE"))
   ind$NMB <- ind$NMB * 100 # to transform in %
   ind     <- cbind(ind,MFBE(DATA$WRF,DATA$observado))
-  print(ind)
 
   MBME <- function(mo,ob){
     MB <- 0.0
@@ -101,11 +100,9 @@ stats <- function(mo,ob,spinup = 0, wd = FALSE, scatter = F,add = F, cor="#FF000
   if(wd){
     cat('using Mughal et al. (2017) for MB and ME for wind speed\n')
     ws_stats <- MBME(DATA$WRF,DATA$observado)
-    print(ws_stats)
     ind$MB   =  ws_stats$MB
     ind$ME   =  ws_stats$ME
   }
-  print(ind)
 
   if(is.na(lim)){
     limites <- range(c(mo,ob),na.rm = T)
