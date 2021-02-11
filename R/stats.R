@@ -98,7 +98,7 @@ stats <- function(mo,ob,spinup = 0, wd = FALSE, scatter = F,add = F, cor="#FF000
   }
 
   if(wd){
-    cat('using Mughal et al. (2017) for MB and ME for wind speed\n')
+    cat('using Mughal et al. (2017) for MB and ME for wind direction\n')
     ws_stats <- MBME(DATA$WRF,DATA$observado)
     ind$MB   =  ws_stats$MB
     ind$ME   =  ws_stats$ME
