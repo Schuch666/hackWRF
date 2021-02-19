@@ -14,7 +14,6 @@
 #' @return a data.frame containing the pollutant name, minimum, average, maximum, units, molar weight and total (in kt/year)
 #'
 #' @import ncdf4 units sf raster eixport
-#' @importFrom utils choose.files
 #'
 #' @note Molar mass for PAR is estimated considering weighted average of: Propane 11\%, Butanes 18\%, Pentanes 9\%, Hexanes and higher alkanes 39\%, Acetylene 5\%, Benzene 11\%, Esters 3\%, Ethers 4\%) divided by the number of carbons (1.5 for propane, 4 for Butanes, 5 for pentanes, 5.86 for Hexanes and 1 for the others).
 #'
@@ -28,7 +27,7 @@
 #' BR_regions <- sf::read_sf(paste0(system.file("extdata",package="hackWRF"),"/BR_regions.shp"))
 #'
 #' \dontrun{
-#' file <- choose.files()
+#' file <- file.choose()
 #'
 #' # fast check for the entire file
 #' summary_emission(file = file)
@@ -47,7 +46,7 @@
 #' summary_emission(file = file,mask = masp)
 #' }
 #'
-summary_emission <- function(file = choose.files(),
+summary_emission <- function(file = file.choose(),
                              chem_opt = 'cb05',
                              remove_zeros = TRUE,
                              remove_dim = TRUE,

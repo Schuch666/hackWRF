@@ -4,7 +4,8 @@
 #'
 #' @param mo model
 #' @param ob observed data
-#' @param spinup numer of model points excluded to the statistic
+#' @param spinup number of model points excluded to the statistic
+#' @param wd logical, true for wind direction, see notes
 #' @param scatter set TRUE to plot a scatter plot
 #' @param add set TRUE to add the points to a scatter plot
 #' @param cor color of scatterplot dots
@@ -15,6 +16,8 @@
 #'
 #' @importFrom openair modStats
 #' @import graphics
+#'
+#' @note MB and ME are calculated using Mughal et al. (2017) for wind direction
 #'
 #' @export
 #'

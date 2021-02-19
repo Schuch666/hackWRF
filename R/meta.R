@@ -16,7 +16,7 @@
 #' @examples
 #' nc <- paste0(system.file("extdata",package="hackWRF"),"/small.nc")
 #' meta(nc)
-#' meta(nc,attname = "Title")
+#' meta(nc,attname  = "Title")
 #' meta(nc,variable = "?")
 #' meta(nc,variable = "so2")
 #' meta(nc,variable = "so2",attname = "long_name")
@@ -25,7 +25,7 @@
 meta <- function(filename = NA,variable = 0, attname = NA, action="read", value=NA, verbose=F){
   if(is.na(filename)){
     cat("choose a file:\n")     # nocov
-    filename <- file.choose() # nocov
+    filename <- file.choose()   # nocov
     cat(paste(filename,"\n"))   # nocov
   }
   if(action != "read")

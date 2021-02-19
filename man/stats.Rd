@@ -23,7 +23,9 @@ stats(
 
 \item{ob}{observed data}
 
-\item{spinup}{numer of model points excluded to the statistic}
+\item{spinup}{number of model points excluded to the statistic}
+
+\item{wd}{logical, true for wind direction, see notes}
 
 \item{scatter}{set TRUE to plot a scatter plot}
 
@@ -41,6 +43,9 @@ stats(
 }
 \description{
 Calculate statistical indexes
+}
+\note{
+MB and ME are calculated using Mughal et al. (2017) for wind direction
 }
 \examples{
 model <- 1:100

@@ -4,7 +4,7 @@
 #'
 #' @param tabA Table A, from evaluate
 #' @param tabB Table B, from evaluate
-#' @param Use_names list of names to be used instead of Table B
+#' @param use_names list of names to be used instead of Table B
 #' @param verbose display additional information
 #'
 #' @note to perform a comparison check both tables using comparison(A,B) and comparison(B,A)

@@ -11,9 +11,9 @@ comparison(tabA, tabB, use_names, verbose = T)
 
 \item{tabB}{Table B, from evaluate}
 
-\item{verbose}{display additional information}
+\item{use_names}{list of names to be used instead of Table B}
 
-\item{Use_names}{list of names to be used instead of Table B}
+\item{verbose}{display additional information}
 }
 \value{
 Table A containing only the row.names in table B

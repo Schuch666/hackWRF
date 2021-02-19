@@ -5,7 +5,7 @@
 \title{Summary the emission from a emission file from WRF-Chem model}
 \usage{
 summary_emission(
-  file = choose.files(),
+  file = file.choose(),
   chem_opt = "cb05",
   remove_zeros = TRUE,
   remove_dim = TRUE,
@@ -49,7 +49,7 @@ BR         <- sf::read_sf(paste0(system.file("extdata",package="hackWRF"),"/BR.s
 BR_regions <- sf::read_sf(paste0(system.file("extdata",package="hackWRF"),"/BR_regions.shp"))
 
 \dontrun{
-file <- choose.files()
+file <- file.choose()
 
 # fast check for the entire file
 summary_emission(file = file)
