@@ -18,6 +18,6 @@ LazyData: true
 RoxygenNote: 7.1.1
 Depends: R (>= 3.5)
 Imports: utils, ncdf4, eixport, openair, graphics, units, sf, raster
-Suggests: testthat, covr
+Suggests: testthat, covr, codetools
 URL: https://schuch666.github.io/hackWRF
 BugReports: https://github.com/Schuch666/hackWRF/issues
