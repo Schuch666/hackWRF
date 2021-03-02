@@ -14,6 +14,7 @@
 #' @param summaryze add a last line with the the average values and format the table
 #' @param formate works only with summaryzee, format the output for 2 digit (default)
 #' @param cutoff minimum (optionally the maximum) valid value for observation
+#' @param nobs minimum number of valid observations, default is 8
 #' @param verbose display additional information
 #' @param ... arguments to be passing to stats and plot
 #'
@@ -56,7 +57,7 @@
 #' print(table)
 
 evaluate <- function(mo, ob, station, table = NULL, wd = FALSE, clean = FALSE, cutoff = 0,
-                     summaryze = FALSE, formate = T, verbose = TRUE, ...){
+                     summaryze = FALSE, formate = T, nobs = 8, verbose = TRUE, ...){
   if(summaryze){
     cat('creating the summary\n')
 
@@ -126,14 +127,14 @@ evaluate <- function(mo, ob, station, table = NULL, wd = FALSE, clean = FALSE, c
   A     <- DATA$model
   B     <- DATA$obser
 
-  if(length(B[!is.na(B)]) > 8){
+  if(length(B[!is.na(B)]) > nobs){
     if(verbose)
       cat(station,'has',length(B[!is.na(B)]),'valid observations\n')
     RESULT <- stats(A,B, cutoff=cutoff, wd = wd, ...)
     row.names(RESULT) <- station
   }else{
     if(verbose)
-      cat(station,'has',length(B[!is.na(B)]),'valid observations\n')
+      cat(station,'has only',length(B[!is.na(B)]),'valid observations (lesser than nobs)\n')
     RESULT <- stats((1:199)/100,(1:199)/100)
     RESULT$n = 0
     row.names(RESULT) <- station

@@ -32,7 +32,7 @@ Read and write metadata information of a NetCDF files
 \examples{
 nc <- paste0(system.file("extdata",package="hackWRF"),"/small.nc")
 meta(nc)
-meta(nc,attname = "Title")
+meta(nc,attname  = "Title")
 meta(nc,variable = "?")
 meta(nc,variable = "so2")
 meta(nc,variable = "so2",attname = "long_name")

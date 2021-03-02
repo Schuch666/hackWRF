@@ -14,6 +14,7 @@ evaluate(
   cutoff = 0,
   summaryze = FALSE,
   formate = T,
+  nobs = 8,
   verbose = TRUE,
   ...
 )
@@ -36,6 +37,8 @@ evaluate(
 \item{summaryze}{add a last line with the the average values and format the table}
 
 \item{formate}{works only with summaryzee, format the output for 2 digit (default)}
+
+\item{nobs}{minimum number of valid observations, default is 8}
 
 \item{verbose}{display additional information}
 
