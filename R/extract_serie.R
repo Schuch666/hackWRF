@@ -29,12 +29,18 @@
 #' cat('Example 2: METAR stations of Brazil\n')
 #' stations <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/metar-br.Rds"))
 #'
-#' cat('Example 3: Brazilian Air Quality: CETESB (SP), RAMQAr (ES) and SMAC (RJ)\n')
+#' cat('Example 3: METAR soundings over Brazil\n')
+#' stations <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/soundings.Rds"))
+#'
+#' cat('Example 4: Brazilian Air Quality: CETESB (SP), RAMQAr (ES) and SMAC (RJ)\n')
 #' stations <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/stations.Rds"))
 #'
-#' files    <- dir(path = system.file("extdata",package="hackWRF"),pattern = 'wrf',full.names = TRUE)
+#' files    <- dir(path = system.file("extdata",package="hackWRF"),
+#'                 pattern = 'wrf.day',
+#'                 full.names = TRUE)
 #' dir.create(file.path(tempdir(),"SERIE"))
 #' folder <- file.path(tempdir(),"SERIE")
+#'
 #' # extract data for 3 locations
 #' extract_serie(filelist = files, point = stations[1:3,],prefix = paste0(folder,'/serie'))
 #'

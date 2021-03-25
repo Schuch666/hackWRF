@@ -17,3 +17,10 @@ array
 \description{
 Conversion a raster or brick to a array for WRF-Chem model
 }
+\examples{
+
+r <- raster::raster(paste0(system.file("extdata", package = "hackWRF"),
+                           "/wrf.day1.o3.nc"))
+a <- raster_to_ncdf(r)
+
+}
