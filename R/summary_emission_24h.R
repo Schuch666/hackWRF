@@ -20,10 +20,10 @@
 #'
 #' }
 #'
-summary_emission_24h <- function(file_00, file_12, ...){
+summary_emission_24h <- function(file_00, file_12 = file_00[2], ...){
 
-  cat('* processing',file_00,'...\n')
-  sum_00 <- summary_emission(file_00, ... )
+  cat('* processing',file_00[1],'...\n')
+  sum_00 <- summary_emission(file_00[1], ... )
 
   cat('* processing',file_12,'...\n')
   sum_12 <- summary_emission(file_12, ... )
@@ -32,8 +32,13 @@ summary_emission_24h <- function(file_00, file_12, ...){
   summary_e$med   = sum_00$med/2   + sum_12$med/2
   summary_e$total = sum_00$total/2 + sum_12$total/2
   for(i in 1:nrow(summary_e)){
-    summary_e$min[i] = min(sum_00$min[i], sum_12$min[i], na.rm = T)
-    summary_e$max[i] = max(sum_00$max[i], sum_12$max[i], na.rm = T)
+    if(is.na(sum_00$min[i])){
+      summary_e$min[i] = NA
+      summary_e$max[i] = NA
+    }else{
+      summary_e$min[i] = min(sum_00$min[i], sum_12$min[i], na.rm = T)
+      summary_e$max[i] = max(sum_00$max[i], sum_12$max[i], na.rm = T)
+    }
   }
   return(summary_e)
 }

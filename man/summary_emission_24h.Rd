@@ -4,7 +4,7 @@
 \alias{summary_emission_24h}
 \title{Summary the emission from two emission files (00Z and 12z) from WRF-Chem model}
 \usage{
-summary_emission_24h(file_00, file_12, ...)
+summary_emission_24h(file_00, file_12 = file_00[2], ...)
 }
 \arguments{
 \item{file_00}{file patch and name for 00z emission file}
