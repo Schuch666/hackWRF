@@ -14,6 +14,7 @@
 #' @param summaryze add a last line with the the average values and format the table
 #' @param formate works only with summaryzee, format the output for 2 digit (default)
 #' @param cutoff minimum (optionally the maximum) valid value for observation
+#' @param no_tz ignore tz from input
 #' @param nobs minimum number of valid observations, default is 8
 #' @param verbose display additional information
 #' @param ... arguments to be passing to stats and plot
@@ -57,7 +58,7 @@
 #' print(table)
 
 evaluate <- function(mo, ob, station, table = NULL, wd = FALSE, clean = FALSE, cutoff = 0,
-                     summaryze = FALSE, formate = T, nobs = 8, verbose = TRUE, ...){
+                     no_tz=FALSE, summaryze = FALSE, formate = T, nobs = 8, verbose = TRUE, ...){
   if(summaryze){
     cat('creating the summary\n')
 
@@ -102,7 +103,6 @@ evaluate <- function(mo, ob, station, table = NULL, wd = FALSE, clean = FALSE, c
       return(RESULT)
     }
   }
-
   if(!station %in% names(mo)){
     cat(station,'not found in model input\n')
     RESULT <- stats((1:199)/100,(1:199)/100)
@@ -123,6 +123,11 @@ evaluate <- function(mo, ob, station, table = NULL, wd = FALSE, clean = FALSE, c
   names(model) <- c("date","model")
   obser        <- ob[,c("date",station)]
   names(obser) <- c("date","obser")
+  if(no_tz){
+    f <- function(x,tz="GMT") return(as.POSIXct(as.numeric(x), origin="1970-01-01", tz=tz))
+    model$date <- f(model$date)
+    obser$date <- f(model$date)
+  }
   DATA  <- merge(model, obser, by = "date", all.x = TRUE)
   A     <- DATA$model
   B     <- DATA$obser
@@ -134,7 +139,7 @@ evaluate <- function(mo, ob, station, table = NULL, wd = FALSE, clean = FALSE, c
     row.names(RESULT) <- station
   }else{
     if(verbose)
-      cat(station,'has only',length(B[!is.na(B)]),'valid observations (lesser than nobs)\n')
+      cat(station,'has only',length(B[!is.na(B)]),'valid observations (lesser than',nobs,'obs)\n')
     RESULT <- stats((1:199)/100,(1:199)/100)
     RESULT$n = 0
     row.names(RESULT) <- station
