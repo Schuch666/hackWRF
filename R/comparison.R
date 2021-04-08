@@ -5,6 +5,8 @@
 #' @param tabA Table A, from evaluate
 #' @param tabB Table B, from evaluate
 #' @param use_names list of names to be used instead of Table B
+#' @param summaryze logical, true to update or add a summary
+#' @param formate argument passed to evaluation function (default is false)
 #' @param verbose display additional information
 #'
 #' @note to perform a comparison check both tables using comparison(A,B) and comparison(B,A)
@@ -35,7 +37,7 @@
 #' comparison(A,B)
 #' comparison(B,A)
 
-comparison <- function(tabA, tabB, use_names, verbose = T){
+comparison <- function(tabA, tabB, use_names, summaryze = FALSE, formate = FALSE, verbose = TRUE){
 
   if(!missing(use_names)){
     tabB  <- data.frame(NAs = rep(NA,length(use_names)),
@@ -52,5 +54,9 @@ comparison <- function(tabA, tabB, use_names, verbose = T){
     print(B)
   }
   new_table <- tabA[A %in% B,]
-  return(new_table)
+  if(summaryze){
+    return(evaluation(table = new_table, summaryze = T, formate = formate, verbose = verbose))
+  }else{
+    return(new_table)
+  }
 }

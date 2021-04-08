@@ -37,30 +37,31 @@
 #'
 #' # if first a test with no observed data
 #' # the function return an empty row
-#' table <- evaluate(mo = model, ob = obs, station = "VVIbes")
+#' table <- evaluation(mo = model, ob = obs, station = "VVIbes")
 #' print(table)
 #'
 #' # now a test with a few observed values
-#' table <- evaluate(mo = model, ob = obs, station = "Americana", table = table)
+#' table <- evaluation(mo = model, ob = obs, station = "Americana", table = table)
 #' print(table)
 #'
 #' # new tests with no data will be discated
-#' table <- evaluate(mo = model, ob = obs, station = "VVIbes", table = table)
+#' table <- evaluation(mo = model, ob = obs, station = "VVIbes", table = table)
 #' print(table)
 #'
 #' # if the station are not in the input data frame a message is displayed
 #' # and the function return an empty row
-#' table <- evaluate(mo = model, ob = obs, station = "Ibirapuera", table = table)
+#' table <- evaluation(mo = model, ob = obs, station = "Ibirapuera", table = table)
 #' print(table)
 #'
 #' # if the first evaluation has no data, the last call can remove the line
-#' table <- evaluate(mo = model, ob = obs, station = "Americana", table = table, clean = TRUE)
+#' table <- evaluation(mo = model, ob = obs, station = "Americana", table = table, clean = TRUE)
 #' print(table)
 
-evaluate <- function(mo, ob, station, table = NULL, wd = FALSE, clean = FALSE, cutoff = 0,
-                     no_tz=FALSE, summaryze = FALSE, formate = T, nobs = 8, verbose = TRUE, ...){
+evaluation <- function(mo, ob, station, table = NULL, wd = FALSE, clean = FALSE, cutoff = 0,
+                       no_tz=FALSE, summaryze = FALSE, formate = T, nobs = 8, verbose = TRUE, ...){
   if(summaryze){
     cat('creating the summary\n')
+    if(last(row.names(table)) == 'GERAL')  table <- table[-nrow(table),]
 
     summa    <- 1:ncol(table)
     summa[1] <- nrow(table)
@@ -132,13 +133,26 @@ evaluate <- function(mo, ob, station, table = NULL, wd = FALSE, clean = FALSE, c
   A     <- DATA$model
   B     <- DATA$obser
 
-  if(length(B[!is.na(B)]) > nobs){
+  # special case of zeros and NAs (work for constant values and NAs)
+  to_run = TRUE
+  if(suppressWarnings( max(A,na.rm = T) ) == suppressWarnings( min(A,na.rm = T)) ){
+    if(verbose)
+      cat(station,'contains only zeros (or constant values) and NA values for model\n')
+    to_run = FALSE
+  }
+  if(suppressWarnings(  max(B,na.rm = T) ) == suppressWarnings( min(B,na.rm = T)) ){
+    if(verbose)
+      cat(station,'contains only zeros (or constant values) and NA values for observations\n')
+    to_run = FALSE
+  }
+
+  if(length(B[!is.na(B)]) > nobs & to_run){
     if(verbose)
       cat(station,'has',length(B[!is.na(B)]),'valid observations\n')
     RESULT <- stats(A,B, cutoff=cutoff, wd = wd, ...)
     row.names(RESULT) <- station
   }else{
-    if(verbose)
+    if(verbose & to_run)
       cat(station,'has only',length(B[!is.na(B)]),'valid observations (lesser than',nobs,'obs)\n')
     RESULT <- stats((1:199)/100,(1:199)/100)
     RESULT$n = 0

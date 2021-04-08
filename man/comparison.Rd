@@ -4,7 +4,14 @@
 \alias{comparison}
 \title{Filter table A to perform a fair comparison with table B}
 \usage{
-comparison(tabA, tabB, use_names, verbose = T)
+comparison(
+  tabA,
+  tabB,
+  use_names,
+  summaryze = FALSE,
+  formate = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{tabA}{Table A, from evaluate}
@@ -12,6 +19,10 @@ comparison(tabA, tabB, use_names, verbose = T)
 \item{tabB}{Table B, from evaluate}
 
 \item{use_names}{list of names to be used instead of Table B}
+
+\item{summaryze}{logical, true to update or add a summary}
+
+\item{formate}{argument passed to evaluation function (default is false)}
 
 \item{verbose}{display additional information}
 }
