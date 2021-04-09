@@ -4,12 +4,10 @@
 \alias{read.stat}
 \title{Function to read stats and evaluation}
 \usage{
-read.stat(file, csv = T, sep = ";", dec = ".", verbose = FALSE, ...)
+read.stat(file, sep = ";", dec = ".", verbose = FALSE, ...)
 }
 \arguments{
 \item{file}{model data.frame}
-
-\item{csv}{logical, use write.csv instead of write.table#'}
 
 \item{sep}{the field separator string, passed to  read.table function}
 
@@ -24,11 +22,9 @@ Function to read stats and evaluation output
 }
 \examples{
 sample <- read.stat(file    = paste0(system.file("extdata", package = "hackWRF"),"/sample.txt"),
-                    csv     = FALSE,
                     verbose = TRUE)
 
 sample <- read.stat(file    = paste0(system.file("extdata", package = "hackWRF"),"/sample.csv"),
-                    csv     = TRUE,
                     verbose = TRUE)
 
 }

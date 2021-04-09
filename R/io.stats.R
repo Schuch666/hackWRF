@@ -45,8 +45,7 @@ write.stat <- function(file, stat, csv = TRUE, sep = ';',dec = '.', verbose = FA
 #' @description Function to read stats and evaluation output
 #'
 #' @param file model data.frame
-#' @param csv logical, use write.csv instead of write.table#'
-#' @param sep the field separator string, passed to  read.table function
+#' @param sep the field separator string, passed to read.table function
 #' @param dec he string to use for decimal points, passed to read.table function
 #' @param ... arguments passed to read.table functions
 #' @param verbose display additional information
@@ -55,17 +54,15 @@ write.stat <- function(file, stat, csv = TRUE, sep = ';',dec = '.', verbose = FA
 #'
 #' @examples
 #' sample <- read.stat(file    = paste0(system.file("extdata", package = "hackWRF"),"/sample.txt"),
-#'                     csv     = FALSE,
 #'                     verbose = TRUE)
 #'
 #' sample <- read.stat(file    = paste0(system.file("extdata", package = "hackWRF"),"/sample.csv"),
-#'                     csv     = TRUE,
 #'                     verbose = TRUE)
 #'
-read.stat <- function(file, csv = T, sep = ';',dec = '.',verbose = FALSE, ...){
+read.stat <- function(file, sep = ';',dec = '.',verbose = FALSE, ...){
   if(verbose)
     cat('reading', file,'\n')
-  if(csv){
+  if(substr(file,nchar(file)-3,nchar(file)) == '.csv'){
     stat            <- read.csv(file = file)
     nomes           <- stat$X
     stat            <- stat[,-1]
