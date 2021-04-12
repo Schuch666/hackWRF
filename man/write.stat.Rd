@@ -4,14 +4,12 @@
 \alias{write.stat}
 \title{Functions to write stats and evaluation}
 \usage{
-write.stat(file, stat, csv = TRUE, sep = ";", dec = ".", verbose = FALSE, ...)
+write.stat(file, stat, sep = ";", dec = ".", verbose = FALSE, ...)
 }
 \arguments{
 \item{file}{model data.frame}
 
 \item{stat}{observed data.frame}
-
-\item{csv}{logical, use write.csv instead of write.table}
 
 \item{sep}{the field separator string, passed to write.table function}
 
@@ -22,7 +20,8 @@ write.stat(file, stat, csv = TRUE, sep = ";", dec = ".", verbose = FALSE, ...)
 \item{...}{arguments passed to write.table functions}
 }
 \description{
-Functions to write stats and evaluation output
+Functions to write stats and evaluation output. If a file name ending with .csv
+is provided to the function will save using write.csv otherwise the function write.table.
 }
 \examples{
 
@@ -32,12 +31,10 @@ dir.create(file.path(tempdir(), "stats"))
 
 write.stat(file    = paste0(file.path(tempdir(), "stats"),'/sample.txt'),
            stat    = sample,
-           csv     = FALSE,
            verbose = TRUE)
 
 write.stat(file    = paste0(file.path(tempdir(), "stats"),'/sample.csv'),
            stat    = sample,
-           csv     = TRUE,
            verbose = TRUE)
 
 }

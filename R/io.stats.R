@@ -1,10 +1,10 @@
 #' Functions to write stats and evaluation
 #'
-#' @description Functions to write stats and evaluation output
+#' @description Functions to write stats and evaluation output. If a file name ending with .csv
+#' is provided to the function will save using write.csv otherwise the function write.table.
 #'
 #' @param file model data.frame
 #' @param stat observed data.frame
-#' @param csv logical, use write.csv instead of write.table
 #' @param sep the field separator string, passed to write.table function
 #' @param dec he string to use for decimal points, passed to write.table function
 #' @param ... arguments passed to write.table functions
@@ -22,18 +22,16 @@
 #'
 #' write.stat(file    = paste0(file.path(tempdir(), "stats"),'/sample.txt'),
 #'            stat    = sample,
-#'            csv     = FALSE,
 #'            verbose = TRUE)
 #'
 #' write.stat(file    = paste0(file.path(tempdir(), "stats"),'/sample.csv'),
 #'            stat    = sample,
-#'            csv     = TRUE,
 #'            verbose = TRUE)
 #'
-write.stat <- function(file, stat, csv = TRUE, sep = ';',dec = '.', verbose = FALSE, ...){
+write.stat <- function(file, stat, sep = ';',dec = '.', verbose = FALSE, ...){
   if(verbose)
     cat('writing', file,'\n')
-  if(csv){
+  if(substr(file,nchar(file)-3,nchar(file)) == '.csv'){
     write.csv(x = stat, file = file)
   }else{
     write.table(x = stat, file = file, sep = sep, dec = dec, ...)

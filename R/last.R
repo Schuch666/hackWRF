@@ -17,3 +17,23 @@ last <- function(x) {
   }
   return( x[length(x)] )
 }
+
+#' Get the first element of a vector of data.frame
+#'
+#' @description This function return the first member of the input
+#'
+#' @param x vector or data.frame
+#' @return first element
+#'
+#' @export
+#'
+#' @examples
+#' a <- 666:1
+#' print(first(a))
+#'
+first <- function(x) {
+  if(is.data.frame(x)){
+    return( x[1,] )
+  }
+  return( x[1] )
+}

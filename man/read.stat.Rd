@@ -9,7 +9,7 @@ read.stat(file, sep = ";", dec = ".", verbose = FALSE, ...)
 \arguments{
 \item{file}{model data.frame}
 
-\item{sep}{the field separator string, passed to  read.table function}
+\item{sep}{the field separator string, passed to read.table function}
 
 \item{dec}{he string to use for decimal points, passed to read.table function}
 
