@@ -4,12 +4,12 @@
 \alias{write.stat}
 \title{Functions to write stats and evaluation}
 \usage{
-write.stat(file, stat, sep = ";", dec = ".", verbose = FALSE, ...)
+write.stat(stat, file, sep = ";", dec = ".", verbose = FALSE, ...)
 }
 \arguments{
-\item{file}{model data.frame}
-
 \item{stat}{observed data.frame}
+
+\item{file}{model data.frame}
 
 \item{sep}{the field separator string, passed to write.table function}
 

@@ -3,8 +3,8 @@
 #' @description Functions to write stats and evaluation output. If a file name ending with .csv
 #' is provided to the function will save using write.csv otherwise the function write.table.
 #'
-#' @param file model data.frame
 #' @param stat observed data.frame
+#' @param file model data.frame
 #' @param sep the field separator string, passed to write.table function
 #' @param dec he string to use for decimal points, passed to write.table function
 #' @param ... arguments passed to write.table functions
@@ -28,7 +28,7 @@
 #'            stat    = sample,
 #'            verbose = TRUE)
 #'
-write.stat <- function(file, stat, sep = ';',dec = '.', verbose = FALSE, ...){
+write.stat <- function(stat,file, sep = ';',dec = '.', verbose = FALSE, ...){
   if(verbose)
     cat('writing', file,'\n')
   if(substr(file,nchar(file)-3,nchar(file)) == '.csv'){
