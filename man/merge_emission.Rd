@@ -39,14 +39,9 @@ has the values of the auxiliar emissions for grid points with emissions and back
 emission for grid points with zero emissions.
 }
 \examples{
-
-inp  <- 'C:/WORK/2020/1st simulations/EDGAR_EMISSIONS/36km/V13/wrfchemi_12z_d01'
-aux  <- 'C:/WORK/2020/VEIN/ADJUSTED/2012_v1/wrfchemi_12z_d01'
-out  <- 'C:/WORK/2021/COMBINE/ADJ_v02/wrfchemi_00z_d01'
-
-merge_emission(background = inp,
-               auxiliar   = aux,
-               output     = out,
-               name       = 'E_NO')
-
+\dontrun{
+NEW_e <- merge_emission(background = 'base/wrfchemi_00z_d01',
+                        auxiliar   = 'extra/wrfchemi_00z_d01',
+                        name       = 'E_NO')
+}
 }

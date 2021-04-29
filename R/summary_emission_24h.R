@@ -22,6 +22,9 @@
 #'
 summary_emission_24h <- function(file_00, file_12 = file_00[2], ...){
 
+  if(file_00 == file_12)
+    warning('file_00 == file_12, use summaty_emission instead!')
+
   cat('* processing',file_00[1],'...\n')
   sum_00 <- summary_emission(file_00[1], ... )
 

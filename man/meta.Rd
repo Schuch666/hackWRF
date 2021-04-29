@@ -4,21 +4,14 @@
 \alias{meta}
 \title{Read and write metadata on a NetCDF file}
 \usage{
-meta(
-  filename = NA,
-  variable = 0,
-  attname = NA,
-  action = "read",
-  value = NA,
-  verbose = F
-)
+meta(file = NA, var = 0, att = NA, action = "read", value = NA, verbose = F)
 }
 \arguments{
-\item{filename}{file name}
+\item{file}{file name}
 
-\item{variable}{variable name, 0 to global and "?" to ask all names}
+\item{var}{variable name, 0 to global and "?" to ask all names}
 
-\item{attname}{attribute names}
+\item{att}{attribute names}
 
 \item{action}{Read or write attribute (NA for get all attnames)}
 
@@ -32,9 +25,9 @@ Read and write metadata information of a NetCDF files
 \examples{
 nc <- paste0(system.file("extdata",package="hackWRF"),"/small.nc")
 meta(nc)
-meta(nc,attname  = "Title")
-meta(nc,variable = "?")
-meta(nc,variable = "so2")
-meta(nc,variable = "so2",attname = "long_name")
+meta(nc,att = "Title")
+meta(nc,var = "?")
+meta(nc,var = "so2")
+meta(nc,var = "so2",att = "long_name")
 
 }
