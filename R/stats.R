@@ -36,22 +36,27 @@ stats <- function(mo,ob,spinup = 0, wd = FALSE, scatter = F,add = F, cor="#FF000
   if(length(mo) != length(ob))
     stop("mo and ob need to have the same length!") #nocov
 
-  mo  <- mo[!is.na(ob)]
-  ob  <- ob[!is.na(ob)]
-  mo  <- mo[!is.na(mo)]
-  ob  <- ob[!is.na(mo)]
+  NA_mod <- is.na(mo)
+  NA_obs <- is.na(ob)
+
+  mo  <- mo[!NA_obs & !NA_mod]
+  ob  <- ob[!NA_mod & !NA_mod]
 
   if(cutoff[1] > 0 ){
     cat('using',cutoff[1],'for min cutoff\n')
 
     mo  <- mo[ob >= cutoff[1]]
     ob  <- ob[ob >= cutoff[1]]
+
+    cat(length(mo),'values left\n')
   }
   if(length(cutoff)>1){
     cat('using',cutoff[2],'for max cutoff\n')
 
     mo  <- mo[ob < cutoff[2]]
     ob  <- ob[ob < cutoff[2]]
+
+    cat(length(mo),'values left\n')
   }
 
   MFBE <- function(mo,ob){
