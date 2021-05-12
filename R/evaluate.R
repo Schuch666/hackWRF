@@ -149,7 +149,7 @@ evaluation <- function(mo, ob, station, table = NULL, wd = FALSE, clean = FALSE,
   if(length(B[!is.na(B)]) > nobs & to_run){
     if(verbose)
       cat(station,'has',length(B[!is.na(B)]),'valid observations\n')
-    RESULT <- stats(A,B, cutoff=cutoff, wd = wd, ...)
+    RESULT <- stats(A,B, cutoff=cutoff, wd = wd, nobs = nobs, ...)
     row.names(RESULT) <- station
   }else{
     if(verbose & to_run)

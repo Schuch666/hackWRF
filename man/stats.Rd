@@ -14,6 +14,7 @@ stats(
   cor = "#FF000088",
   lim = NA,
   cutoff = 0,
+  nobs = 8,
   verbose = T,
   ...
 )
@@ -36,6 +37,8 @@ stats(
 \item{lim}{scatter plot limits}
 
 \item{cutoff}{(optionally the maximum) valid value for observation}
+
+\item{nobs}{minimum number of observations}
 
 \item{verbose}{display additional information}
 

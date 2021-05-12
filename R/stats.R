@@ -11,6 +11,7 @@
 #' @param cor color of scatterplot dots
 #' @param lim scatter plot limits
 #' @param cutoff (optionally the maximum) valid value for observation
+#' @param nobs minimum number of observations
 #' @param verbose display additional information
 #' @param ... extra arguments passed to scatter plot
 #'
@@ -27,7 +28,8 @@
 #' stats(mo = model, ob = data, scatter = TRUE)
 #'
 
-stats <- function(mo,ob,spinup = 0, wd = FALSE, scatter = F,add = F, cor="#FF000088",lim = NA,cutoff = 0, verbose = T, ...){
+stats <- function(mo,ob,spinup = 0, wd = FALSE, scatter = F,add = F, cor="#FF000088",lim = NA,
+                  cutoff = 0, nobs = 8, verbose = T, ...){
 
   if(spinup != 0){
     mo <- mo[(spinup+1):length(mo)]
@@ -49,6 +51,12 @@ stats <- function(mo,ob,spinup = 0, wd = FALSE, scatter = F,add = F, cor="#FF000
     ob  <- ob[ob >= cutoff[1]]
 
     cat(length(mo),'values left\n')
+
+    if(length(mo) < nobs){
+      RESULT <- stats((1:199)/100,(1:199)/100)
+      RESULT$n = 0
+      return(RESULT)
+    }
   }
   if(length(cutoff)>1){
     cat('using',cutoff[2],'for max cutoff\n')
@@ -57,6 +65,11 @@ stats <- function(mo,ob,spinup = 0, wd = FALSE, scatter = F,add = F, cor="#FF000
     ob  <- ob[ob < cutoff[2]]
 
     cat(length(mo),'values left\n')
+    if(length(mo) < nobs){
+      RESULT <- stats((1:199)/100,(1:199)/100)
+      RESULT$n = 0
+      return(RESULT)
+    }
   }
 
   MFBE <- function(mo,ob){

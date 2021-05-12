@@ -61,6 +61,11 @@ summary_emission <- function(file = file.choose(),
     return(raster::mask(r,s))
   }
 
+  # MW <- switch (chem_opt,
+  #               cb05 = sysdata$cb05,
+  #               BBBB = cat('option not suported!\n'),
+  #               CCCC = cat('option not suported!\n'))
+
   if(chem_opt == 'cb05'){
     MW <- sysdata$cb05
   }else{
