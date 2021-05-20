@@ -12,6 +12,7 @@
 #' @param wd default is FALSE, see notes
 #' @param clean remove rows with zero observations
 #' @param summaryze add a last line with the the average values and format the table
+#' @param use_n only for summaryze = TRUE, use n as weight to calculate the average
 #' @param formate works only with summaryzee, format the output for 2 digit (default)
 #' @param cutoff minimum (optionally the maximum) valid value for observation
 #' @param no_tz ignore tz from input
@@ -58,7 +59,8 @@
 #' print(table)
 
 evaluation <- function(mo, ob, station, table = NULL, wd = FALSE, clean = FALSE, cutoff = 0,
-                       no_tz=FALSE, summaryze = FALSE, formate = T, nobs = 8, verbose = TRUE, ...){
+                       no_tz=FALSE, summaryze = FALSE, use_n = F, formate = T, nobs = 8,
+                       verbose = TRUE, ...){
   if(summaryze){
     cat('creating the summary\n')
     if(last(row.names(table)) == 'GERAL')  table <- table[-nrow(table),]
@@ -66,9 +68,16 @@ evaluation <- function(mo, ob, station, table = NULL, wd = FALSE, clean = FALSE,
     summa    <- 1:ncol(table)
     summa[1] <- nrow(table)
 
-    for(i in 2:ncol(table)){
-      summa[i] <- mean(table[,i],na.rm = T)
+    if(use_n){
+      for(i in 2:ncol(table)){
+        summa[i] <- weighted.mean(table[,i], table$n, na.rm = T)
+      }
+    }else{
+      for(i in 2:ncol(table)){
+        summa[i] <- mean(table[,i],na.rm = T)
+      }
     }
+
     table          <- rbind(table,'GERAL' = summa)
     if(formate){
       table$n         = as.integer(table$n)

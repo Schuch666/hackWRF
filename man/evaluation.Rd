@@ -14,6 +14,7 @@ evaluation(
   cutoff = 0,
   no_tz = FALSE,
   summaryze = FALSE,
+  use_n = F,
   formate = T,
   nobs = 8,
   verbose = TRUE,
@@ -38,6 +39,8 @@ evaluation(
 \item{no_tz}{ignore tz from input}
 
 \item{summaryze}{add a last line with the the average values and format the table}
+
+\item{use_n}{only for summaryze = TRUE, use n as weight to calculate the average}
 
 \item{formate}{works only with summaryzee, format the output for 2 digit (default)}
 
