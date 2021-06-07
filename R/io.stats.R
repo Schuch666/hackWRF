@@ -45,6 +45,7 @@ write.stat <- function(stat,file, sep = ';',dec = '.', verbose = FALSE, ...){
 #' @param file model data.frame
 #' @param sep the field separator string, passed to read.table function
 #' @param dec he string to use for decimal points, passed to read.table function
+#' @param rm.last to remove the last line (summary)
 #' @param ... arguments passed to read.table functions
 #' @param verbose display additional information
 #'
@@ -57,7 +58,7 @@ write.stat <- function(stat,file, sep = ';',dec = '.', verbose = FALSE, ...){
 #' sample <- read.stat(file    = paste0(system.file("extdata", package = "hackWRF"),"/sample.csv"),
 #'                     verbose = TRUE)
 #'
-read.stat <- function(file, sep = ';',dec = '.',verbose = FALSE, ...){
+read.stat <- function(file, sep = ';',dec = '.',verbose = FALSE, rm.last = FALSE, ...){
   if(verbose)
     cat('reading', file,'\n')
   if(substr(file,nchar(file)-3,nchar(file)) == '.csv'){
@@ -69,6 +70,9 @@ read.stat <- function(file, sep = ';',dec = '.',verbose = FALSE, ...){
   }else{
     stat <- read.table(file = file, sep = sep, dec = dec, ...)
     names(stat) <- names(hackWRF::stats(mo = 1:10, ob = 1:10))
+  }
+  if(rm.last){
+    stat <- stat[-nrow(stat),]
   }
   return(stat)
 }

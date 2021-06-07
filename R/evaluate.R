@@ -66,13 +66,14 @@ evaluation <- function(mo, ob, station, table = NULL, wd = FALSE, clean = FALSE,
     if(last(row.names(table)) == 'GERAL')  table <- table[-nrow(table),]
 
     summa    <- 1:ncol(table)
-    summa[1] <- nrow(table)
 
     if(use_n){
+      summa[1] <- sum(table$n,na.rm = T)
       for(i in 2:ncol(table)){
         summa[i] <- weighted.mean(table[,i], table$n, na.rm = T)
       }
     }else{
+      summa[1] <- nrow(table)
       for(i in 2:ncol(table)){
         summa[i] <- mean(table[,i],na.rm = T)
       }

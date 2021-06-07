@@ -4,7 +4,7 @@
 \alias{read.stat}
 \title{Function to read stats and evaluation}
 \usage{
-read.stat(file, sep = ";", dec = ".", verbose = FALSE, ...)
+read.stat(file, sep = ";", dec = ".", verbose = FALSE, rm.last = FALSE, ...)
 }
 \arguments{
 \item{file}{model data.frame}
@@ -14,6 +14,8 @@ read.stat(file, sep = ";", dec = ".", verbose = FALSE, ...)
 \item{dec}{he string to use for decimal points, passed to read.table function}
 
 \item{verbose}{display additional information}
+
+\item{rm.last}{to remove the last line (summary)}
 
 \item{...}{arguments passed to read.table functions}
 }
