@@ -89,12 +89,15 @@ extract_mean <- function(filelist, variable = "o3", field = "4d",
       w    <- nc_open(filename = filelist[i])
       TEMP <- ncvar_get(w,variable,count = contagem)
       INC  <- tsum(TEMP)
-      #times <- ncvar_get(w,"Times")
-      acu_times = acu_times + 1 #length(times)
+      if(meta){
+        times <- ncvar_get(w,"Times")
+        acu_times = acu_times + length(times)
+      }else{
+        acu_times = acu_times + 1
+      }
       nc_close(w)
       SUM <- SUM + INC
     }
-    #MEAN <- MEAN / length(filelist)
   }
 
   MEAN <- SUM / acu_times
