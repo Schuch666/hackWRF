@@ -31,5 +31,6 @@ summarizer <- function(files,rm.last = T,verbose = T){
       output[output$station == i,j] = mean(x[x$station == i,j],na.rm = T)
     }
   }
+  output <- output[,1:14]
   return(output)
 }
