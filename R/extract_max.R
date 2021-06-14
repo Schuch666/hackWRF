@@ -1,6 +1,6 @@
-#' Creata a NetCDF file with the surface mean
+#' Creata a NetCDF file with the surface maximum
 #'
-#' @description Read and calculate the mean value of a variable from a list of wrf output files.
+#' @description Read and calculate the maximum value of a variable from a list of wrf output files.
 #'
 #' @param filelist list of files to be read
 #' @param variable variable name
@@ -18,19 +18,18 @@
 #' @export
 #'
 #' @examples
-#' dir.create(file.path(tempdir(), "MEAN"))
+#' dir.create(file.path(tempdir(), "MAX"))
 #' folder <- system.file("extdata",package="hackWRF")
 #' wrf_file <- paste0(folder,"/wrf.day1.o3.nc")
-#' extract_mean(filelist = wrf_file,prefix = paste0(file.path(tempdir(),"MEAN"),'/mean'))
+#' extract_max(filelist = wrf_file,prefix = paste0(file.path(tempdir(),"MAX"),'/mean'))
 #'
 
-extract_mean <- function(filelist, variable = "o3", field = "4d",
-                         prefix = "mean", units = "ppmv", meta = T,verbose = TRUE){
+extract_max <- function(filelist, variable = "o3", field = "4d",
+                         prefix = "max", units = "ppmv", meta = T,verbose = TRUE){
 
   output_filename   <- paste0(prefix,'.',variable,'.nc')
 
   COMPRESS <- NA
-
   acu_times <- 0
 
   if(!meta)
@@ -46,7 +45,7 @@ extract_mean <- function(filelist, variable = "o3", field = "4d",
     contagem = c(-1,-1,1,-1)   # 4d Field (x,y,z,t)
 
   if(verbose){
-    cat('extracting mean of',variable,'field',field,'\n')
+    cat('extracting max of',variable,'field',field,'\n')
     cat('reading:',filelist[1],'file 1 of',length(filelist),'\n')
   }
 
@@ -63,32 +62,43 @@ extract_mean <- function(filelist, variable = "o3", field = "4d",
     acu_times <- 1
   }
 
-  tsum <- function(var){
+  tmax <- function(var){
     if(length(dim(var)) == 2){
       cat('min:',min(var,na.rm = T),'mean:',mean(var,na.rm = T),'max:',max(var,na.rm = T),'\n')
       return(var)
     }
 
-    t_sum   <- var[,,1,drop = T]
+    t_max   <- var[,,1,drop = T]
     cat('min:',min(var,na.rm = T),'mean:',mean(var,na.rm = T),'max:',max(var,na.rm = T),'\n')
 
     for(i in 1:dim(var)[1]){
       for(j in 1:dim(var)[2]){
-        t_sum[i,j] <- sum(var[i,j,], na.rm = T)
+        t_max[i,j] <- max(var[i,j,], na.rm = T)
       }
     }
 
-    return(t_sum)
+    return(t_max)
   }
 
-  SUM   <- tsum(VAR)
+  tmax2 <- function(var,var2){
+    t_max <- var
+    cat('min:',min(var2,na.rm = T),'mean:',mean(var2,na.rm = T),'max:',max(var2,na.rm = T),'\n')
+    for(i in 1:dim(var)[1]){
+      for(j in 1:dim(var)[2]){
+        t_max[i,j] <- max(c(var[i,j],var2[i,j,]),na.rm = T)
+      }
+    }
+    return(t_max)
+  }
+
+  MAX   <- tmax(VAR)
 
   if(length(filelist) > 1){
     for(i in 2:length(filelist)){
       cat('reading:',filelist[i],'file',i,'of',length(filelist),'\n')
       w    <- nc_open(filename = filelist[i])
       TEMP <- ncvar_get(w,variable,count = contagem)
-      INC  <- tsum(TEMP)
+      MAX  <- tmax2(MAX,TEMP)
       if(meta){
         times <- ncvar_get(w,"Times")
         acu_times = acu_times + length(times)
@@ -96,11 +106,8 @@ extract_mean <- function(filelist, variable = "o3", field = "4d",
         acu_times = acu_times + 1
       }
       nc_close(w)
-      SUM <- SUM + INC
     }
   }
-
-  MEAN <- SUM / acu_times
 
   # some input
   wrfinput     <- nc_open(filelist[1])
@@ -245,7 +252,7 @@ extract_mean <- function(filelist, variable = "o3", field = "4d",
     # to the variable
     ncdf4::ncvar_put(output_file,
                      varid = variable,
-                     MEAN)
+                     MAX)
     ncdf4::ncatt_put(output_file,
                      varid = variable,
                      attname = "MemoryOrder",
@@ -280,11 +287,11 @@ extract_mean <- function(filelist, variable = "o3", field = "4d",
     west_east <- ncdf4::ncdim_def("west_east",
                                   units = "",
                                   longname = "",
-                                  vals = 1:dim(MEAN)[1])
+                                  vals = 1:dim(MAX)[1])
     south_north <- ncdf4::ncdim_def("south_north",
                                     units = "",
                                     longname = "",
-                                    vals = 1:dim(MEAN)[2])
+                                    vals = 1:dim(MAX)[2])
     bottom_top <- ncdf4::ncdim_def("bottom_top",
                                    units = "",
                                    longname = "",
@@ -329,7 +336,7 @@ extract_mean <- function(filelist, variable = "o3", field = "4d",
     # to the variable
     ncdf4::ncvar_put(output_file,
                      varid = variable,
-                     MEAN)
+                     MAX)
     ncdf4::ncatt_put(output_file,
                      varid = variable,
                      attname = "MemoryOrder",

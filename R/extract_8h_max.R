@@ -1,12 +1,12 @@
-#' Creata a NetCDF file with the surface mean
+#' Creata a NetCDF file with the surface maximum of O3
 #'
-#' @description Read and calculate the mean value of a variable from a list of wrf output files.
+#' @description Read the values from o3 and T2, convert o3 to ug m-3 and calculate the maximum of 8-hour moving avarage from a list of files.
 #'
 #' @param filelist list of files to be read
 #' @param variable variable name
 #' @param field '4d' (default), '3d', '2d' or '2dz' see notes
 #' @param prefix to output file, defolt is serie
-#' @param units units on netcdf file (default is ppmv)
+#' @param units units on netcdf file (default is ug m-3), change to skip unit conversion
 #' @param meta use Times, XLONG and XLAT data (only work with 2d variable for file)
 #' @param verbose display additional information
 #'
@@ -14,18 +14,19 @@
 #'
 #' @import ncdf4
 #' @import eixport
+#' @importFrom zoo rollmean
 #'
 #' @export
 #'
 #' @examples
-#' dir.create(file.path(tempdir(), "MEAN"))
+#' dir.create(file.path(tempdir(), "MAX"))
 #' folder <- system.file("extdata",package="hackWRF")
 #' wrf_file <- paste0(folder,"/wrf.day1.o3.nc")
-#' extract_mean(filelist = wrf_file,prefix = paste0(file.path(tempdir(),"MEAN"),'/mean'))
+#' extract_max(filelist = wrf_file,prefix = paste0(file.path(tempdir(),"MAX"),'/mean'))
 #'
 
-extract_mean <- function(filelist, variable = "o3", field = "4d",
-                         prefix = "mean", units = "ppmv", meta = T,verbose = TRUE){
+extract_max_8h <- function(filelist, variable = "o3", field = "4d",
+                           prefix = "max_8h", units = "ug m-3", meta = T,verbose = TRUE){
 
   output_filename   <- paste0(prefix,'.',variable,'.nc')
 
@@ -46,12 +47,30 @@ extract_mean <- function(filelist, variable = "o3", field = "4d",
     contagem = c(-1,-1,1,-1)   # 4d Field (x,y,z,t)
 
   if(verbose){
-    cat('extracting mean of',variable,'field',field,'\n')
+    cat('extracting 8h max of',variable,'field',field,'units:',units,'\n')
     cat('reading:',filelist[1],'file 1 of',length(filelist),'\n')
+
   }
 
   w     <- nc_open(filename = filelist[1])
   VAR   <- ncvar_get(w,variable,count = contagem)
+  if(units == "ug m-3"){
+    T2    <- ncvar_get(w,'T2')
+    VAR   <- VAR * 10^3*(48)/(0.0805 * T2) # 48 -> O3 molar mass
+  }
+
+  mov_av_max <- function(var){
+    moving_max <- var[,,1,drop = TRUE]
+    cat('min:',min(var,na.rm = T),'mean:',mean(var,na.rm = T),'max:',max(var,na.rm = T),'\n')
+
+    for(i in 1:dim(var)[1]){
+      for(j in 1:dim(var)[2]){
+        moving_max[i,j] <- max(rollmean(var[i,j,],k = 8),na.rm = T)
+      }
+    }
+    return(moving_max)
+  }
+
   if(meta){
     times <- ncvar_get(w,"Times")
   }
@@ -63,32 +82,29 @@ extract_mean <- function(filelist, variable = "o3", field = "4d",
     acu_times <- 1
   }
 
-  tsum <- function(var){
-    if(length(dim(var)) == 2){
-      cat('min:',min(var,na.rm = T),'mean:',mean(var,na.rm = T),'max:',max(var,na.rm = T),'\n')
-      return(var)
-    }
-
-    t_sum   <- var[,,1,drop = T]
-    cat('min:',min(var,na.rm = T),'mean:',mean(var,na.rm = T),'max:',max(var,na.rm = T),'\n')
-
+  tmax2 <- function(var,var2){
+    t_max <- var
     for(i in 1:dim(var)[1]){
       for(j in 1:dim(var)[2]){
-        t_sum[i,j] <- sum(var[i,j,], na.rm = T)
+        t_max[i,j] <- max(c(var[i,j],var2[i,j]),na.rm = T)
       }
     }
-
-    return(t_sum)
+    return(t_max)
   }
 
-  SUM   <- tsum(VAR)
+  MAX_8h <- mov_av_max(VAR)
 
   if(length(filelist) > 1){
     for(i in 2:length(filelist)){
       cat('reading:',filelist[i],'file',i,'of',length(filelist),'\n')
       w    <- nc_open(filename = filelist[i])
       TEMP <- ncvar_get(w,variable,count = contagem)
-      INC  <- tsum(TEMP)
+      if(units == "ug m-3"){
+        T2    <- ncvar_get(w,'T2')
+        TEMP  <- TEMP * 10^3*(48)/(0.0805 * T2) # 48 -> O3 molar mass
+      }
+      TEMP <- mov_av_max(TEMP)
+      MAX_8h  <- tmax2(MAX_8h,TEMP)
       if(meta){
         times <- ncvar_get(w,"Times")
         acu_times = acu_times + length(times)
@@ -96,11 +112,8 @@ extract_mean <- function(filelist, variable = "o3", field = "4d",
         acu_times = acu_times + 1
       }
       nc_close(w)
-      SUM <- SUM + INC
     }
   }
-
-  MEAN <- SUM / acu_times
 
   # some input
   wrfinput     <- nc_open(filelist[1])
@@ -245,7 +258,7 @@ extract_mean <- function(filelist, variable = "o3", field = "4d",
     # to the variable
     ncdf4::ncvar_put(output_file,
                      varid = variable,
-                     MEAN)
+                     MAX_8h)
     ncdf4::ncatt_put(output_file,
                      varid = variable,
                      attname = "MemoryOrder",
@@ -280,11 +293,11 @@ extract_mean <- function(filelist, variable = "o3", field = "4d",
     west_east <- ncdf4::ncdim_def("west_east",
                                   units = "",
                                   longname = "",
-                                  vals = 1:dim(MEAN)[1])
+                                  vals = 1:dim(MAX_8h)[1])
     south_north <- ncdf4::ncdim_def("south_north",
                                     units = "",
                                     longname = "",
-                                    vals = 1:dim(MEAN)[2])
+                                    vals = 1:dim(MAX_8h)[2])
     bottom_top <- ncdf4::ncdim_def("bottom_top",
                                    units = "",
                                    longname = "",
@@ -329,7 +342,7 @@ extract_mean <- function(filelist, variable = "o3", field = "4d",
     # to the variable
     ncdf4::ncvar_put(output_file,
                      varid = variable,
-                     MEAN)
+                     MAX_8h)
     ncdf4::ncatt_put(output_file,
                      varid = variable,
                      attname = "MemoryOrder",
