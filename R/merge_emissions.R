@@ -31,13 +31,12 @@ merge_emission <- function(background,
                            proj    = NA,
                            plot    = T,
                            verbose = T){
-  if(verbose){
+  # if(verbose){
     cat('Background emission:',background, '\n')
     cat('Auxiliar emission  :',auxiliar,'\n')
-    if(!is.na(output)){
-      cat('Output file:        ',output, '\n')
-    }
-  }
+    if(!is.na(output))
+      cat('Output file        :',output, '\n')
+  # }
   main_input  <- wrf_raster(background, name, raster_crs = proj, verbose = F)
   aux_input   <- wrf_raster(auxiliar,name, raster_crs = proj, verbose = F)
   if(!is.na(output)){
