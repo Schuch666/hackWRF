@@ -25,7 +25,7 @@ This function perform a conditional cbind or rbind.
 \itemize{
 \item \code{ccbind}: Perform a conditional cbind
 
-\item \code{crbind}: Perform a conditional cbind
+\item \code{crbind}: Perform a conditional rbind
 }}
 
 \examples{

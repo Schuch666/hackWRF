@@ -26,7 +26,7 @@ ccbind <- function(x, y, bind = TRUE, message = NA) {
     return(cbind(x,y))
   }
 }
-#' @describeIn xybind Perform a conditional cbind
+#' @describeIn xybind Perform a conditional rbind
 #' @export
 crbind <- function(x, y, bind = TRUE, message = NA) {
   if(bind == FALSE){

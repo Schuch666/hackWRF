@@ -9,7 +9,6 @@
 #' @param auxiliar auxliar input file (WRF-Chem emission file)
 #' @param output output file (WRF-Chem emission file), or NA to return the emission array
 #' @param name variable/pollutant name
-#' @param proj projection to convert the raster, default is NA (no conversion)
 #' @param plot to plot from output file
 #' @param verbose display additional information
 #'
@@ -28,7 +27,6 @@ merge_emission <- function(background,
                            auxiliar,
                            output  = NA,
                            name,
-                           proj    = NA,
                            plot    = T,
                            verbose = T){
   # if(verbose){
@@ -37,10 +35,10 @@ merge_emission <- function(background,
     if(!is.na(output))
       cat('Output file        :',output, '\n')
   # }
-  main_input  <- wrf_raster(background, name, raster_crs = proj, verbose = F)
-  aux_input   <- wrf_raster(auxiliar,name, raster_crs = proj, verbose = F)
+  main_input  <- wrf_raster(background,name, verbose = F)
+  aux_input   <- wrf_raster(auxiliar,  name, verbose = F)
   if(!is.na(output)){
-    main_output <- wrf_raster(output, name, raster_crs = proj, verbose = F)
+    main_output <- wrf_raster(output,  name, verbose = F)
   }else{
     main_output <- main_input
   }

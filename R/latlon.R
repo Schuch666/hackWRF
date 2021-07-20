@@ -1,0 +1,51 @@
+#' Get latitude and longitude.
+#'
+#' @param data data.frame with row.names of correscponding locations
+#' @param coord data.frame or 'BR-AQ','BR-METAR','BR-INMET' containing lat, lon and row.names of each location
+#' @param verbose to display additional information
+#'
+#' @importFrom sp SpatialPointsDataFrame
+#'
+#' @examples
+#' sample <- read.stat(paste0(system.file("extdata", package = "hackWRF"),
+#'                            "/sample.csv"),verbose=TRUE)
+#' row.names(sample) <- c("Americana","Campinas","Congonhas")
+#'
+#' stations <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/stations.Rds"))
+#'
+#' coord    <- latlon(sample, coord = stations)
+#' print(coord)
+#'
+#' @export
+#'
+
+latlon <- function(data,coord = 'BR-AQ',verbose = T){
+
+  if(class(coord) == 'character'){
+    if(coord[1] == 'BR-AQ'){
+      coord  <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/stations.Rds"))
+    }
+    if(coord[1] == 'BR-METAR'){
+      coord  <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/metar-br.Rds"))
+    }
+    if(coord[1] == 'BR-INMET'){
+      coord  <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/inmet_2015.Rds"))
+    }
+  }
+
+  data$lat <- rep(0,nrow(data))
+  data$lon <- rep(0,nrow(data))
+
+  for(i in 1:length(row.names(data))){
+    name <- row.names(data)[i]
+    if(verbose)
+      cat(name,'found\n')
+    data$lat[i] = coord[row.names(coord) == name,][[1]]
+    data$lon[i] = coord[row.names(coord) == name,][[2]]
+  }
+  pontos <- SpatialPointsDataFrame(coords   = matrix(c(data$lon, data$lat),
+                                                     ncol = 2,byrow = F),
+                                   data     = data,
+                                   match.ID = FALSE)
+  return(pontos)
+}

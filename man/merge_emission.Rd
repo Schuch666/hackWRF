@@ -4,15 +4,7 @@
 \alias{merge_emission}
 \title{Function to merge two different emissions}
 \usage{
-merge_emission(
-  background,
-  auxiliar,
-  output = NA,
-  name,
-  proj = NA,
-  plot = T,
-  verbose = T
-)
+merge_emission(background, auxiliar, output = NA, name, plot = T, verbose = T)
 }
 \arguments{
 \item{background}{main input file (WRF-Chem emission file)}
@@ -22,8 +14,6 @@ merge_emission(
 \item{output}{output file (WRF-Chem emission file), or NA to return the emission array}
 
 \item{name}{variable/pollutant name}
-
-\item{proj}{projection to convert the raster, default is NA (no conversion)}
 
 \item{plot}{to plot from output file}
 
