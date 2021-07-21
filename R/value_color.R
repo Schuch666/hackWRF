@@ -1,10 +1,12 @@
-#' Get color values from a vctor inside a regular interval
+#' Get color values from a vector inside a regular interval
 #'
 #' @param var numeric vector
 #' @param col colors
 #' @param interval range of values for the color interval (values outside the range are mapped in extremes)
-#' @param n_classes number of classes, default is the number of colors (col) or length(var) - 1 if length(var) <= n_classes
+#' @param n_classes number of classes, see details
 #' @param verbose to display additional information
+#'
+#' @details the default number of classes (n_classes) is the number of colors (col) or length(var) - 1 if length(var) <= n_classes
 #'
 #' @import classInt
 #'
