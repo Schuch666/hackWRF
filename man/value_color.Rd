@@ -4,7 +4,7 @@
 \alias{value_color}
 \title{Get color values from a vctor inside a regular interval}
 \usage{
-value_color(var, col, interval, verbose = T)
+value_color(var, col, interval, n_classes = length(col), verbose = T)
 }
 \arguments{
 \item{var}{numeric vector}
@@ -12,6 +12,8 @@ value_color(var, col, interval, verbose = T)
 \item{col}{colors}
 
 \item{interval}{range of values for the color interval (values outside the range are mapped in extremes)}
+
+\item{n_classes}{number of classes, default is the number of colors (col) or length(var) - 1 if length(var) <= n_classes}
 
 \item{verbose}{to display additional information}
 }

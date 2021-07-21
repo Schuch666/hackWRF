@@ -3,6 +3,7 @@
 #' @param var numeric vector
 #' @param col colors
 #' @param interval range of values for the color interval (values outside the range are mapped in extremes)
+#' @param n_classes number of classes, default is the number of colors (col) or length(var) - 1 if length(var) <= n_classes
 #' @param verbose to display additional information
 #'
 #' @import classInt
@@ -21,14 +22,14 @@
 #' @export
 #'
 
-value_color <- function(var,col,interval,verbose = T){
+value_color <- function(var,col,interval,n_classes = length(col),verbose = T){
   plotvar <- var
   # include values outside the interval
   var[var < interval[1]] = interval[1] + 0.01
   var[var > interval[2]] = interval[2] - 0.01
   # if(verbose)
   #   print(var)
-  n_classes <- 10
+
   if(length(var) <= n_classes)
     n_classes = length(var) - 1
   # this function causes warnings for small vectors
@@ -37,7 +38,7 @@ value_color <- function(var,col,interval,verbose = T){
                                                         style = "fixed",
                                                         fixedBreaks=seq(interval[1],
                                                                         interval[2],
-                                                                        by = 2.5)) )
+                                                                        length.out=n_classes)) )
   colcode <- classInt::findColours(class, col)
   return(colcode)
 }

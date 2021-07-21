@@ -24,13 +24,12 @@ latlon <- function(data,coord = 'BR-AQ',verbose = T){
   if(class(coord) == 'character'){
     if(coord[1] == 'BR-AQ'){
       coord  <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/stations.Rds"))
-    }
-    if(coord[1] == 'BR-METAR'){
+    }else if(coord[1] == 'BR-METAR'){
       coord  <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/metar-br.Rds"))
-    }
-    if(coord[1] == 'BR-INMET'){
+    }else if(coord[1] == 'BR-INMET'){
       coord  <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/inmet_2015.Rds"))
-    }
+    }else
+      stop(coord,'data not found')
   }
 
   data$lat <- rep(0,nrow(data))
