@@ -30,7 +30,7 @@ legend_range <- function(x, text.width=6, dig = c(2,2,2),
                          y.intersp=0.1,
                          x.intersp=0.1){
 
-  if(class(x)[1] == 'Raster'){
+  if(class(x)[1] == 'Raster' || class(x)[1] == 'RasterLayer'){
     x <- raster_to_ncdf(x)
   }
 
