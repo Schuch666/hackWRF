@@ -14,11 +14,11 @@ comparison(
 )
 }
 \arguments{
-\item{tabA}{Table A, from evaluate}
+\item{tabA}{Table A, from evaluate (output values)}
 
-\item{tabB}{Table B, from evaluate}
+\item{tabB}{Table B, from evaluate (for row.names only)}
 
-\item{use_names}{list of names to be used instead of Table B}
+\item{use_names}{list of names to be used instead of row.names of Table B}
 
 \item{summaryze}{logical, true to update or add a summary}
 

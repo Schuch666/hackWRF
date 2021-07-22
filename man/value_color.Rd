@@ -2,7 +2,7 @@
 % Please edit documentation in R/value_color.R
 \name{value_color}
 \alias{value_color}
-\title{Get color values from a vctor inside a regular interval}
+\title{Get color values from a vector inside a regular interval}
 \usage{
 value_color(var, col, interval, n_classes = length(col), verbose = T)
 }
@@ -13,12 +13,15 @@ value_color(var, col, interval, n_classes = length(col), verbose = T)
 
 \item{interval}{range of values for the color interval (values outside the range are mapped in extremes)}
 
-\item{n_classes}{number of classes, default is the number of colors (col) or length(var) - 1 if length(var) <= n_classes}
+\item{n_classes}{number of classes, see details}
 
 \item{verbose}{to display additional information}
 }
 \description{
-Get color values from a vctor inside a regular interval
+Get color values from a vector inside a regular interval
+}
+\details{
+the default number of classes (n_classes) is the number of colors (col) or length(var) - 1 if length(var) <= n_classes
 }
 \examples{
 color    <- hcl.colors(13, "Blue-Red 2")

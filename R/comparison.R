@@ -2,9 +2,9 @@
 #'
 #' @description Filter table A to perform a fair comparison with table B using row.names
 #'
-#' @param tabA Table A, from evaluate
-#' @param tabB Table B, from evaluate
-#' @param use_names list of names to be used instead of Table B
+#' @param tabA Table A, from evaluate (output values)
+#' @param tabB Table B, from evaluate (for row.names only)
+#' @param use_names list of names to be used instead of row.names of Table B
 #' @param summaryze logical, true to update or add a summary
 #' @param formate argument passed to evaluation function (default is false)
 #' @param verbose display additional information
