@@ -9,22 +9,22 @@
 #' @details the default number of classes (n_classes) is the number of colors (col) or length(var) - 1 if length(var) <= n_classes
 #'
 #' @import classInt
+#' @importFrom grDevices hcl.colors
 #'
 #' @examples
-#' color    <- hcl.colors(13, "Blue-Red 2")
-#' x        <- c(-5,-20,-40,-34,25,50,55,25,12)
-#'
-#' vcolors  <- value_color(var = x,
-#'                         col = color,
-#'                         interval = c(-50,50))
-#'
-#' barplot(x, col = vcolors, ylim = c(-60,60))
+#' x <- sin(pi/8 * 1:15)
+#' barplot(x, col = value_color(x))
 #' box()
 #'
 #' @export
 #'
 
-value_color <- function(var,col,interval,n_classes = length(col),verbose = T){
+value_color <- function(var,
+                        col       = hcl.colors(41,"Blue-Red"),
+                        interval  = range(var),
+                        n_classes = length(col),
+                        verbose   = T){
+
   plotvar <- var
   # include values outside the interval
   var[var < interval[1]] = interval[1] + 0.01
