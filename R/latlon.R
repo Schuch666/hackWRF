@@ -26,8 +26,10 @@ latlon <- function(data,coord = 'BR-AQ',verbose = T){
       coord  <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/stations.Rds"))
     }else if(coord[1] == 'BR-METAR'){
       coord  <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/metar-br.Rds"))
+      coord  <- coord[,c(2,3)]
     }else if(coord[1] == 'BR-INMET'){
       coord  <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/inmet_2015.Rds"))
+      coord  <- coord[,c(4,5)]
     }else
       stop(coord,'data not found')
   }
@@ -39,8 +41,8 @@ latlon <- function(data,coord = 'BR-AQ',verbose = T){
     name <- row.names(data)[i]
     if(verbose)
       cat(name,'found\n')
-    data$lat[i] = coord[row.names(coord) == name,][[1]]
-    data$lon[i] = coord[row.names(coord) == name,][[2]]
+    data$lat[i] = coord[row.names(coord) == name,names(coord) == 'lat'] #[[1]]
+    data$lon[i] = coord[row.names(coord) == name,names(coord) == 'lon'] #[[2]]
   }
   pontos <- SpatialPointsDataFrame(coords   = matrix(c(data$lon, data$lat),
                                                      ncol = 2,byrow = F),
