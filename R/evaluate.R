@@ -17,10 +17,13 @@
 #' @param cutoff minimum (optionally the maximum) valid value for observation
 #' @param no_tz ignore tz from input
 #' @param nobs minimum number of valid observations, default is 8
+#' @param NAME row.name for summaryze option
 #' @param verbose display additional information
 #' @param ... arguments to be passing to stats and plot
 #'
 #' @note for wind direction some the ME and MB are calculated using Mughal et al. (2017)
+#'
+#' @import raster
 #'
 #' @references
 #'
@@ -60,10 +63,14 @@
 
 evaluation <- function(mo, ob, station, table = NULL, wd = FALSE, clean = FALSE, cutoff = 0,
                        no_tz=FALSE, summaryze = FALSE, use_n = F, formate = T, nobs = 8,
-                       verbose = TRUE, ...){
+                       NAME = 'AVERAGE', verbose = TRUE, ...){
   if(summaryze){
-    cat('creating the summary\n')
-    if(last(row.names(table)) == 'GERAL')  table <- table[-nrow(table),]
+    if(verbose){
+      cat('creating the summary\n')
+    }
+
+    if(last(row.names(table)) == 'GERAL' | last(row.names(table)) == NAME)
+      table <- table[-nrow(table),]
 
     summa    <- 1:ncol(table)
 
@@ -80,6 +87,8 @@ evaluation <- function(mo, ob, station, table = NULL, wd = FALSE, clean = FALSE,
     }
 
     table          <- rbind(table,'GERAL' = summa)
+    row.names(table)[nrow(table)] <- NAME
+
     if(formate){
       table$n         = as.integer(table$n)
       table$Obs       = round(table$Obs,2)

@@ -4,12 +4,14 @@
 \alias{latlon}
 \title{Get latitude and longitude.}
 \usage{
-latlon(data, coord = "BR-AQ", verbose = T)
+latlon(data, coord = "BR-AQ", proj = "+proj=longlat", verbose = T)
 }
 \arguments{
 \item{data}{data.frame with row.names of correscponding locations}
 
 \item{coord}{data.frame or 'BR-AQ','BR-METAR','BR-INMET' containing lat, lon and row.names of each location}
+
+\item{proj}{projection string to CRS / proj4string (sp package), defoult in "+proj=longlat"}
 
 \item{verbose}{to display additional information}
 }

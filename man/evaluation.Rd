@@ -17,6 +17,7 @@ evaluation(
   use_n = F,
   formate = T,
   nobs = 8,
+  NAME = "AVERAGE",
   verbose = TRUE,
   ...
 )
@@ -45,6 +46,8 @@ evaluation(
 \item{formate}{works only with summaryzee, format the output for 2 digit (default)}
 
 \item{nobs}{minimum number of valid observations, default is 8}
+
+\item{NAME}{row.name for summaryze option}
 
 \item{verbose}{display additional information}
 

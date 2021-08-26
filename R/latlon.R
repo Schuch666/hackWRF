@@ -2,9 +2,10 @@
 #'
 #' @param data data.frame with row.names of correscponding locations
 #' @param coord data.frame or 'BR-AQ','BR-METAR','BR-INMET' containing lat, lon and row.names of each location
+#' @param proj projection string to CRS / proj4string (sp package), defoult in "+proj=longlat"
 #' @param verbose to display additional information
 #'
-#' @importFrom sp SpatialPointsDataFrame
+#' @import sp
 #'
 #' @examples
 #' sample <- read.stat(paste0(system.file("extdata", package = "hackWRF"),
@@ -19,7 +20,7 @@
 #' @export
 #'
 
-latlon <- function(data,coord = 'BR-AQ',verbose = T){
+latlon <- function(data,coord = 'BR-AQ',proj = "+proj=longlat",verbose = T){
 
   if(class(coord) == 'character'){
     if(coord[1] == 'BR-AQ'){
@@ -48,5 +49,8 @@ latlon <- function(data,coord = 'BR-AQ',verbose = T){
                                                      ncol = 2,byrow = F),
                                    data     = data,
                                    match.ID = FALSE)
+
+  sp::proj4string(pontos) <- sp::CRS(proj)
+
   return(pontos)
 }

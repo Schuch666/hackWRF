@@ -4,25 +4,39 @@
 #' @param col colors
 #' @param interval range of values for the color interval (values outside the range are mapped in extremes)
 #' @param n_classes number of classes, see details
+#' @param alpha value or vector (0 to 1 range) to modify the alpha values
+#' @param beta value or vector (0 to 1 range) to lighten the color values
+#' @param space one of "HCL", "HLS" or "combined" for colorspace::lighten
 #' @param verbose to display additional information
 #'
 #' @details the default number of classes (n_classes) is the number of colors (col) or length(var) - 1 if length(var) <= n_classes
 #'
 #' @import classInt
 #' @importFrom grDevices hcl.colors
+#' @importFrom scales alpha
+#' @importFrom colorspace lighten
 #'
 #' @examples
 #' x <- sin(pi/8 * 1:15)
 #' barplot(x, col = value_color(x))
 #' box()
 #'
+#' barplot(x, col = value_color(x, alpha = seq(0,1,along.with=x)))
+#' box()
+#'
+#' barplot(x, col = value_color(x, beta = seq(0,1,along.with=x)))
+#' box()
+#'
 #' @export
 #'
 
-value_color <- function(var,
+value2color <- function(var,
                         col       = hcl.colors(41,"Blue-Red"),
                         interval  = range(var),
                         n_classes = length(col),
+                        alpha     = NA,
+                        beta      = NA,
+                        space     = "HLS",
                         verbose   = T){
 
   plotvar <- var
@@ -42,5 +56,11 @@ value_color <- function(var,
                                                                         interval[2],
                                                                         length.out=n_classes)) )
   colcode <- classInt::findColours(class, col)
+  if(!is.na(alpha[1])){
+    colcode <- scales::alpha(colour = colcode, alpha = alpha)
+  }
+  if(!is.na(beta[1])){
+    colcode <- colorspace::lighten(col = colcode, space = space, amount = 1 - beta)
+  }
   return(colcode)
 }

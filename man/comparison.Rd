@@ -10,7 +10,7 @@ comparison(
   use_names,
   summaryze = FALSE,
   formate = FALSE,
-  verbose = TRUE
+  verbose = FALSE
 )
 }
 \arguments{
@@ -22,7 +22,7 @@ comparison(
 
 \item{summaryze}{logical, true to update or add a summary}
 
-\item{formate}{argument passed to evaluation function (default is false)}
+\item{formate}{argument passed to evaluation function, only works with summaryze = TRUE}
 
 \item{verbose}{display additional information}
 }
