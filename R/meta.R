@@ -4,8 +4,8 @@
 #'
 #' @param file file name
 #' @param var variable name, 0 to global and "?" to ask all names
-#' @param att attribute names
-#' @param action Read or write attribute (NA for get all attnames)
+#' @param att attribute names (NA for get all attnames)
+#' @param action Read or write attribute
 #' @param value value to write
 #' @param verbose display additional information
 #'

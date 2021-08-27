@@ -11,9 +11,9 @@ meta(file = NA, var = 0, att = NA, action = "read", value = NA, verbose = F)
 
 \item{var}{variable name, 0 to global and "?" to ask all names}
 
-\item{att}{attribute names}
+\item{att}{attribute names (NA for get all attnames)}
 
-\item{action}{Read or write attribute (NA for get all attnames)}
+\item{action}{Read or write attribute}
 
 \item{value}{value to write}
 

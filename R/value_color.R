@@ -5,7 +5,7 @@
 #' @param interval range of values for the color interval (values outside the range are mapped in extremes)
 #' @param n_classes number of classes, see details
 #' @param alpha value or vector (0 to 1 range) to modify the alpha values
-#' @param beta value or vector (0 to 1 range) to lighten the color values
+#' @param beta value or vector (-1 to 1 range) to lighten the color values
 #' @param space one of "HCL", "HLS" or "combined" for colorspace::lighten
 #' @param verbose to display additional information
 #'
@@ -60,7 +60,7 @@ value2color <- function(var,
     colcode <- scales::alpha(colour = colcode, alpha = alpha)
   }
   if(!is.na(beta[1])){
-    colcode <- colorspace::lighten(col = colcode, space = space, amount = 1 - beta)
+    colcode <- colorspace::lighten(col = colcode, space = space, amount = beta)
   }
   return(colcode)
 }

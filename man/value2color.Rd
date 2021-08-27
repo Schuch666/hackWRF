@@ -26,7 +26,7 @@ value2color(
 
 \item{alpha}{value or vector (0 to 1 range) to modify the alpha values}
 
-\item{beta}{value or vector (0 to 1 range) to lighten the color values}
+\item{beta}{value or vector (-1 to 1 range) to lighten the color values}
 
 \item{space}{one of "HCL", "HLS" or "combined" for colorspace::lighten}
 

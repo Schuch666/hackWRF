@@ -11,7 +11,7 @@ plot_raster(
   legend.shrink = 0.98,
   legend.width = 3,
   axe = !llaxis,
-  llaxis = F,
+  llaxis = T,
   int = 10,
   ...
 )
