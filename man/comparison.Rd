@@ -9,7 +9,7 @@ comparison(
   tabB,
   use_names,
   summaryze = FALSE,
-  formate = FALSE,
+  formate = TRUE,
   verbose = FALSE
 )
 }

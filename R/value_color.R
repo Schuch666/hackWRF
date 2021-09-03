@@ -18,13 +18,13 @@
 #'
 #' @examples
 #' x <- sin(pi/8 * 1:15)
-#' barplot(x, col = value_color(x))
+#' barplot(x, col = value2color(x))
 #' box()
 #'
-#' barplot(x, col = value_color(x, alpha = seq(0,1,along.with=x)))
+#' barplot(x, col = value2color(x, alpha = seq(0,1,along.with=x)))
 #' box()
 #'
-#' barplot(x, col = value_color(x, beta = seq(0,1,along.with=x)))
+#' barplot(x, col = value2color(x, beta = seq(0,1,along.with=x)))
 #' box()
 #'
 #' @export

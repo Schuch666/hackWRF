@@ -8,11 +8,13 @@ plot_raster(
   r,
   log = F,
   min = -3,
+  max,
   legend.shrink = 0.98,
   legend.width = 3,
   axe = !llaxis,
   llaxis = T,
   int = 10,
+  proj = F,
   ...
 )
 }
@@ -21,7 +23,9 @@ plot_raster(
 
 \item{log}{TRUE to plot in log-scale}
 
-\item{min}{minimum for log calculation}
+\item{min}{minimum for log plot (default is -3)}
+
+\item{max}{maximum for log plot}
 
 \item{legend.shrink}{argument passed to plot}
 
@@ -32,6 +36,8 @@ plot_raster(
 \item{llaxis}{to plot custom axis}
 
 \item{int}{argument passed to latitude / longitude functions}
+
+\item{proj}{TRUE to project the raster to latlon}
 
 \item{...}{arguments to be passing to stats and plot}
 }

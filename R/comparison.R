@@ -37,7 +37,7 @@
 #' comparison(A,B)
 #' comparison(B,A)
 
-comparison <- function(tabA, tabB, use_names, summaryze = FALSE, formate = FALSE, verbose = FALSE){
+comparison <- function(tabA, tabB, use_names, summaryze = FALSE, formate = TRUE, verbose = FALSE){
 
   if(!missing(use_names)){
     tabB  <- data.frame(NAs = rep(NA,length(use_names)),
