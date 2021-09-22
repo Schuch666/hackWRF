@@ -34,10 +34,13 @@
 #' }
 #' row.names(B) <- c('a0','a1','z0','z1','z2')
 #'
-#' comparison(A,B)
-#' comparison(B,A)
+#' comparison(A,B,verbose = TRUE)
+#' comparison(B,A,verbose = TRUE)
 
 comparison <- function(tabA, tabB, use_names, summaryze = FALSE, formate = TRUE, verbose = FALSE){
+
+  if(missing(tabB))
+    tabB <- tabA   # usefull to summaryze
 
   if(!missing(use_names)){
     tabB  <- data.frame(NAs = rep(NA,length(use_names)),

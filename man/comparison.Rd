@@ -54,6 +54,6 @@ for(i in 2:5){
 }
 row.names(B) <- c('a0','a1','z0','z1','z2')
 
-comparison(A,B)
-comparison(B,A)
+comparison(A,B,verbose = TRUE)
+comparison(B,A,verbose = TRUE)
 }
