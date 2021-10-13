@@ -3,7 +3,7 @@
 #' @param r raster object
 #' @param shape sf object from a shapefile containing 5 regions
 #' @param factor numeric vector with 5 growth factors
-#' @param background growth factors to be used outside the domain
+#' @param background growth factors to be used outside the domain (default is 1)
 #'
 #' @import sf raster
 #'
