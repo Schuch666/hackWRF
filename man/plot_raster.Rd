@@ -6,15 +6,15 @@
 \usage{
 plot_raster(
   r,
-  log = F,
+  log = FALSE,
   min = -3,
   max,
   legend.shrink = 0.98,
   legend.width = 3,
   axe = !llaxis,
-  llaxis = T,
+  llaxis = TRUE,
   int = 10,
-  proj = F,
+  proj = FALSE,
   ...
 )
 }
@@ -27,9 +27,9 @@ plot_raster(
 
 \item{max}{maximum for log plot}
 
-\item{legend.shrink}{argument passed to plot}
+\item{legend.shrink}{legend height (default is 0.98)}
 
-\item{legend.width}{argument passed to plot}
+\item{legend.width}{legend width (default is 3)}
 
 \item{axe}{to plot axis}
 
@@ -42,10 +42,10 @@ plot_raster(
 \item{...}{arguments to be passing to stats and plot}
 }
 \description{
-functions that modifi plot from raster package
+functions that modified plot from raster package
 }
 \examples{
-model <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/model.Rds"))
+m <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/model.Rds"))
 
 
 }

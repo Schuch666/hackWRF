@@ -11,6 +11,7 @@ extract_max_8h(
   prefix = "max_8h",
   units = "ug m-3",
   meta = T,
+  filename,
   verbose = TRUE
 )
 }
@@ -26,6 +27,8 @@ extract_max_8h(
 \item{units}{units on netcdf file (default is ug m-3), change to skip unit conversion}
 
 \item{meta}{use Times, XLONG and XLAT data (only work with 2d variable for file)}
+
+\item{filename}{name for the file, in this case prefix is not used}
 
 \item{verbose}{display additional information}
 }

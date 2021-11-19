@@ -11,6 +11,7 @@ extract_mean(
   prefix = "mean",
   units = "ppmv",
   meta = T,
+  filename,
   verbose = TRUE
 )
 }
@@ -26,6 +27,8 @@ extract_mean(
 \item{units}{units on netcdf file (default is ppmv)}
 
 \item{meta}{use Times, XLONG and XLAT data (only work with 2d variable for file)}
+
+\item{filename}{name for the file, in this case prefix is not used}
 
 \item{verbose}{display additional information}
 }

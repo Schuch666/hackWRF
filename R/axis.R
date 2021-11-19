@@ -11,7 +11,7 @@
 #'
 #' @examples
 #' library(raster)
-#' br <- shapefile(paste0(system.file("extdata",package="hackWRF"),"/BR_estates.shp"),verbose=FALSE)
+#' br <- shapefile(paste0(system.file("extdata",package="hackWRF"),"/BR_states.shp"),verbose=FALSE)
 #' plot(br)
 #' box()
 #' latitude()

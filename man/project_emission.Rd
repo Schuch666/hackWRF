@@ -4,7 +4,7 @@
 \alias{project_emission}
 \title{project emissions using growth factors.}
 \usage{
-project_emission(r, shape, factor = rep(1, nrow(regions)), background = 1)
+project_emission(r, shape, factor = rep(1, nrow(shape)), background = 1)
 }
 \arguments{
 \item{r}{raster object}
@@ -13,7 +13,7 @@ project_emission(r, shape, factor = rep(1, nrow(regions)), background = 1)
 
 \item{factor}{numeric vector with 5 growth factors}
 
-\item{background}{growth factors to be used outside the domain}
+\item{background}{growth factors to be used outside the domain (default is 1)}
 }
 \description{
 project emissions using growth factors.
@@ -24,5 +24,5 @@ factors <- c(1.1,1.5,2,1.5,0.75)
 # using XLAT only for test purposis
 x  <- eixport::wrf_raster(paste0(system.file("extdata",package="hackWRF"),"/wrfinput_d01"),'XLAT')
 project_x <- project_emission(x,regions,factors)
-plot_raster(project_x,proj = T)
+plot_raster(project_x,proj = TRUE)
 }

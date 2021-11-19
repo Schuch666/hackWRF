@@ -33,7 +33,7 @@ labels for latitude range from 180ºW to 0 to 180ºE and longitude from 90ºS to
 
 \examples{
 library(raster)
-br <- shapefile(paste0(system.file("extdata",package="hackWRF"),"/BR_estates.shp"),verbose=FALSE)
+br <- shapefile(paste0(system.file("extdata",package="hackWRF"),"/BR_states.shp"),verbose=FALSE)
 plot(br)
 box()
 latitude()

@@ -8,6 +8,7 @@
 #' @param prefix to output file, defolt is serie
 #' @param units units on netcdf file (default is ppmv)
 #' @param meta use Times, XLONG and XLAT data (only work with 2d variable for file)
+#' @param filename name for the file, in this case prefix is not used
 #' @param verbose display additional information
 #'
 #' @note The field argument '4d' / '2dz' is used to read a 4d/3d variable droping the 3rd dimention (z).
@@ -25,9 +26,14 @@
 #'
 
 extract_max <- function(filelist, variable = "o3", field = "4d",
-                         prefix = "max", units = "ppmv", meta = T,verbose = TRUE){
+                        prefix = "max", units = "ppmv", meta = T,
+                        filename,verbose = TRUE){
 
-  output_filename   <- paste0(prefix,'.',variable,'.nc')
+  if(missing(filename)){
+    output_filename   <- paste0(prefix,'.',variable,'.nc')
+  }else{
+    output_filename   <- filename
+  }
 
   COMPRESS <- NA
   acu_times <- 0
@@ -276,7 +282,7 @@ extract_max <- function(filelist, variable = "o3", field = "4d",
   }else{
     # global attributes
     g_atributos  <- ncdf4::ncatt_get(wrfinput, 0)
-    g_atributos  <- c( list(TITLE = paste0('mean ',variable),
+    g_atributos  <- c( list(TITLE = paste0('max of ',variable),
                             History = paste("created on",
                                             format(Sys.time(),
                                                    "%Y-%m-%d at %H:%M")),
@@ -344,7 +350,7 @@ extract_max <- function(filelist, variable = "o3", field = "4d",
     ncdf4::ncatt_put(output_file,
                      varid = variable,
                      attname = "description",
-                     attval = "mean value")
+                     attval = "max value")
     ncdf4::ncatt_put(output_file,
                      varid = variable,
                      attname = "units",

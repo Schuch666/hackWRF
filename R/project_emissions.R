@@ -13,11 +13,11 @@
 #' # using XLAT only for test purposis
 #' x  <- eixport::wrf_raster(paste0(system.file("extdata",package="hackWRF"),"/wrfinput_d01"),'XLAT')
 #' project_x <- project_emission(x,regions,factors)
-#' plot_raster(project_x,proj = T)
+#' plot_raster(project_x,proj = TRUE)
 #' @export
 #'
 
-project_emission <- function(r, shape, factor = rep(1,nrow(regions)), background = 1){
+project_emission <- function(r, shape, factor = rep(1,nrow(shape)), background = 1){
 
   region <- sf::st_transform(shape,crs = raster::projection(r))
   X      <- r

@@ -11,7 +11,8 @@ legend_range(
   xjust = 0.5,
   horiz = TRUE,
   y.intersp = 0.1,
-  x.intersp = 0.1
+  x.intersp = 0.1,
+  show.mean = T
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ legend_range(
 \item{y.intersp}{passed to legend}
 
 \item{x.intersp}{passed to legend}
+
+\item{show.mean}{set TRUE to hide mean value}
 }
 \description{
 Get the distance in kilometers between two points.
@@ -39,7 +42,7 @@ text.width can vary depending on map dimensions
 }
 \examples{
 library(raster)
-br <- shapefile(paste0(system.file("extdata",package="hackWRF"),"/BR_estates.shp"),verbose=FALSE)
+br <- shapefile(paste0(system.file("extdata",package="hackWRF"),"/BR_states.shp"),verbose=FALSE)
 plot(br)
 box()
 latitude()

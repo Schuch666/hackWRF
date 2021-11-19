@@ -1,13 +1,13 @@
 #' Plot raster object
 #'
-#' @description functions that modifi plot from raster package
+#' @description functions that modified plot from raster package
 #'
 #' @param r raster
 #' @param log TRUE to plot in log-scale
 #' @param min minimum for log plot (default is -3)
 #' @param max maximum for log plot
-#' @param legend.shrink argument passed to plot
-#' @param legend.width argument passed to plot
+#' @param legend.shrink legend height (default is 0.98)
+#' @param legend.width legend width (default is 3)
 #' @param axe to plot axis
 #' @param llaxis to plot custom axis
 #' @param int argument passed to latitude / longitude functions
@@ -19,17 +19,28 @@
 #' @export
 #'
 #' @examples
-#' model <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/model.Rds"))
+#' m <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/model.Rds"))
 #'
 #'
-plot_raster <- function(r, log = F, min = -3, max,
+plot_raster <- function(r, log = FALSE, min = -3, max,
                         legend.shrink = 0.98,legend.width = 3,
-                        axe = !llaxis, llaxis = T, int = 10,
-                        proj = F,
+                        axe = !llaxis, llaxis = TRUE, int = 10,
+                        proj = FALSE,
                         ...){
+
+  attach(list(...), warn.conflicts = F)
+  # name <- attach(list(...), warn.conflicts = F)
+  # on.exit(detach(name))
 
   if(proj){
     r <- projectRaster(r, crs="+proj=longlat +datum=WGS84 +no_defs")
+  }
+
+  if(FALSE) zlim = FALSE # do nothing / avoid warning
+
+  if(!log & exists('zlim')){
+    r[r[] < zlim[1] ] = zlim[1]
+    r[r[] > zlim[2] ] = zlim[2]
   }
 
   Rlog10 <- function(r,min){
