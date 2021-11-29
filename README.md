@@ -9,6 +9,8 @@ The functions include:
 - `ccbind()` and `crbind()` conditional `cbind()` and conditional `rbind()`;
 - `last()` but not least, a fnunctions to return the last member of a vector.
 
+## Installation
+
 ### System dependencies
 
 ### To Ubuntu
@@ -40,6 +42,22 @@ The following steps are required for installation on Fedora:
 No additional steps for windows installation.
 
 Detailed instructions can be found at [netcdf](https://www.unidata.ucar.edu/software/netcdf/), [libudunits2-dev](https://r-quantities.github.io/units/) and [sf](https://r-spatial.github.io/sf/#installing) developers page.
+
+### To [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) (miniconda / anaconda)
+
+First create a new environment called rspatial *(or a better name)*:
+```bash
+  conda create -n rspatial -y
+  conda activate rspatial
+```
+
+and to install some requisites:
+```bash
+  conda install -c conda-forge r-sf -y
+  conda install -c conda-forge r-rgdal -y
+  conda install -c conda-forge r-lwgeom -y
+  conda install -c conda-forge r-raster -y
+```
 
 ### Package installation
 
