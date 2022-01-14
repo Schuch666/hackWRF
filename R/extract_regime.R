@@ -1,9 +1,10 @@
-#' Creata a NetCDF file with the surface maximum
+#' Creata a NetCDF file with the ratio of FORM/(NO2 + O3)
 #'
-#' @description Read and calculate the maximum value of a variable from a list of wrf output files.
+#' @description Read and calculate the mean value of a variable from a list of wrf output files.
 #'
 #' @param filelist list of files to be read
-#' @param variable variable name
+#' @param variable_mon variable name for nominador
+#' @param variable_dem variable name for denominador
 #' @param field '4d' (default), '3d', '2d' or '2dz' see notes
 #' @param prefix to output file, defolt is serie
 #' @param units units on netcdf file (default is ppmv)
@@ -12,30 +13,34 @@
 #' @param verbose display additional information
 #'
 #' @note The field argument '4d' / '2dz' is used to read a 4d/3d variable droping the 3rd dimention (z).
+#' @note ratio < 0.28, VOC-limited, +VOC emissions -> +O3 concentration
+#' @note ratio > 0.28, NOx-limited, +NOx emissions -> +O3 concentration
+#'
+#' @references Sillman, S. (1995). The use of NO y, H2O2, and HNO3 as indicators
+#' for ozone‐NO x‐hydrocarbon sensitivity in urban locations. Journal of
+#' Geophysical Research: Atmospheres, 100(D7), 14175-14188.
 #'
 #' @import ncdf4
 #' @import eixport
 #'
 #' @export
 #'
-#' @examples
-#' dir.create(file.path(tempdir(), "MAX"))
-#' folder <- system.file("extdata",package="hackWRF")
-#' wrf_file <- paste0(folder,"/wrf.day1.o3.nc")
-#' extract_max(filelist = wrf_file,prefix = paste0(file.path(tempdir(),"MAX"),'/mean'))
-#'
 
-extract_max <- function(filelist, variable = "o3", field = "4d",
-                        prefix = "max", units = "ppmv", meta = T,
-                        filename,verbose = TRUE){
+extract_regime <- function(filelist, variable_mon = "FORM",
+                           variable_dem = c('no2','o3'), field = "4d",
+                           prefix = "ratio", units = "", meta = T,
+                           filename, verbose = TRUE){
+
+  variable <- 'ratio'
 
   if(missing(filename)){
-    output_filename   <- paste0(prefix,'.',variable,'.nc')
+    output_filename   <- paste0(prefix,'.','.nc')
   }else{
     output_filename   <- filename
   }
 
   COMPRESS <- NA
+
   acu_times <- 0
 
   if(!meta)
@@ -51,12 +56,18 @@ extract_max <- function(filelist, variable = "o3", field = "4d",
     contagem = c(-1,-1,1,-1)   # 4d Field (x,y,z,t)
 
   if(verbose){
-    cat('extracting max of',variable,'field',field,'\n')
+    cat('extracting mean of FORM / (NO2 + O3)\n')
     cat('reading:',filelist[1],'file 1 of',length(filelist),'\n')
   }
 
   w     <- nc_open(filename = filelist[1])
-  VAR   <- ncvar_get(w,variable,count = contagem)
+  # this part need to improve
+  NOM   <- ncvar_get(w,variable_mon,   count = contagem)
+  DEN_1 <- ncvar_get(w,variable_dem[1],count = contagem)
+  DEN_2 <- ncvar_get(w,variable_dem[2],count = contagem)
+  # ration of FORM / (NO2 + O3)
+  VAR   <- NOM / (DEN_1 + DEN_2)
+
   if(meta){
     times <- ncvar_get(w,"Times")
   }
@@ -68,47 +79,39 @@ extract_max <- function(filelist, variable = "o3", field = "4d",
     acu_times <- 1
   }
 
-  tmax <- function(var){
+  tsum <- function(var){
     if(length(dim(var)) == 2){
       cat('min:',min(var,na.rm = T),'mean:',mean(var,na.rm = T),'max:',max(var,na.rm = T),'\n')
       return(var)
     }
 
-    t_max   <- var[,,1,drop = T]
+    t_sum   <- var[,,1,drop = T]
     cat('min:',min(var,na.rm = T),'mean:',mean(var,na.rm = T),'max:',max(var,na.rm = T),'\n')
 
     for(i in 1:dim(var)[1]){
       for(j in 1:dim(var)[2]){
-        t_max[i,j] <- max(var[i,j,], na.rm = T)
+        t_sum[i,j] <- sum(var[i,j,], na.rm = T)
       }
     }
 
-    return(t_max)
+    return(t_sum)
   }
 
-  tmax2 <- function(var,var2){
-    t_max <- var
-    cat('min:',min(var2,na.rm = T),'mean:',mean(var2,na.rm = T),'max:',max(var2,na.rm = T),'\n')
-    for(i in 1:dim(var)[1]){
-      for(j in 1:dim(var)[2]){
-        if(dim(var2) == 3){
-          t_max[i,j] <- max(c(var[i,j],var2[i,j,]),na.rm = T)
-        }else{
-          t_max[i,j] <- max(c(var[i,j],var2[i,j]),na.rm = T)
-        }
-      }
-    }
-    return(t_max)
-  }
-
-  MAX   <- tmax(VAR)
+  SUM   <- tsum(VAR)
 
   if(length(filelist) > 1){
     for(i in 2:length(filelist)){
       cat('reading:',filelist[i],'file',i,'of',length(filelist),'\n')
+
       w    <- nc_open(filename = filelist[i])
-      TEMP <- ncvar_get(w,variable,count = contagem)
-      MAX  <- tmax2(MAX,TEMP)
+      # TEMP <- ncvar_get(w,variable,count = contagem)
+      NOM   <- ncvar_get(w,variable_mon,   count = contagem)
+      DEN_1 <- ncvar_get(w,variable_dem[1],count = contagem)
+      DEN_2 <- ncvar_get(w,variable_dem[2],count = contagem)
+      # ration of FORM / (NO2 + O3)
+      TEMP  <- NOM / (DEN_1 + DEN_2)
+
+      INC  <- tsum(TEMP)
       if(meta){
         times <- ncvar_get(w,"Times")
         acu_times = acu_times + length(times)
@@ -116,8 +119,11 @@ extract_max <- function(filelist, variable = "o3", field = "4d",
         acu_times = acu_times + 1
       }
       nc_close(w)
+      SUM <- SUM + INC
     }
   }
+
+  MEAN <- SUM / acu_times
 
   # some input
   wrfinput     <- nc_open(filelist[1])
@@ -262,7 +268,7 @@ extract_max <- function(filelist, variable = "o3", field = "4d",
     # to the variable
     ncdf4::ncvar_put(output_file,
                      varid = variable,
-                     MAX)
+                     MEAN)
     ncdf4::ncatt_put(output_file,
                      varid = variable,
                      attname = "MemoryOrder",
@@ -286,7 +292,7 @@ extract_max <- function(filelist, variable = "o3", field = "4d",
   }else{
     # global attributes
     g_atributos  <- ncdf4::ncatt_get(wrfinput, 0)
-    g_atributos  <- c( list(TITLE = paste0('max of ',variable),
+    g_atributos  <- c( list(TITLE = paste0('average of ',variable),
                             History = paste("created on",
                                             format(Sys.time(),
                                                    "%Y-%m-%d at %H:%M")),
@@ -297,11 +303,11 @@ extract_max <- function(filelist, variable = "o3", field = "4d",
     west_east <- ncdf4::ncdim_def("west_east",
                                   units = "",
                                   longname = "",
-                                  vals = 1:dim(MAX)[1])
+                                  vals = 1:dim(MEAN)[1])
     south_north <- ncdf4::ncdim_def("south_north",
                                     units = "",
                                     longname = "",
-                                    vals = 1:dim(MAX)[2])
+                                    vals = 1:dim(MEAN)[2])
     bottom_top <- ncdf4::ncdim_def("bottom_top",
                                    units = "",
                                    longname = "",
@@ -346,7 +352,7 @@ extract_max <- function(filelist, variable = "o3", field = "4d",
     # to the variable
     ncdf4::ncvar_put(output_file,
                      varid = variable,
-                     MAX)
+                     MEAN)
     ncdf4::ncatt_put(output_file,
                      varid = variable,
                      attname = "MemoryOrder",
@@ -354,7 +360,7 @@ extract_max <- function(filelist, variable = "o3", field = "4d",
     ncdf4::ncatt_put(output_file,
                      varid = variable,
                      attname = "description",
-                     attval = "max value")
+                     attval = "average")
     ncdf4::ncatt_put(output_file,
                      varid = variable,
                      attname = "units",
