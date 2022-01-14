@@ -19,6 +19,7 @@
 
 project_emission <- function(r, shape, factor = rep(1,nrow(shape)), background = 1){
 
+  factor <- as.numeric(factor)
   region <- sf::st_transform(shape,crs = raster::projection(r))
   X      <- r
 
