@@ -26,7 +26,7 @@
 #' @export
 #'
 
-extract_regime <- function(filelist, variable_mon = "FORM",
+extract_regime <- function(filelist, variable_mon = "form",
                            variable_dem = c('no2','o3'), field = "4d",
                            prefix = "ratio", units = "", meta = T,
                            filename, verbose = TRUE){
