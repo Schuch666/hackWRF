@@ -15,6 +15,7 @@
 #' @param coe_n2 coefficient for to multiply extra auxliar input
 #' @param plot to plot from output file
 #' @param verbose display additional information
+#' @param ... param for plot function
 #'
 #' @return if output is NA, returns an array or a matrix
 #'
@@ -36,7 +37,8 @@ merge_emission <- function(background,
                            aux_n2  = NA,
                            coe_n2  = 1.0,
                            plot    = T,
-                           verbose = T){
+                           verbose = T,
+                           ...){
 
   cat('Background emission:',background, '\n')
   if(coef_backgroud != 1.0)
@@ -51,6 +53,9 @@ merge_emission <- function(background,
   if(is.na(aux_n2)){
     aux_input <- coef_auxiliar * wrf_raster(auxiliar,  name, verbose = F)
   }else{
+    cat('Auxiliar emission 2:',aux_n2,'\n')
+    if(coe_n2  != 1.0)
+      cat('Auxiliar coefficient 2:',coe_n2,'\n')
     aux_input <- coef_auxiliar * wrf_raster(auxiliar,  name, verbose = F) +
                  coe_n2        * wrf_raster(aux_n2,    name, verbose = F)
   }
@@ -77,12 +82,16 @@ merge_emission <- function(background,
   #   VALUES[,,i] = as.matrix(t(raster::flip(main_output[[i]],2)))
   # }
   if(is.na(output)){
+    if(plot){
+      cat('Ploting',name,'\n')
+      plot(main_output[[1]],...)
+    }
     cat('Returning emissions\n')
     return(VALUES)
   }
   wrf_put(output,name,VALUES,verbose = T)
   if(plot){
     cat('Ploting',name,'from file',output,'\n')
-    wrf_plot(output,name,verbose = F,skip = T)
+    wrf_plot(output,name,verbose = F,skip = T,...)
   }
 }

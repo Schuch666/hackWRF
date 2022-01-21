@@ -14,7 +14,8 @@ merge_emission(
   aux_n2 = NA,
   coe_n2 = 1,
   plot = T,
-  verbose = T
+  verbose = T,
+  ...
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ merge_emission(
 \item{plot}{to plot from output file}
 
 \item{verbose}{display additional information}
+
+\item{...}{param for plot function}
 }
 \value{
 if output is NA, returns an array or a matrix
