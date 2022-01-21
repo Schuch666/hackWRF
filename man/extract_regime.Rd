@@ -6,7 +6,7 @@
 \usage{
 extract_regime(
   filelist,
-  variable_mon = "FORM",
+  variable_mon = "form",
   variable_dem = c("no2", "o3"),
   field = "4d",
   prefix = "ratio",

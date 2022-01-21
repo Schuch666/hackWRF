@@ -4,7 +4,18 @@
 \alias{merge_emission}
 \title{Function to merge two different emissions}
 \usage{
-merge_emission(background, auxiliar, output = NA, name, plot = T, verbose = T)
+merge_emission(
+  background,
+  auxiliar,
+  output = NA,
+  name,
+  coef_backgroud = 1,
+  coef_auxiliar = 1,
+  aux_n2 = NA,
+  coe_n2 = 1,
+  plot = T,
+  verbose = T
+)
 }
 \arguments{
 \item{background}{main input file (WRF-Chem emission file)}
@@ -14,6 +25,14 @@ merge_emission(background, auxiliar, output = NA, name, plot = T, verbose = T)
 \item{output}{output file (WRF-Chem emission file), or NA to return the emission array}
 
 \item{name}{variable/pollutant name}
+
+\item{coef_backgroud}{coefficient to multiply main input}
+
+\item{coef_auxiliar}{coefficient to multiply auxliar input}
+
+\item{aux_n2}{extra auxliar input file (will be merged with auxliar)}
+
+\item{coe_n2}{coefficient for to multiply extra auxliar input}
 
 \item{plot}{to plot from output file}
 

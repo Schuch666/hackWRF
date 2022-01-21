@@ -9,6 +9,10 @@
 #' @param auxiliar auxliar input file (WRF-Chem emission file)
 #' @param output output file (WRF-Chem emission file), or NA to return the emission array
 #' @param name variable/pollutant name
+#' @param coef_backgroud coefficient to multiply main input
+#' @param coef_auxiliar coefficient to multiply auxliar input
+#' @param aux_n2 extra auxliar input file (will be merged with auxliar)
+#' @param coe_n2 coefficient for to multiply extra auxliar input
 #' @param plot to plot from output file
 #' @param verbose display additional information
 #'
@@ -27,16 +31,30 @@ merge_emission <- function(background,
                            auxiliar,
                            output  = NA,
                            name,
+                           coef_backgroud = 1.0,
+                           coef_auxiliar = 1.0,
+                           aux_n2  = NA,
+                           coe_n2  = 1.0,
                            plot    = T,
                            verbose = T){
-  # if(verbose){
-    cat('Background emission:',background, '\n')
-    cat('Auxiliar emission  :',auxiliar,'\n')
-    if(!is.na(output))
-      cat('Output file        :',output, '\n')
-  # }
-  main_input  <- wrf_raster(background,name, verbose = F)
-  aux_input   <- wrf_raster(auxiliar,  name, verbose = F)
+
+  cat('Background emission:',background, '\n')
+  if(coef_backgroud != 1.0)
+    cat('Background coefficient:',coef_backgroud,'\n')
+  cat('Auxiliar emission  :',auxiliar,'\n')
+  if(coef_auxiliar  != 1.0)
+    cat('Auxiliar coefficient:',coef_auxiliar,'\n')
+  if(!is.na(output))
+    cat('Output file        :',output, '\n')
+
+  main_input  <- coef_backgroud * wrf_raster(background,name, verbose = F)
+  if(is.na(aux_n2)){
+    aux_input <- coef_auxiliar * wrf_raster(auxiliar,  name, verbose = F)
+  }else{
+    aux_input <- coef_auxiliar * wrf_raster(auxiliar,  name, verbose = F) +
+                 coe_n2        * wrf_raster(aux_n2,    name, verbose = F)
+  }
+
   if(!is.na(output)){
     main_output <- wrf_raster(output,  name, verbose = F)
   }else{
