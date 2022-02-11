@@ -8,6 +8,7 @@
 #' @param x.intersp passed to legend
 #' @param y.intersp passed to legend
 #' @param show.mean set TRUE to hide mean value
+#' @param unit a string for units
 #'
 #' @note for use with raster use before any change of projection
 #' @note text.width can vary depending on map dimensions
@@ -30,7 +31,8 @@ legend_range <- function(x, text.width=6, dig = c(2,2,2),
                          horiz = TRUE,
                          y.intersp =0.1,
                          x.intersp =0.1,
-                         show.mean = T){
+                         show.mean = TRUE,
+                         unit = ""){
 
   if(class(x)[1] == 'Raster' ||
      class(x)[1] == 'RasterLayer' ||
@@ -38,9 +40,9 @@ legend_range <- function(x, text.width=6, dig = c(2,2,2),
     x <- raster_to_ncdf(x)
   }
 
-  mi <- paste('Min:', formatC(min(x, na.rm = TRUE), digits = dig[1], format = "f"))
-  me <- paste('Mean:',formatC(mean(x,na.rm = TRUE), digits = dig[2], format = "f"))
-  ma <- paste('Max:', formatC(max(x, na.rm = TRUE), digits = dig[3], format = "f"))
+  mi <- paste('Min:', formatC(min(x, na.rm = TRUE), digits = dig[1], format = "f"),unit)
+  me <- paste('Mean:',formatC(mean(x,na.rm = TRUE), digits = dig[2], format = "f"),unit)
+  ma <- paste('Max:', formatC(max(x, na.rm = TRUE), digits = dig[3], format = "f"),unit)
 
   if(show.mean){
     le <- c(mi,me,ma)
