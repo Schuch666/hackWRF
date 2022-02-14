@@ -12,7 +12,8 @@ legend_range(
   horiz = TRUE,
   y.intersp = 0.1,
   x.intersp = 0.1,
-  show.mean = T
+  show.mean = TRUE,
+  unit = ""
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ legend_range(
 \item{x.intersp}{passed to legend}
 
 \item{show.mean}{set TRUE to hide mean value}
+
+\item{unit}{a string for units}
 }
 \description{
 Get the distance in kilometers between two points.
