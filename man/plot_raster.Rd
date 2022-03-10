@@ -12,9 +12,10 @@ plot_raster(
   legend.shrink = 0.98,
   legend.width = 3,
   axe = !llaxis,
-  llaxis = TRUE,
+  llaxis = F,
   int = 10,
   proj = FALSE,
+  col = c("white", colorRampPalette(colors = c("#D1F5B1", "#FFDE24FC", "#C70000"))(39)),
   ...
 )
 }
@@ -38,6 +39,8 @@ plot_raster(
 \item{int}{argument passed to latitude / longitude functions}
 
 \item{proj}{TRUE to project the raster to latlon}
+
+\item{col}{color}
 
 \item{...}{arguments to be passing to stats and plot}
 }

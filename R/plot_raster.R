@@ -12,9 +12,11 @@
 #' @param llaxis to plot custom axis
 #' @param int argument passed to latitude / longitude functions
 #' @param proj TRUE to project the raster to latlon
+#' @param col color
 #' @param ... arguments to be passing to stats and plot
 #'
 #' @import raster
+#' @importFrom grDevices colorRampPalette
 #'
 #' @export
 #'
@@ -24,8 +26,12 @@
 #'
 plot_raster <- function(r, log = FALSE, min = -3, max,
                         legend.shrink = 0.98,legend.width = 3,
-                        axe = !llaxis, llaxis = TRUE, int = 10,
+                        axe = !llaxis, llaxis = F, int = 10,
                         proj = FALSE,
+                        col = c('white',
+                                colorRampPalette(colors = c("#D1F5B1",
+                                                            "#FFDE24FC",
+                                                            "#C70000"))(39)),
                         ...){
 
   attach(list(...), warn.conflicts = F)
@@ -70,6 +76,7 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
            legend.width  = legend.width,
            axe           = axe,
            axis.args     = arg,
+           col           = col,
            ...)
     }else{
       plot(x             = r_log,
@@ -78,6 +85,7 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
            axe           = axe,
            axis.args     = arg,
            zlim          = c(min, max),
+           col           = col,
            ...)
     }
   }else{
@@ -85,6 +93,7 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
          legend.shrink = legend.shrink,
          legend.width  = legend.width,
          axe           = axe,
+         col           = col,
          ...)
   }
   if(llaxis){
