@@ -1,6 +1,7 @@
 # example scripts for WRF evaluation using METAR
 
-## 0. Instalation process of [hackWRF](https://github.com/Schuch666/hackWRF#installation) package, other R-packages needed ([riem](https://docs.ropensci.org/riem/) and [openair](https://davidcarslaw.com/files/openairmanual.pdf)), can be installed inside R session:
+## 0. Instalation
+Instalation process of [hackWRF](https://github.com/Schuch666/hackWRF#installation) package, other R-packages needed ([riem](https://docs.ropensci.org/riem/) and [openair](https://davidcarslaw.com/files/openairmanual.pdf)), can be installed inside R session:
 `bash install.packages('riem')
 install.packages('openair')`
 
