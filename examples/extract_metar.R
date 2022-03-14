@@ -14,8 +14,7 @@ if(length(args) > 2){
 if(ndim == '&')
    ndim <- '4d'
 
-stations <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/metar-dust2400.Rds"))
-# stations <- readRDS("metar-dust2400.Rds")
+stations <- readRDS("metar-sites.Rds")
 
 files    <- dir(path = dir, pattern = "wrfout_d01",full.names = T)
 extract_serie(filelist = files, 
