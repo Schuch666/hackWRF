@@ -2,8 +2,8 @@
 
 ## 0. Instalation
 Instalation process of [hackWRF](https://github.com/Schuch666/hackWRF#installation) package, other R-packages needed ([riem](https://docs.ropensci.org/riem/) and [openair](https://davidcarslaw.com/files/openairmanual.pdf)), can be installed inside R session:
-`install.packages('riem')
-install.packages('openair')`
+`install.packages('riem')`
+`install.packages('openair')`
 
 ## 1. Download and processing of the METAR data
 To download the data, run the R-script `download.R`, this script download all METAR stations with the code included in the variable `sites` including some preliminary preprocessing of the data, the data/sites can also be found in [link](https://mesonet.agron.iastate.edu/request/download.phtml).
