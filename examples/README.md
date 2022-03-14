@@ -2,7 +2,7 @@
 
 ## 0. Instalation
 Instalation process of [hackWRF](https://github.com/Schuch666/hackWRF#installation) package, other R-packages needed ([riem](https://docs.ropensci.org/riem/) and [openair](https://davidcarslaw.com/files/openairmanual.pdf)), can be installed inside R session:
-`bash install.packages('riem')
+`install.packages('riem')
 install.packages('openair')`
 
 ## 1. Download and processing of the METAR data
