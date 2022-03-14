@@ -9,10 +9,10 @@ install.packages('openair')`
 To download the data, run the R-script `download.R`, this script download all METAR stations with the code included in the variable `sites` including some preliminary preprocessing of the data, the data/sites can also be found in [link](https://mesonet.agron.iastate.edu/request/download.phtml).
 
 ## 2. Processing of site locations
-The script `process_stations.R` create a data.frame with the latitude and longitude using the metadata from all downloaded METAR sites.
+The script `process_stations.R` create a data.frame with the latitude and longitude using the metadata from all downloaded METAR sites and save in `metar-sites.Rds`.
 
 ## 3. Extracting model variables
-The bash script `post.sh` (a PBS job script for Cheyenne) is a high-level script that passes the folder and the variable name (and other arguments if needed) to the R-script `extract_metar.R` that extract values from domain d01, d02 and d03 (in series) and create a tar file with the processed data. Each variable is extracted in parallel.
+The bash script `post.sh` (a PBS job script for Cheyenne) is a high-level script that passes the folder and the variable name (and other arguments if needed) to the R-script `extract_metar.R` that extract values from domain d01, d02 and d03 (in series) using `metar-sites.Rds` information and create a tar file with the processed data. Each variable is extracted in parallel.
 
 ## 4. Perform model evaluation
 The R-script `all_tables.R` control the paths and other control variables and call `table_metar_T2.R`, `table_metar_Wind.R` and `table_metar_Q.R`.
