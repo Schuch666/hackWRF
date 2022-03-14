@@ -20,7 +20,7 @@
 #'
 #' @describeIn plot cool latitude
 #' @export
-latitude <- function(int = 10, side = 1,lmin = -180, lmax = 180, ...){
+longitude <- function(int = 10, side = 1,lmin = -180, lmax = 180, ...){
   vet_lat <- seq(lmin,lmax,by = int)
   lab_lat <- c(paste0(seq(-lmin,int,by=-int),"\u00baW"),'0',
                paste0(seq(int,lmax,by=int),"\u00baE"))
@@ -29,7 +29,7 @@ latitude <- function(int = 10, side = 1,lmin = -180, lmax = 180, ...){
 }
 #' @describeIn plot cool longitude
 #' @export
-longitude <- function(int = 10,side = 2,lmin = -90, lmax = 90, ...){
+latitude <- function(int = 10,side = 2,lmin = -90, lmax = 90, ...){
   vet_lon <- seq(lmin,lmax,by = int)
   lab_lon <- c(paste0(seq(-lmin,int,by=-int),"\u00baS"),'0',
                paste0(seq(int,lmax,by=int),"\u00baN"))
