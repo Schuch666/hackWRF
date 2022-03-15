@@ -13,7 +13,7 @@ meta(file = NA, var = 0, att = NA, action = "read", value = NA, verbose = F)
 
 \item{att}{attribute names (NA for get all attnames)}
 
-\item{action}{Read or write attribute}
+\item{action}{Read or write attribute, get return the value}
 
 \item{value}{value to write}
 

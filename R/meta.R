@@ -5,7 +5,7 @@
 #' @param file file name
 #' @param var variable name, 0 to global and "?" to ask all names
 #' @param att attribute names (NA for get all attnames)
-#' @param action Read or write attribute
+#' @param action Read or write attribute, get return the value
 #' @param value value to write
 #' @param verbose display additional information
 #'
@@ -37,10 +37,14 @@ meta <- function(file = NA,var = 0, att = NA, action="read", value=NA, verbose=F
 
   if(var == "?"){
     ncdf4::nc_close(meta)
-    return(cat(names(meta$var)))
+    if(action == 'get'){
+      return(names(meta$var))
+    }else{
+      return(cat(names(meta$var)))
+    }
   }
 
-  if(action == "read"){
+  if(action == "read" | action == "get"){
     if(is.na(att)){
       ATR <- ncdf4::ncatt_get(meta,var,att,verbose=verbose)
       if(var==0)
@@ -55,6 +59,7 @@ meta <- function(file = NA,var = 0, att = NA, action="read", value=NA, verbose=F
       cat(paste0(var," attribute ",att,":\n"))
       cat(paste0(ATR$value,"\n"))
     }
+    if(action == 'get') return(ATR)
   }else{
     if(is.na(value))
       stop("nothing to write") # nocov
