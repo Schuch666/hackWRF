@@ -15,25 +15,15 @@ model_d01        <- readRDS('metar.d01.Q2.Rds')
 model_d02        <- readRDS('metar.d02.Q2.Rds')
 model_d03        <- readRDS('metar.d03.Q2.Rds')
 
-files_obs <- dir(path = METAR_folder,pattern = 'METAR',full.names = T)
-
 cat('opening TEMP:\n')
-cat('open',files_obs[i],1,'of',length(files_obs),'\n')
-obs        <- readRDS(files_obs[1])
-names(obs[,c(2,5)])
-name       <- obs$station[1]
-obs        <- obs[,c(1,5)]
-names(obs) <- c('date',name)
+files_obs <- dir(path = METAR_folder,pattern = 'METAR',full.names = T)
+obs       <- data.frame(date = model_d01$date, stringsAsFactors = T)
 
-obs <- selectByDate(obs,
-                    start = as.Date(model_d01$date[1]),
-                    end   = as.Date(last(model_d01$date)))
-obs <- obs[!duplicated(obs$date), ]
-for(i in 2:length(files_obs)){
+for(i in 1:length(files_obs)){
   cat('open',files_obs[i],i,'of',length(files_obs),'\n')
   new        <- readRDS(files_obs[i])
   name       <- new$station[1]
-  new        <- new[,c(1,5)]
+  new        <- new[,c(1,6)]
   names(new) <- c('date',name)
 
   new        <- selectByDate(new,
@@ -47,22 +37,13 @@ names(obs)  <- c('date',substr(files_obs,nchar(METAR_folder)+7,nchar(files_obs)-
 temperature <- obs
 
 cat('opening RH:\n')
-cat('open',files_obs[i],1,'of',length(files_obs),'\n')
-obs        <- readRDS(files_obs[1])
-names(obs[,c(2,8)])
-name       <- obs$station[1]
-obs        <- obs[,c(1,8)]
-names(obs) <- c('date',name)
+obs       <- data.frame(date = model_d01$date, stringsAsFactors = T)
 
-obs <- selectByDate(obs,
-                    start = as.Date(model_d01$date[1]),
-                    end   = as.Date(last(model_d01$date)))
-obs <- obs[!duplicated(obs$date), ]
-for(i in 2:length(files_obs)){
+for(i in 1:length(files_obs)){
   cat('open',files_obs[i],i,'of',length(files_obs),'\n')
   new        <- readRDS(files_obs[i])
   name       <- new$station[1]
-  new        <- new[,c(1,8)]
+  new        <- new[,c(1,9)]
   names(new) <- c('date',name)
 
   new        <- selectByDate(new,

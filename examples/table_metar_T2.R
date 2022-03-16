@@ -18,24 +18,15 @@ model_d01[-1] <- model_d01[-1] - 273.15
 model_d02[-1] <- model_d02[-1] - 273.15
 model_d03[-1] <- model_d03[-1] - 273.15
 
+cat('opening TEMP:\n')
 files_obs <- dir(path = METAR_folder,pattern = 'METAR',full.names = T)
+obs       <- data.frame(date = model_d01$date, stringsAsFactors = T)
 
-cat('open',files_obs[i],1,'of',length(files_obs),'\n')
-obs        <- readRDS(files_obs[1])
-names(obs[,c(2,5)])
-name       <- obs$station[1]
-obs        <- obs[,c(1,5)]
-names(obs) <- c('date',name)
-
-obs <- selectByDate(obs,
-                    start = as.Date(model_d01$date[1]),
-                    end   = as.Date(last(model_d01$date)))
-obs <- obs[!duplicated(obs$date), ]
-for(i in 2:length(files_obs)){
+for(i in 1:length(files_obs)){
   cat('open',files_obs[i],i,'of',length(files_obs),'\n')
   new        <- readRDS(files_obs[i])
   name       <- new$station[1]
-  new        <- new[,c(1,5)]
+  new        <- new[,c(1,6)]
   names(new) <- c('date',name)
 
   new        <- selectByDate(new,

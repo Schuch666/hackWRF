@@ -71,24 +71,15 @@ for(i in 1:ncol(WS)){
 model_d03_WS[,-1]  <- WS
 model_d03_WD[,-1]  <- WD
 
+cat('opening Wind speed METAR:\n')
 files_obs <- dir(path = METAR_folder,pattern = 'METAR',full.names = T)
+obs       <- data.frame(date = model_d01$date, stringsAsFactors = T)
 
-cat('open',files_obs[1],1,'of',length(files_obs),'\n')
-obs        <- readRDS(files_obs[1])
-names(obs[,c(2,9)])
-name       <- obs$station[1]
-obs        <- obs[,c(1,9)]
-names(obs) <- c('date',name)
-
-obs <- selectByDate(obs,
-                    start = as.Date(model_d01_WS$date[1]),
-                    end   = as.Date(last(model_d01_WS$date)))
-obs <- obs[!duplicated(obs$date), ]
-for(i in 2:length(files_obs)){
+for(i in 1:length(files_obs)){
   cat('open',files_obs[i],i,'of',length(files_obs),'\n')
   new        <- readRDS(files_obs[i])
   name       <- new$station[1]
-  new        <- new[,c(1,9)]
+  new        <- new[,c(1,10)]
   names(new) <- c('date',name)
 
   new        <- selectByDate(new,
@@ -218,25 +209,14 @@ if(to.plot){
 }
 
 cat('opening Wind direction METAR:\n')
-
 files_obs <- dir(path = METAR_folder,pattern = 'METAR',full.names = T)
+obs       <- data.frame(date = model_d01$date, stringsAsFactors = T)
 
-cat('open',files_obs[1],1,'of',length(files_obs),'\n')
-obs        <- readRDS(files_obs[1])
-names(obs[,c(2,10)])
-name       <- obs$station[1]
-obs        <- obs[,c(1,10)]
-names(obs) <- c('date',name)
-
-obs <- selectByDate(obs,
-                    start = as.Date(model_d01_WS$date[1]),
-                    end   = as.Date(last(model_d01_WS$date)))
-obs <- obs[!duplicated(obs$date), ]
-for(i in 2:length(files_obs)){
+for(i in 1:length(files_obs)){
   cat('open',files_obs[i],i,'of',length(files_obs),'\n')
   new        <- readRDS(files_obs[i])
   name       <- new$station[1]
-  new        <- new[,c(1,10)]
+  new        <- new[,c(1,11)]
   names(new) <- c('date',name)
 
   new        <- selectByDate(new,
