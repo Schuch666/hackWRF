@@ -68,6 +68,13 @@ evaluation <- function(mo, ob, station, table = NULL, wd = FALSE, clean = FALSE,
     if(verbose){
       cat('creating the summary\n')
     }
+    if(nrow(table) == 0){
+      cat('no stats in input table\n')
+      RESULT <- stats((1:199)/100,(1:199)/100)
+      RESULT$n = 0
+      row.names(RESULT) <- 'no_data'
+      return(RESULT)
+    }
 
     if(last(row.names(table)) == 'GERAL' | last(row.names(table)) == NAME)
       table <- table[-nrow(table),]
