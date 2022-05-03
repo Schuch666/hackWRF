@@ -17,11 +17,19 @@ for(site in sites){
   for(i in 1:length(DATA$valid)){
     min <- as.numeric(format(DATA$valid[i], format = '%M'))
     if(min >= 30){
-      new_data[i] <- DATA$valid[i] - min * 60
+      new_data[i] <- DATA$valid[i] - min * 60 + 60*60
     }else{
-      new_data[i] <- DATA$valid[i] + min * 60
+      new_data[i] <- DATA$valid[i] - min * 60
     }
   }
+  # Eeshan modifications
+  # tt <- strptime(paste(DATA$valid), format="%Y-%m-%d %H:%M:%S", tz="UTC")
+  # # cat('initial:')
+  # # print(head(tt))
+  # tt_new <- format(round(tt, units="hours"), format="%Y-%m-%d %H:%M:%S") # Use round.Date to round, then format to format
+  # new_data <- as.POSIXlt(tt_new, tz = "UTC")                             # changing it to the POSIXlt format
+  # # print('final:')
+  # # print(head(new_data))
 
   DATA2 <- data.frame(date    = new_data,             # processed date
                       o_date  = DATA$valid,           # original date
