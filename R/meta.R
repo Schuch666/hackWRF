@@ -23,7 +23,7 @@
 #'
 
 meta <- function(file = NA,var = 0, att = NA, action="read", value=NA, verbose=F){
-  if(is.na(file)){
+  if(is.na(file[1])){
     cat("choose a file:\n") # nocov
     file <- file.choose()   # nocov
     cat(paste(file,"\n"))   # nocov

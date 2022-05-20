@@ -14,6 +14,9 @@ extract_serie(
   return.nearest = FALSE,
   fast = FALSE,
   use_ij = FALSE,
+  latitude = "XLAT",
+  longitude = "XLONG",
+  use_TFLAG = F,
   verbose = TRUE
 )
 }
@@ -35,6 +38,12 @@ extract_serie(
 \item{fast}{faster calculation of grid distances but less precise}
 
 \item{use_ij}{logical, use i and j from input instead of calculate}
+
+\item{latitude}{name of latitude coordinade variable in the netcdf}
+
+\item{longitude}{name of longitude coordinade variable in the netcdf}
+
+\item{use_TFLAG}{use the variable TFLAG (CMAQ / smoke) instead of Times (WRF)}
 
 \item{verbose}{display additional information}
 }

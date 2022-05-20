@@ -11,6 +11,9 @@
 #' @param return.nearest return the data.frame of nearest points instead of extract the serie
 #' @param fast faster calculation of grid distances but less precise
 #' @param use_ij logical, use i and j from input instead of calculate
+#' @param latitude name of latitude coordinade variable in the netcdf
+#' @param longitude name of longitude coordinade variable in the netcdf
+#' @param use_TFLAG use the variable TFLAG (CMAQ / smoke) instead of Times (WRF)
 #' @param verbose display additional information
 #'
 #' @note The field argument '4d' or '2dz' is used to read a 4d/3d variable droping the 3rd dimention (z).
@@ -47,7 +50,9 @@
 
 extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
                           prefix = 'serie',new = 'check', return.nearest = FALSE,
-                          fast = FALSE, use_ij = FALSE,verbose = TRUE){
+                          fast = FALSE, use_ij = FALSE,
+                          latitude = 'XLAT',longitude = 'XLONG', use_TFLAG = F,
+                          verbose = TRUE){
 
   output_file  <- paste0(prefix,'.',variable,'.Rds')
 
@@ -59,8 +64,8 @@ extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
     cat('extracting series of',variable,'field',field,'for',nrow(point),'points\n')
 
   wrf   <- nc_open(filelist[1])
-  lat   <- ncvar_get(wrf,"XLAT")
-  lon   <- ncvar_get(wrf,"XLONG")
+  lat   <- ncvar_get(wrf,latitude)
+  lon   <- ncvar_get(wrf,longitude)
   if(verbose)
     cat('dim of lat/lon:',dim(lat),'\n')
 
@@ -152,7 +157,21 @@ extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
     cat('reading',variable,':',filelist[1],'file 1 of',length(filelist),'\n')
   }
 
-  times   <- eixport::wrf_get(wrf$filename,name = 'time',verbose = F)
+  if(use_TFLAG){
+    TFLAG <- eixport::wrf_get(file = wrf$filename,name = 'TFLAG')        # nocov
+    TFLAG <- TFLAG[,1,,drop = T]                                         # nocov
+    year  <- as.numeric(substr(x = TFLAG[1,],start = 1,stop = 4))        # nocov
+    jday  <- as.numeric(substr(x = TFLAG[1,],start = 5,stop = 7))        # nocov
+    day   <- as.Date(paste0(year,jday),format = '%Y%j')                  # nocov
+    hour  <- as.numeric(TFLAG[2,]) / 10000                               # nocov
+    hour  <- paste(formatC(hour,width = 2, format = "d", flag = "0"))    # nocov
+    date_time <- paste0(as.character(day),' ',hour,':00:00')             # nocov
+    times     <- as.POSIXlt(date_time, tz = "UTC",                       # nocov
+                            format="%Y-%m-%d %H:%M:%OS", optional=FALSE) # nocov
+  }else{
+    times   <- eixport::wrf_get(wrf$filename,name = 'time',verbose = F)
+  }
+
   if(field == '2d')
     contagem  = NA             # 2d Field (x,y)
   if(field == '2dz')
@@ -189,8 +208,8 @@ extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
         cat('reading',variable,':',filelist[i],'file',i,'of',length(filelist),'\n')
 
       wrf   <- nc_open(filelist[i])
-      lat   <- ncvar_get(wrf,"XLAT")
-      lon   <- ncvar_get(wrf,"XLONG")
+      lat   <- ncvar_get(wrf,latitude)
+      lon   <- ncvar_get(wrf,longitude)
       if(length(dim(lat)) == 3){
         lat   <- lat[,,1,drop = T]
         lon   <- lon[,,1,drop = T]
@@ -202,7 +221,22 @@ extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
 
       # stations <- nearest(point,lat,lon,fast)
       # stations <- remove_outsiders(stations,lat)
-      times    <- eixport::wrf_get(wrf$filename,name = 'time')
+
+      if(use_TFLAG){
+        TFLAG <- eixport::wrf_get(file = wrf$filename,name = 'TFLAG')        # nocov
+        TFLAG <- TFLAG[,1,,drop = T]                                         # nocov
+        year  <- as.numeric(substr(x = TFLAG[1,],start = 1,stop = 4))        # nocov
+        jday  <- as.numeric(substr(x = TFLAG[1,],start = 5,stop = 7))        # nocov
+        day   <- as.Date(paste0(year,jday),format = '%Y%j')                  # nocov
+        hour  <- as.numeric(TFLAG[2,]) / 10000                               # nocov
+        hour  <- paste(formatC(hour,width = 2, format = "d", flag = "0"))    # nocov
+        date_time <- paste0(as.character(day),' ',hour,':00:00')             # nocov
+        times     <- as.POSIXlt(date_time, tz = "UTC",                       # nocov
+                                format="%Y-%m-%d %H:%M:%OS", optional=FALSE) # nocov
+      }else{
+        times   <- eixport::wrf_get(wrf$filename,name = 'time',verbose = F)
+      }
+
       var      <- ncvar_get(wrf,variable,count = contagem)
       nc_close(wrf)
 
