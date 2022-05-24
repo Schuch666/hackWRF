@@ -41,20 +41,28 @@ value2color <- function(var,
 
   plotvar <- var
   # include values outside the interval
-  var[var < interval[1]] = interval[1] + 0.01
-  var[var > interval[2]] = interval[2] - 0.01
+  # var[var < interval[1]] = interval[1] + 0.01
+  # var[var > interval[2]] = interval[2] - 0.01
   # if(verbose)
   #   print(var)
 
   if(length(var) <= n_classes)
     n_classes = length(var) - 1
   # this function causes warnings for small vectors
-  class   <- suppressWarnings( classInt::classIntervals(var   = plotvar,
-                                                        n     = n_classes,
-                                                        style = "fixed",
-                                                        fixedBreaks=seq(interval[1],
-                                                                        interval[2],
-                                                                        length.out=n_classes)) )
+  # class   <- suppressWarnings( classInt::classIntervals(var   = plotvar,
+  #                                                       n     = n_classes,
+  #                                                       style = "fixed",
+  #                                                       fixedBreaks=seq(interval[1],
+  #                                                                       interval[2],
+  #                                                                       length.out=n_classes)) )
+
+  class   <- classInt::classIntervals(var   = plotvar,
+                                      n     = n_classes,
+                                      style = "fixed",
+                                      fixedBreaks=seq(interval[1],
+                                                      interval[2],
+                                                      length.out=n_classes))
+
   colcode <- classInt::findColours(class, col)
   if(!is.na(alpha[1])){
     colcode <- scales::alpha(colour = colcode, alpha = alpha)
