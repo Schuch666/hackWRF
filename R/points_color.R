@@ -29,12 +29,12 @@ points_color <- function(x,
                          outside   = TRUE,
                          verbose   = F,
                          ...){
-
+  nlevels = length(col)
   if(outside){
     z[z >= zlim[2]] = zlim[2]
     z[z <= zlim[1]] = zlim[1]
   }
-  levels <- seq(zlim[1],zlim[2],length.out = length(col))
+  levels <- seq(zlim[1],zlim[2],length.out = nlevels)
   # to use cut, the zlim should be used
   # otherwise only the z range is considered
   colz   <- col[cut(c(zlim[1],z,zlim[2]),nlevels,include.lowest = TRUE,labels = FALSE)]
