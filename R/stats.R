@@ -44,6 +44,10 @@ stats <- function(mo,ob,spinup = 0, wd = FALSE, scatter = F,add = F, cor="#FF000
   mo  <- mo[!NA_obs & !NA_mod]
   ob  <- ob[!NA_obs & !NA_mod]
 
+  if(wd & length(cutoff) != 2){
+    cutoff = c(1,360)
+  }
+
   if(cutoff[1] > 0 ){
     cat('using',cutoff[1],'for min cutoff\n')
 
@@ -72,15 +76,28 @@ stats <- function(mo,ob,spinup = 0, wd = FALSE, scatter = F,add = F, cor="#FF000
     }
   }
 
+  if(wd){
+    diff = mo
+    for(i in 1:length(mo)){
+      diff[i] = mo[i] - ob[i]
+      if(diff[i] > 180){
+        mo[i] = mo[i] - 360
+      }
+      if(diff[i] < -180){
+        ob[i] = ob[i] - 360
+      }
+    }
+  }
+
   # if(wd){
   #   for(in in 1:length(ob)){
   #     diff = mo[i] - ob[i]
   #     if(abs(diff) > 180){
   #       temp = 360.0 - abs(diff)
   #       if(diff > 0){
-  #         mo[i] = obs[i] + temp # mo = ob +360 + |mo - obs|
+  #         mo[i] = obs[i] + temp # mo = ob +360 - |mo - obs|
   #       }else{
-  #         mo[i] = obs[i] - temp # mo = ob -360 - |mo - obs|
+  #         mo[i] = obs[i] - temp # mo = ob -360 + |mo - obs|
   #       }
   #     }
   #   }
