@@ -73,7 +73,7 @@ model_d03_WD[,-1]  <- WD
 
 cat('opening Wind speed METAR:\n')
 files_obs <- dir(path = METAR_folder,pattern = 'METAR',full.names = T)
-obs       <- data.frame(date = model_d01$date, stringsAsFactors = T)
+obs       <- data.frame(date = model_d01_WS$date, stringsAsFactors = T)
 
 for(i in 1:length(files_obs)){
   cat('open',files_obs[i],i,'of',length(files_obs),'\n')
@@ -210,7 +210,7 @@ if(to.plot){
 
 cat('opening Wind direction METAR:\n')
 files_obs <- dir(path = METAR_folder,pattern = 'METAR',full.names = T)
-obs       <- data.frame(date = model_d01$date, stringsAsFactors = T)
+obs       <- data.frame(date = model_d01_WS$date, stringsAsFactors = T)
 
 for(i in 1:length(files_obs)){
   cat('open',files_obs[i],i,'of',length(files_obs),'\n')
