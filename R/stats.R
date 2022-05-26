@@ -72,6 +72,41 @@ stats <- function(mo,ob,spinup = 0, wd = FALSE, scatter = F,add = F, cor="#FF000
     }
   }
 
+  # if(wd){
+  #   for(in in 1:length(ob)){
+  #     diff = mo[i] - ob[i]
+  #     if(abs(diff) > 180){
+  #       temp = 360.0 - abs(diff)
+  #       if(diff > 0){
+  #         mo[i] = obs[i] + temp # mo = ob +360 + |mo - obs|
+  #       }else{
+  #         mo[i] = obs[i] - temp # mo = ob -360 - |mo - obs|
+  #       }
+  #     }
+  #   }
+  # }
+  # 100  DO I=1,TOTNUM
+  #      ObsData(I)=ObsSpecies(I)
+  #      ModData(I)=ModSpecies(I)
+  #      if(ObsData(I).ne.(-999.0).and.ModData(I).ne.(-999.0)) then
+  #        NumberS=NumberS+1
+  #        DiffData(I) = ModData(I)-ObsData(I)
+  #        if(ABS(DiffData(I))>180.0) then
+  #        Temp(I) = 360.0-ABS(DiffData(I))
+  #        if (DiffData(I).lt.0) then
+  #          ObsA(NumberS)= ObsData(I)
+  #          ModA(NumberS)= ObsData(I) + Temp(I)
+  #        else
+  #          ObsA(NumberS)= ObsData(I)
+  #          ModA(NumberS)= ObsData(I) - Temp(I)
+  #        endif
+  #      else
+  #        ObsA(NumberS)=ObsData(I)
+  #        ModA(NumberS)=ModData(I)
+  #      endif
+  #      endif
+  # ENDDO
+
   MFBE <- function(mo,ob){
     MFB <- 0.0
     MFE <- 0.0
