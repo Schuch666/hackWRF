@@ -63,13 +63,14 @@ read.stat <- function(file, sep = ';',dec = '.',verbose = FALSE, rm.last = FALSE
     cat('reading', file,'\n')
   if(substr(file,nchar(file)-3,nchar(file)) == '.csv'){
     stat            <- read.csv(file = file)
-    nomes           <- stat$X
+    row.names(stat) <- stat$X
     stat            <- stat[,-1]
-    row.names(stat) <- nomes
-    names(stat)     <- names(hackWRF::stats(mo = 1:10, ob = 1:10))
+    # names(stat)     <- names(hackWRF::stats(mo = 1:10, ob = 1:10))
+    names(stat) <- gsub("....", " (%)", names(stat), fixed = T)
   }else{
     stat <- read.table(file = file, sep = sep, dec = dec, ...)
-    names(stat) <- names(hackWRF::stats(mo = 1:10, ob = 1:10))
+    # names(stat) <- names(hackWRF::stats(mo = 1:10, ob = 1:10))
+    names(stat) <- gsub("....", " (%)", names(stat), fixed = T)
   }
   if(rm.last){
     stat <- stat[-nrow(stat),]
