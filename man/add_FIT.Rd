@@ -4,7 +4,7 @@
 \alias{add_FIT}
 \title{Function to add \%FIT to stats}
 \usage{
-add_FIT(file = choose.files(), verbose = F)
+add_FIT(file = file.choose(), verbose = F)
 }
 \arguments{
 \item{file}{model data.frame}
