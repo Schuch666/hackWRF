@@ -8,6 +8,7 @@ evaluation(
   mo,
   ob,
   station,
+  fair = NULL,
   table = NULL,
   wd = FALSE,
   clean = FALSE,
@@ -27,7 +28,9 @@ evaluation(
 
 \item{ob}{observed data.frame}
 
-\item{station}{name of the station}
+\item{station}{name of the station or ALL, see notes}
+
+\item{fair}{model data.frame (or list of names) to perform a fair comparison, see notes}
 
 \item{table}{a data.frame with output from evaluate or stats}
 
@@ -55,12 +58,17 @@ evaluation(
 }
 \description{
 Statistical evaluation from 2 data.frames. The input data.frames (model and observation)
-must contain a date collum (with POSIXlt data) and also contains the same station (or pollutant) name.
+must contain a date column (with POSIXlt data) and also contains the same station (or pollutant) name.
 The function test and combine the time pairs and perform some basic tests.
 If a data.frame is provided to table argument a crbind is performed with a new row.
 }
 \note{
 for wind direction some the ME and MB are calculated using Mughal et al. (2017)
+
+station == 'ALL' make the function put all observations and model together,
+for this option a additional data.frame (or character containging the station names)
+can be used to perform a fair comparison, considering only stations (ie columns)
+in the fair data.frame and ob data.frame (or the name list).
 }
 \examples{
 model <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/model.Rds"))

@@ -1,13 +1,14 @@
 #' Model statistical evaluation
 #'
 #' @description Statistical evaluation from 2 data.frames. The input data.frames (model and observation)
-#' must contain a date collum (with POSIXlt data) and also contains the same station (or pollutant) name.
+#' must contain a date column (with POSIXlt data) and also contains the same station (or pollutant) name.
 #' The function test and combine the time pairs and perform some basic tests.
 #' If a data.frame is provided to table argument a crbind is performed with a new row.
 #'
 #' @param mo model data.frame
 #' @param ob observed data.frame
-#' @param station name of the station
+#' @param station name of the station or ALL, see notes
+#' @param fair model data.frame (or list of names) to perform a fair comparison, see notes
 #' @param table a data.frame with output from evaluate or stats
 #' @param wd default is FALSE, see notes
 #' @param clean remove rows with zero observations
@@ -22,6 +23,11 @@
 #' @param ... arguments to be passing to stats and plot
 #'
 #' @note for wind direction some the ME and MB are calculated using Mughal et al. (2017)
+#'
+#' @note station == 'ALL' make the function put all observations and model together,
+#' for this option a additional data.frame (or character containging the station names)
+#' can be used to perform a fair comparison, considering only stations (ie columns)
+#' in the fair data.frame and ob data.frame (or the name list).
 #'
 #' @import raster
 #'
@@ -61,9 +67,10 @@
 #' table <- evaluation(mo = model, ob = obs, station = "Americana", table = table, clean = TRUE)
 #' print(table)
 
-evaluation <- function(mo, ob, station, table = NULL, wd = FALSE, clean = FALSE, cutoff = 0,
-                       no_tz=FALSE, summaryze = FALSE, use_n = F, formate = T, nobs = 8,
-                       NAME = 'AVERAGE', verbose = TRUE, ...){
+evaluation <- function(mo, ob, station, fair = NULL, table = NULL, wd = FALSE,
+                       clean = FALSE, cutoff = 0,no_tz=FALSE, summaryze = FALSE,
+                       use_n = F, formate = T, nobs = 8,NAME = 'AVERAGE',
+                       verbose = TRUE, ...){
   if(summaryze){
     if(verbose){
       cat('creating the summary\n')
@@ -115,34 +122,74 @@ evaluation <- function(mo, ob, station, table = NULL, wd = FALSE, clean = FALSE,
 
     return(table)
   }
-  if(!station %in% names(ob)){
-    cat(station,'not found in observation input\n')
-    RESULT <- stats((1:199)/100,(1:199)/100)
-    RESULT$n = 0
-    row.names(RESULT) <- station
-    if(is.null(table)){
-      return(RESULT)
+  if(station == "ALL"){
+    cat('combining all stations...\n')
+    # check the stations present in both
+    # site_model   <- names(mo)[-1]
+    site_obs     <- names(ob)[-1]
+    # common_sites <- site_model[ site_model %in% site_obs ]
+    if(!is.null(fair)){
+      cat('considering a fair comparison for other domain...\n')
+      if(class(fair) %in% 'data.frame'){
+        site_model   <- names(fair)[-1]
+      }else{
+        site_model   <- fair
+      }
+      # common_sites   <- site_model[ site_model %in% site_obs ]
+    }else{
+      site_model   <- names(mo)[-1]
     }
-    else{
-      RESULT <- rbind(table,RESULT)
-      if(clean)
-        RESULT <- RESULT[RESULT$n > 0,]
-      return(RESULT)
+    common_sites   <- site_model[ site_model %in% site_obs ]
+
+    # put everything in a vector with name 'ALL'
+    combination_model <- data.frame()
+    combination_obs   <- data.frame()
+    # cte  for date
+    a_number          <- 666 * 60 * 60 * 24 * 365 + 161 * 60 * 60 * 24
+    for(i in seq_along(common_sites)){
+      cat(common_sites[i],'\n')
+      new_mo            <- data.frame(date = mo$date,
+                                      ALL  = mo[[common_sites[i]]])
+      new_mo$date       <- new_mo$date + (i- 1) * a_number
+      combination_model <- rbind(combination_model, new_mo)
+
+      new_ob            <- data.frame(date = ob$date,
+                                      ALL  = ob[[common_sites[i]]])
+      new_ob$date       <- new_ob$date + (i - 1) * a_number
+      combination_obs   <- rbind(combination_obs, new_ob)
     }
-  }
-  if(!station %in% names(mo)){
-    cat(station,'not found in model input\n')
-    RESULT <- stats((1:199)/100,(1:199)/100)
-    RESULT$n = 0
-    row.names(RESULT) <- station
-    if(is.null(table)){
-      return(RESULT)
+    mo <- combination_model
+    ob <- combination_obs
+  }else{
+    if(!station %in% names(ob)){
+      cat(station,'not found in observation input\n')
+      RESULT <- stats((1:199)/100,(1:199)/100)
+      RESULT$n = 0
+      row.names(RESULT) <- station
+      if(is.null(table)){
+        return(RESULT)
+      }
+      else{
+        RESULT <- rbind(table,RESULT)
+        if(clean)
+          RESULT <- RESULT[RESULT$n > 0,]
+        return(RESULT)
+      }
     }
-    else{
-      RESULT <- rbind(table,RESULT)
-      if(clean)
-        RESULT <- RESULT[RESULT$n > 0,]
-      return(RESULT)
+    if(!station %in% names(mo)){
+      cat(station,'not found in model input\n')
+      RESULT <- stats((1:199)/100,(1:199)/100)
+      RESULT$n = 0
+      row.names(RESULT) <- station
+      if(is.null(table)){
+        return(RESULT)
+      }
+      else{
+        RESULT <- rbind(table,RESULT)
+        if(clean)
+          RESULT <- RESULT[RESULT$n > 0,]
+        return(RESULT)
+      }
     }
   }
 

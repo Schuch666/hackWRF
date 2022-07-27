@@ -28,15 +28,16 @@
 #' stats(mo = model, ob = data, scatter = TRUE)
 #'
 
-stats <- function(mo,ob,spinup = 0, wd = FALSE, scatter = F,add = F, cor="#FF000088",lim = NA,
-                  cutoff = 0, nobs = 8, verbose = T, ...){
+stats <- function(mo,ob,spinup = 0, wd = FALSE, scatter = F,add = F,
+                  cor="#FF000088",lim = NA,cutoff = 0, nobs = 8,
+                  verbose = T, ...){
 
   if(spinup != 0){
     mo <- mo[(spinup+1):length(mo)]
     ob <- ob[(spinup+1):length(ob)]
   }
   if(length(mo) != length(ob))
-    stop("mo and ob need to have the same length!") #nocov
+    stop("mo and ob need to have the same length!") # nocov
 
   NA_mod <- is.na(mo)
   NA_obs <- is.na(ob)
@@ -76,18 +77,18 @@ stats <- function(mo,ob,spinup = 0, wd = FALSE, scatter = F,add = F, cor="#FF000
     }
   }
 
-  if(wd){
-    diff = mo
-    for(i in 1:length(mo)){
-      diff[i] = mo[i] - ob[i]
-      if(diff[i] > 180){
-        mo[i] = mo[i] - 360
-      }
-      if(diff[i] < -180){
-        ob[i] = ob[i] - 360
-      }
-    }
-  }
+  # if(wd){
+  #   diff = mo
+  #   for(i in 1:length(mo)){
+  #     diff[i] = mo[i] - ob[i]
+  #     if(diff[i] > 180){
+  #       mo[i] = mo[i] - 360
+  #     }
+  #     if(diff[i] < -180){
+  #       ob[i] = ob[i] - 360
+  #     }
+  #   }
+  # }
 
   # if(wd){
   #   for(in in 1:length(ob)){
@@ -144,34 +145,37 @@ stats <- function(mo,ob,spinup = 0, wd = FALSE, scatter = F,add = F, cor="#FF000
   }
   DATA <- cbind(WRF = mo, observado = ob)
   DATA <- as.data.frame(DATA)
-  ind  <- openair::modStats(DATA,mod = "WRF",
+  ind  <- openair::modStats(DATA,
+                            mod = "WRF",
                             obs = "observado",
-                            statistic = c("n", "FAC2","MB","RMSE", "r","NMB","IOA","MGE"))
+                            statistic = c("n", "FAC2","MB","RMSE", "r","NMB","IOA","MGE")) #"NMGE"
+  # "NMGE" == NME
   ind$NMB <- ind$NMB * 100 # to transform in %
   ind     <- cbind(ind,MFBE(DATA$WRF,DATA$observado))
 
-  MBME <- function(mo,ob){
-    MB <- 0.0
-    ME <- 0.0
-    for(i in 1:length(ob)){
-      if(mo[i] - ob[i] != 0){
-        if(abs(mo[i] - ob[i]) > 180){
-          a = abs(1 - (360 / abs(mo[i] - ob[i]) ) )
-        }else{
-          a = 1
-        }
-        MB = MB +    (mo[i] - ob[i]) * a
-        ME = ME + abs(mo[i] - ob[i]) * a
-      }
-    }
-    MB  =  MB / length(ob)
-    ME  =  ME / length(ob)
-    out <- cbind(MB,ME)
-    return(as.data.frame(out))
-  }
-
   if(wd){
     cat('using Mughal et al. (2017) for MB and ME for wind direction\n')
+
+    MBME <- function(mo,ob){
+      MB <- 0.0
+      ME <- 0.0
+      for(i in 1:length(ob)){
+        if(mo[i] - ob[i] != 0){
+          if(abs(mo[i] - ob[i]) > 180){
+            a = abs(1 - (360 / abs(mo[i] - ob[i]) ) )
+          }else{
+            a = 1
+          }
+          MB = MB +    (mo[i] - ob[i]) * a
+          ME = ME + abs(mo[i] - ob[i]) * a
+        }
+      }
+      MB  =  MB / length(ob)
+      ME  =  ME / length(ob)
+      out <- cbind(MB,ME)
+      return(as.data.frame(out))
+    }
+
     ws_stats <- MBME(DATA$WRF,DATA$observado)
     ind$MB   =  ws_stats$MB
     ind$ME   =  ws_stats$ME

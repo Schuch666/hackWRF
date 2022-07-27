@@ -101,6 +101,7 @@ for(i in names(model_d01)[c(-1,-2)]){
 if(!is.na(r_limit))
   mod_stats_d01   <- mod_stats_d01[mod_stats_d01$r >= r_limit,]
 mod_stats_d01   <- evaluation(table = mod_stats_d01,summaryze = T)
+mod_stats_d01   <- evaluation(model_d01,observed,'ALL',table = mod_stats_d01) # NEW d01
 cat('...\n')
 print(tail(mod_stats_d01))
 cat('\n')
@@ -115,6 +116,7 @@ for(i in names(model_d02)[c(-1,-2)]){
 if(!is.na(r_limit))
   mod_stats_d02   <- mod_stats_d02[mod_stats_d02$r >= r_limit,]
 mod_stats_d02   <- evaluation(table = mod_stats_d02,summaryze = T)
+mod_stats_d02   <- evaluation(model_d02,observed,'ALL',table = mod_stats_d02) # NEW d02
 cat('...\n')
 print(tail(mod_stats_d02))
 cat('\n')
@@ -129,6 +131,7 @@ for(i in names(model_d03)[c(-1,-2)]){
 if(!is.na(r_limit))
   mod_stats_d03 <- mod_stats_d03[mod_stats_d03$r >= r_limit,]
 mod_stats_d03   <- evaluation(table = mod_stats_d03,summaryze = T)
+mod_stats_d03   <- evaluation(model_d03,observed,'ALL',table = mod_stats_d03) # NEW d03
 cat('...\n')
 print(tail(mod_stats_d03))
 cat('\n')
@@ -140,18 +143,13 @@ write.stat(stat = mod_stats_d02,
 write.stat(stat = mod_stats_d03,
            file = paste0(WRF_folder,case,'/stats.metar.Q2.d03.csv'))
 
-summary_stats <- rbind('d01 in d01' = last(mod_stats_d01),
-                       'd01 in d02' = last(comparison(tabA = mod_stats_d01,
-                                                      tabB = mod_stats_d02,
-                                                      summaryze = T)),
-                       'd02 in d02' = last(mod_stats_d02),
-                       'd01 in d03' = last(comparison(tabA = mod_stats_d01,
-                                                      tabB = mod_stats_d03,
-                                                      summaryze = T)),
-                       'd02 in d03' = last(comparison(tabA = mod_stats_d02,
-                                                      tabB = mod_stats_d03,
-                                                      summaryze = T)),
-                       'd03 in d03' = last(mod_stats_d03))
+# new summary + fair comparison for d01 / d02 / d03
+summary_stats <- rbind('d01 in d01' = evaluation(model_d01,observed,'ALL',fair = model_d01),
+                       'd01 in d02' = evaluation(model_d01,observed,'ALL',fair = model_d02),
+                       'd02 in d02' = evaluation(model_d02,observed,'ALL',fair = model_d02),
+                       'd01 in d03' = evaluation(model_d01,observed,'ALL',fair = model_d03),
+                       'd02 in d03' = evaluation(model_d02,observed,'ALL',fair = model_d03),
+                       'd03 in d03' = evaluation(model_d03,observed,'ALL',fair = model_d03))
 
 print(summary_stats)
 

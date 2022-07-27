@@ -33,6 +33,7 @@ format_stats <- function(file = file.choose(),
   output <- input[,select]
 
   if(!is.null(rename)){
+    cat('aqui')
     new_names <- names(output)
     for(i in seq_along(rename)){
       if(!is.na(rename[i])){
@@ -44,8 +45,9 @@ format_stats <- function(file = file.choose(),
           cat('is NA\n')
       }
     }
+    names(output) <- new_names
   }
-  names(output) <- new_names
+
 
   if(!is.null(multiplier)){
     for(i in seq_along(multiplier)){
