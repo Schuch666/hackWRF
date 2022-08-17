@@ -152,12 +152,12 @@ write.stat(stat = mod_stats_d03,
            file = paste0(WRF_folder,case,'/stats.metar.WS.d03.csv'))
 
 # new summary + fair comparison for d01 / d02 / d03
-summary_stats <- rbind('d01 in d01' = evaluation(model_d01_WS,observed,'ALL',fair = model_d01),
-                       'd01 in d02' = evaluation(model_d01_WS,observed,'ALL',fair = model_d02),
-                       'd02 in d02' = evaluation(model_d02_WS,observed,'ALL',fair = model_d02),
-                       'd01 in d03' = evaluation(model_d01_WS,observed,'ALL',fair = model_d03),
-                       'd02 in d03' = evaluation(model_d02_WS,observed,'ALL',fair = model_d03),
-                       'd03 in d03' = evaluation(model_d03_WS,observed,'ALL',fair = model_d03))
+summary_stats <- rbind('d01 in d01' = evaluation(model_d01_WS,observed,'ALL',fair = model_d01_WS),
+                       'd01 in d02' = evaluation(model_d01_WS,observed,'ALL',fair = model_d02_WS),
+                       'd02 in d02' = evaluation(model_d02_WS,observed,'ALL',fair = model_d02_WS),
+                       'd01 in d03' = evaluation(model_d01_WS,observed,'ALL',fair = model_d03_WS),
+                       'd02 in d03' = evaluation(model_d02_WS,observed,'ALL',fair = model_d03_WS),
+                       'd03 in d03' = evaluation(model_d03_WS,observed,'ALL',fair = model_d03_WS))
 
 print(summary_stats)
 
@@ -286,12 +286,12 @@ write.stat(stat = mod_stats_d03,
            file = paste0(WRF_folder,case,'/stats.metar.WD.d03.csv'))
 
 # new summary + fair comparison for d01 / d02 / d03
-summary_stats <- rbind('d01 in d01' = evaluation(model_d01_WD,observed,'ALL',fair = model_d01),
-                       'd01 in d02' = evaluation(model_d01_WD,observed,'ALL',fair = model_d02),
-                       'd02 in d02' = evaluation(model_d02_WD,observed,'ALL',fair = model_d02),
-                       'd01 in d03' = evaluation(model_d01_WD,observed,'ALL',fair = model_d03),
-                       'd02 in d03' = evaluation(model_d02_WD,observed,'ALL',fair = model_d03),
-                       'd03 in d03' = evaluation(model_d03_WD,observed,'ALL',fair = model_d03))
+summary_stats <- rbind('d01 in d01' = evaluation(model_d01_WD,observed,'ALL',fair = model_d01_WD),
+                       'd01 in d02' = evaluation(model_d01_WD,observed,'ALL',fair = model_d02_WD),
+                       'd02 in d02' = evaluation(model_d02_WD,observed,'ALL',fair = model_d02_WD),
+                       'd01 in d03' = evaluation(model_d01_WD,observed,'ALL',fair = model_d03_WD),
+                       'd02 in d03' = evaluation(model_d02_WD,observed,'ALL',fair = model_d03_WD),
+                       'd03 in d03' = evaluation(model_d03_WD,observed,'ALL',fair = model_d03_WD))
 
 print(summary_stats)
 
