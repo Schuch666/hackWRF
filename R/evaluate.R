@@ -67,7 +67,7 @@
 #' table <- evaluation(mo = model, ob = obs, station = "Americana", table = table, clean = TRUE)
 #' print(table)
 
-evaluation <- function(mo, ob, station, fair = NULL, table = NULL, wd = FALSE,
+evaluation <- function(mo, ob, station = 'ALL', fair = NULL, table = NULL, wd = FALSE,
                        clean = FALSE, cutoff = 0,no_tz=FALSE, summaryze = FALSE,
                        use_n = F, formate = T, nobs = 8,NAME = 'AVERAGE',
                        verbose = TRUE, ...){
@@ -147,7 +147,8 @@ evaluation <- function(mo, ob, station, fair = NULL, table = NULL, wd = FALSE,
     # cte  for date
     a_number          <- 666 * 60 * 60 * 24 * 365 + 161 * 60 * 60 * 24
     for(i in seq_along(common_sites)){
-      cat(common_sites[i],'\n')
+      if(verbose)
+        cat(common_sites[i],'\n')
       new_mo            <- data.frame(date = mo$date,
                                       ALL  = mo[[common_sites[i]]])
       new_mo$date       <- new_mo$date + (i- 1) * a_number
