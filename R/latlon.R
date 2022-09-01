@@ -40,10 +40,15 @@ latlon <- function(data,coord = 'BR-AQ',proj = "+proj=longlat",verbose = T){
 
   for(i in 1:length(row.names(data))){
     name <- row.names(data)[i]
-    if(verbose)
-      cat(name,'found\n')
-    data$lat[i] = coord[row.names(coord) == name,names(coord) == 'lat'] #[[1]]
-    data$lon[i] = coord[row.names(coord) == name,names(coord) == 'lon'] #[[2]]
+    if(name %in% row.names(coord)){
+      if(verbose)
+        cat(name,'found\n')
+      data$lat[i] = coord[row.names(coord) == name,names(coord) == 'lat'] #[[1]]
+      data$lon[i] = coord[row.names(coord) == name,names(coord) == 'lon'] #[[2]]
+    }else{
+      if(verbose)
+        cat(name,'not found\n')
+    }
   }
   pontos <- SpatialPointsDataFrame(coords   = matrix(c(data$lon, data$lat),
                                                      ncol = 2,byrow = F),

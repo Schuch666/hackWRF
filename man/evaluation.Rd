@@ -7,7 +7,7 @@
 evaluation(
   mo,
   ob,
-  station,
+  station = "ALL",
   fair = NULL,
   table = NULL,
   wd = FALSE,
