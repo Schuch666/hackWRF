@@ -6,6 +6,7 @@
 \usage{
 legend_range(
   x,
+  y,
   text.width = 6,
   dig = c(2, 2, 2),
   xjust = 0.5,
@@ -13,11 +14,14 @@ legend_range(
   y.intersp = 0.1,
   x.intersp = 0.1,
   show.mean = TRUE,
-  unit = ""
+  unit = "",
+  label_mean = "ALL:"
 )
 }
 \arguments{
 \item{x}{raster or array}
+
+\item{y}{raster or array to mean (x is used only for the range in this case)}
 
 \item{text.width}{Longitude in decimals}
 
@@ -34,6 +38,8 @@ legend_range(
 \item{show.mean}{set TRUE to hide mean value}
 
 \item{unit}{a string for units}
+
+\item{label_mean}{label in case y is provided}
 }
 \description{
 Get the distance in kilometers between two points.

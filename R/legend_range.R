@@ -27,6 +27,7 @@
 #' legend_range(x)
 #'
 #' @export
+#' @importFrom methods missingArg
 #'
 legend_range <- function(x, y,
                          text.width=6, dig = c(2,2,2),

@@ -6,6 +6,7 @@
 #' @param ob observed data
 #' @param spinup number of model points excluded to the statistic
 #' @param wd logical, true for wind direction, see notes
+#' @param Mughal logical, to use Mughal et al. (2017) for MB and ME for wind direction
 #' @param scatter set TRUE to plot a scatter plot
 #' @param add set TRUE to add the points to a scatter plot
 #' @param cor color of scatterplot dots
@@ -28,9 +29,62 @@
 #' stats(mo = model, ob = data, scatter = TRUE)
 #'
 
-stats <- function(mo,ob,spinup = 0, wd = FALSE, scatter = F,add = F,
-                  cor="#FF000088",lim = NA,cutoff = 0, nobs = 8,
+stats <- function(mo,ob,spinup = 0, wd = FALSE, Mughal = FALSE,scatter = F,add = F,
+                  cor="#FF000088",lim = NA,cutoff = NA, nobs = 8,
                   verbose = T, ...){
+
+  MFBE <- function(mo,ob){
+    MFB <- 0.0
+    MFE <- 0.0
+    NME <- 0.0
+    for(i in 1:length(ob)){
+      if(mo[i] - ob[i] != 0){
+        MFB = MFB +    (mo[i] - ob[i]) / (mo[i] + ob[i])
+        MFE = MFE + abs(mo[i] - ob[i]) / (mo[i] + ob[i])
+        NME = NME + abs(mo[i] - ob[i])
+      }
+    }
+    ME  = NME * 1.0 / length(ob)
+    MFB = MFB * 200 / length(ob)
+    MFE = MFE * 200 / length(ob)
+    NME = NME * 100 / sum(ob,na.rm = T)
+    out <- cbind(MFB,MFE,NME,ME)
+    return(as.data.frame(out))
+  }
+
+  wind_direction <- function(obs,mod, verbose = F){
+    for(i in 1:length(mod)){
+      diff_value <- mod[i] - obs[i]
+      if(abs(diff_value)>180){
+        temp_value <- 360 - abs(diff_value)
+        if(diff_value < 0){
+          previous <- mod[i]
+          mod[i] <- obs[i] + temp_value
+          if(verbose)
+            cat(paste("model WD was changed from",previous,"to", mod[i],'\n'))
+        } else {
+          previous <- mod[i]
+          mod[i] <- obs[i] - temp_value
+          if(verbose)
+            cat(paste("model WD was changed from",previous,"to", mod[i],'\n'))
+        }
+      }
+    }
+    return(mod)
+  }
+
+  IOA <- function(sim,obs){
+    Om          <- mean(obs, na.rm=TRUE)
+    denominator <- sum( ( abs(sim - Om) + abs(obs - Om)  )^2 )
+
+    if (denominator != 0) {
+      d <- 1 - ( sum( (obs - sim)^2 ) / denominator )
+    } else {
+      d <- NA
+      warning("'sum((abs(sim-Om)+abs(obs-Om))^2)=0', it is not possible to compute 'IoA'")
+    }
+    return(d)
+  }
 
   if(spinup != 0){
     mo <- mo[(spinup+1):length(mo)]
@@ -45,11 +99,7 @@ stats <- function(mo,ob,spinup = 0, wd = FALSE, scatter = F,add = F,
   mo  <- mo[!NA_obs & !NA_mod]
   ob  <- ob[!NA_obs & !NA_mod]
 
-  if(wd & length(cutoff) != 2){
-    cutoff = c(1,360)
-  }
-
-  if(cutoff[1] > 0 ){
+  if(!is.na(cutoff[1])){
     cat('using',cutoff[1],'for min cutoff\n')
 
     mo  <- mo[ob >= cutoff[1]]
@@ -77,74 +127,11 @@ stats <- function(mo,ob,spinup = 0, wd = FALSE, scatter = F,add = F,
     }
   }
 
-  # if(wd){
-  #   diff = mo
-  #   for(i in 1:length(mo)){
-  #     diff[i] = mo[i] - ob[i]
-  #     if(diff[i] > 180){
-  #       mo[i] = mo[i] - 360
-  #     }
-  #     if(diff[i] < -180){
-  #       ob[i] = ob[i] - 360
-  #     }
-  #   }
-  # }
-
-  # if(wd){
-  #   for(in in 1:length(ob)){
-  #     diff = mo[i] - ob[i]
-  #     if(abs(diff) > 180){
-  #       temp = 360.0 - abs(diff)
-  #       if(diff > 0){
-  #         mo[i] = obs[i] + temp # mo = ob +360 - |mo - obs|
-  #       }else{
-  #         mo[i] = obs[i] - temp # mo = ob -360 + |mo - obs|
-  #       }
-  #     }
-  #   }
-  # }
-  # 100  DO I=1,TOTNUM
-  #      ObsData(I)=ObsSpecies(I)
-  #      ModData(I)=ModSpecies(I)
-  #      if(ObsData(I).ne.(-999.0).and.ModData(I).ne.(-999.0)) then
-  #        NumberS=NumberS+1
-  #        DiffData(I) = ModData(I)-ObsData(I)
-  #        if(ABS(DiffData(I))>180.0) then
-  #        Temp(I) = 360.0-ABS(DiffData(I))
-  #        if (DiffData(I).lt.0) then
-  #          ObsA(NumberS)= ObsData(I)
-  #          ModA(NumberS)= ObsData(I) + Temp(I)
-  #        else
-  #          ObsA(NumberS)= ObsData(I)
-  #          ModA(NumberS)= ObsData(I) - Temp(I)
-  #        endif
-  #      else
-  #        ObsA(NumberS)=ObsData(I)
-  #        ModA(NumberS)=ModData(I)
-  #      endif
-  #      endif
-  # ENDDO
-
-  MFBE <- function(mo,ob){
-    MFB <- 0.0
-    MFE <- 0.0
-    NME <- 0.0
-    for(i in 1:length(ob)){
-      if(mo[i] - ob[i] != 0){
-        MFB = MFB +    (mo[i] - ob[i]) / (mo[i] + ob[i])
-        MFE = MFE + abs(mo[i] - ob[i]) / (mo[i] + ob[i])
-        NME = NME + abs(mo[i] - ob[i])
-      }
-    }
-    ME  = NME * 1.0 / length(ob)
-    MFB = MFB * 200 / length(ob)
-    MFE = MFE * 200 / length(ob)
-    NME = NME * 100 / sum(ob,na.rm = T)
-    out <- cbind(MFB,MFE,NME,ME)
-    return(as.data.frame(out))
-  }
   DATA <- cbind(WRF = mo, observado = ob)
   DATA <- as.data.frame(DATA)
+  if(wd){
+    DATA$WRF <- wind_direction(obs = DATA$observado, mod = DATA$WRF)
+  }
   ind  <- openair::modStats(DATA,
                             mod = "WRF",
                             obs = "observado",
@@ -152,8 +139,10 @@ stats <- function(mo,ob,spinup = 0, wd = FALSE, scatter = F,add = F,
   # "NMGE" == NME
   ind$NMB <- ind$NMB * 100 # to transform in %
   ind     <- cbind(ind,MFBE(DATA$WRF,DATA$observado))
+  # to calculate the new index of aggrement
+  ind$IOA <- IOA(DATA$WRF,DATA$observado)
 
-  if(wd){
+  if(Mughal){
     cat('using Mughal et al. (2017) for MB and ME for wind direction\n')
 
     MBME <- function(mo,ob){
@@ -200,9 +189,9 @@ stats <- function(mo,ob,spinup = 0, wd = FALSE, scatter = F,add = F,
   if(add){
     points(ob,mo,pch = 20, cex=1.8, col = cor, ... )
   }
-  ind <- as.data.frame(cbind(n         = length(ob),
-                             Obs       = mean(ob),
-                             Sim       = mean(mo),
+  ind <- as.data.frame(cbind(n         = length(DATA$WRF),
+                             Obs       = mean(DATA$observado),
+                             Sim       = mean(DATA$WRF),
                              r         = ind$r,
                              IOA       = ind$IOA,
                              FA2       = ind$FAC2,

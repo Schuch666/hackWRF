@@ -9,11 +9,12 @@ stats(
   ob,
   spinup = 0,
   wd = FALSE,
+  Mughal = FALSE,
   scatter = F,
   add = F,
   cor = "#FF000088",
   lim = NA,
-  cutoff = 0,
+  cutoff = NA,
   nobs = 8,
   verbose = T,
   ...
@@ -27,6 +28,8 @@ stats(
 \item{spinup}{number of model points excluded to the statistic}
 
 \item{wd}{logical, true for wind direction, see notes}
+
+\item{Mughal}{logical, to use Mughal et al. (2017) for MB and ME for wind direction}
 
 \item{scatter}{set TRUE to plot a scatter plot}
 
