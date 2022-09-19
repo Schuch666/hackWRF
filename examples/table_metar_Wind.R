@@ -228,10 +228,10 @@ names(obs) <- c('date',substr(files_obs,nchar(METAR_folder)+7,nchar(files_obs)-4
 observed   <- obs
 
 cat("WD for d01:\n")
-mod_stats_d01 <- evaluation(model_d01_WD,observed,names(model_d01_WD)[2],cutoff = c(15,345),wd = T)
+mod_stats_d01 <- evaluation(model_d01_WD,observed,names(model_d01_WD)[2],wd = T)
 for(i in names(model_d01_WD)[c(-1,-2)]){
   mod_stats_d01 <- evaluation(model_d01_WD,observed,
-                              table = mod_stats_d01, station = i,cutoff = c(15,345),wd = T,
+                              table = mod_stats_d01, station = i,wd = T,
                               clean = T)
 }
 if(!is.na(r_limit))
@@ -239,16 +239,16 @@ if(!is.na(r_limit))
 if(!is.na(IOA_limit))
   mod_stats_d01   <- mod_stats_d01[mod_stats_d01$IOA >= IOA_limit,]
 mod_stats_d01   <- evaluation(table = mod_stats_d01,summaryze = T)
-mod_stats_d01   <- evaluation(model_d01_WD,observed,'ALL',table = mod_stats_d01) # NEW d01
+mod_stats_d01   <- evaluation(model_d01_WD,observed,'ALL',table = mod_stats_d01,wd = T) # NEW d01
 cat('...\n')
 print(tail(mod_stats_d01))
 cat('\n')
 
 cat("WD for d02:\n")
-mod_stats_d02 <- evaluation(model_d02_WD,observed,names(model_d02_WD)[2],cutoff = c(15,345),wd = T)
+mod_stats_d02 <- evaluation(model_d02_WD,observed,names(model_d02_WD)[2],wd = T)
 for(i in names(model_d02_WD)[c(-1,-2)]){
   mod_stats_d02 <- evaluation(model_d02_WD,observed,
-                              table = mod_stats_d02, station = i,cutoff = c(15,345),wd = T,
+                              table = mod_stats_d02, station = i,wd = T,
                               clean = T)
 }
 if(!is.na(r_limit))
@@ -256,16 +256,16 @@ if(!is.na(r_limit))
 if(!is.na(IOA_limit))
   mod_stats_d02   <- mod_stats_d02[mod_stats_d02$IOA >= IOA_limit,]
 mod_stats_d02   <- evaluation(table = mod_stats_d02,summaryze = T)
-mod_stats_d02   <- evaluation(model_d02_WD,observed,'ALL',table = mod_stats_d02) # NEW d02
+mod_stats_d02   <- evaluation(model_d02_WD,observed,'ALL',table = mod_stats_d02,wd = T) # NEW d02
 cat('...\n')
 print(tail(mod_stats_d02))
 cat('\n')
 
 cat("WD for d03:\n")
-mod_stats_d03 <- evaluation(model_d03_WD,observed,names(model_d03_WD)[2],cutoff = c(15,345),wd = T)
+mod_stats_d03 <- evaluation(model_d03_WD,observed,names(model_d03_WD)[2],wd = T)
 for(i in names(model_d03_WD)[c(-1,-2)]){
   mod_stats_d03 <- evaluation(model_d03_WD,observed,
-                              table = mod_stats_d03, station = i,cutoff = c(15,345),wd = T,
+                              table = mod_stats_d03, station = i,wd = T,
                               clean = T)
 }
 if(!is.na(r_limit))
@@ -273,7 +273,7 @@ if(!is.na(r_limit))
 if(!is.na(IOA_limit))
   mod_stats_d03 <- mod_stats_d03[mod_stats_d03$IOA >= IOA_limit,]
 mod_stats_d03   <- evaluation(table = mod_stats_d03,summaryze = T)
-mod_stats_d03   <- evaluation(model_d03_WD,observed,'ALL',table = mod_stats_d03) # NEW d03
+mod_stats_d03   <- evaluation(model_d03_WD,observed,'ALL',table = mod_stats_d03,wd = T) # NEW d03
 cat('...\n')
 print(tail(mod_stats_d03))
 cat('\n')
@@ -286,12 +286,12 @@ write.stat(stat = mod_stats_d03,
            file = paste0(WRF_folder,case,'/stats.metar.WD.d03.csv'))
 
 # new summary + fair comparison for d01 / d02 / d03
-summary_stats <- rbind('d01 in d01' = evaluation(model_d01_WD,observed,'ALL',fair = model_d01_WD),
-                       'd01 in d02' = evaluation(model_d01_WD,observed,'ALL',fair = model_d02_WD),
-                       'd02 in d02' = evaluation(model_d02_WD,observed,'ALL',fair = model_d02_WD),
-                       'd01 in d03' = evaluation(model_d01_WD,observed,'ALL',fair = model_d03_WD),
-                       'd02 in d03' = evaluation(model_d02_WD,observed,'ALL',fair = model_d03_WD),
-                       'd03 in d03' = evaluation(model_d03_WD,observed,'ALL',fair = model_d03_WD))
+summary_stats <- rbind('d01 in d01' = evaluation(model_d01_WD,observed,'ALL',fair = model_d01_WD,wd = T),
+                       'd01 in d02' = evaluation(model_d01_WD,observed,'ALL',fair = model_d02_WD,wd = T),
+                       'd02 in d02' = evaluation(model_d02_WD,observed,'ALL',fair = model_d02_WD,wd = T),
+                       'd01 in d03' = evaluation(model_d01_WD,observed,'ALL',fair = model_d03_WD,wd = T),
+                       'd02 in d03' = evaluation(model_d02_WD,observed,'ALL',fair = model_d03_WD,wd = T),
+                       'd03 in d03' = evaluation(model_d03_WD,observed,'ALL',fair = model_d03_WD,wd = T))
 
 print(summary_stats)
 
