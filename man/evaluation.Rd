@@ -12,7 +12,7 @@ evaluation(
   table = NULL,
   wd = FALSE,
   clean = FALSE,
-  cutoff = 0,
+  cutoff = NA,
   no_tz = FALSE,
   summaryze = FALSE,
   use_n = F,

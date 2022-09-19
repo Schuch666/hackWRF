@@ -68,7 +68,7 @@
 #' print(table)
 
 evaluation <- function(mo, ob, station = 'ALL', fair = NULL, table = NULL, wd = FALSE,
-                       clean = FALSE, cutoff = 0,no_tz=FALSE, summaryze = FALSE,
+                       clean = FALSE, cutoff = NA,no_tz=FALSE, summaryze = FALSE,
                        use_n = F, formate = T, nobs = 8,NAME = 'AVERAGE',
                        verbose = TRUE, ...){
   if(summaryze){
