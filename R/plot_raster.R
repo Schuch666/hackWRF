@@ -13,6 +13,8 @@
 #' @param int argument passed to latitude / longitude functions
 #' @param proj TRUE to project the raster to latlon
 #' @param col color
+#' @param x_adjust to raster shift dx
+#' @param y_adjust to raster shift dy
 #' @param ... arguments to be passing to stats and plot
 #'
 #' @import raster
@@ -32,6 +34,9 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
                                 colorRampPalette(colors = c("#D1F5B1",
                                                             "#FFDE24FC",
                                                             "#C70000"))(39)),
+
+                        x_adjust = 0,
+                        y_adjust = 0,
                         ...){
 
   attach(list(...), warn.conflicts = F)
@@ -40,6 +45,13 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
 
   if(proj){
     r <- projectRaster(r, crs="+proj=longlat +datum=WGS84 +no_defs")
+  }
+
+  if(x_adjust!=0){
+    emi <- raster::shift(x = emi,dx=x_adjust)
+  }
+  if(y_adjust!=0){
+    emi <- raster::shift(x = emi,dy=y_adjust)
   }
 
   if(FALSE) zlim = FALSE # do nothing / avoid warning

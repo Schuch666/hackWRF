@@ -16,6 +16,8 @@ plot_raster(
   int = 10,
   proj = FALSE,
   col = c("white", colorRampPalette(colors = c("#D1F5B1", "#FFDE24FC", "#C70000"))(39)),
+  x_adjust = 0,
+  y_adjust = 0,
   ...
 )
 }
@@ -41,6 +43,10 @@ plot_raster(
 \item{proj}{TRUE to project the raster to latlon}
 
 \item{col}{color}
+
+\item{x_adjust}{to raster shift dx}
+
+\item{y_adjust}{to raster shift dy}
 
 \item{...}{arguments to be passing to stats and plot}
 }
