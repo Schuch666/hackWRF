@@ -48,10 +48,10 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
   }
 
   if(x_adjust!=0){
-    emi <- raster::shift(x = emi,dx=x_adjust)
+    r <- raster::shift(x = r,dx=x_adjust)
   }
   if(y_adjust!=0){
-    emi <- raster::shift(x = emi,dy=y_adjust)
+    r <- raster::shift(x = r,dy=y_adjust)
   }
 
   if(FALSE) zlim = FALSE # do nothing / avoid warning
