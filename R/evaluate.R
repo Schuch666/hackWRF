@@ -14,7 +14,8 @@
 #' @param clean remove rows with zero observations
 #' @param summaryze add a last line with the the average values and format the table
 #' @param use_n only for summaryze = TRUE, use n as weight to calculate the average
-#' @param formate works only with summaryzee, format the output for 2 digit (default)
+#' @param formate format the output for 2 digit (default)
+#' @param ndig number of digits for formate
 #' @param cutoff minimum (optionally the maximum) valid value for observation
 #' @param no_tz ignore tz from input
 #' @param nobs minimum number of valid observations, default is 8
@@ -28,6 +29,8 @@
 #' for this option a additional data.frame (or character containging the station names)
 #' can be used to perform a fair comparison, considering only stations (ie columns)
 #' in the fair data.frame and ob data.frame (or the name list).
+#'
+#' @note Special thanks to Kiarash and Libo to help to test the wind direction option.
 #'
 #' @import raster
 #'
@@ -67,9 +70,10 @@
 #' table <- evaluation(mo = model, ob = obs, station = "Americana", table = table, clean = TRUE)
 #' print(table)
 
-evaluation <- function(mo, ob, station = 'ALL', fair = NULL, table = NULL, wd = FALSE,
-                       clean = FALSE, cutoff = NA,no_tz=FALSE, summaryze = FALSE,
-                       use_n = F, formate = T, nobs = 8,NAME = 'AVERAGE',
+evaluation <- function(mo, ob, station = 'ALL', fair = NULL, table = NULL,
+                       wd = FALSE, cutoff = NA, no_tz = FALSE, nobs = 8,
+                       clean = FALSE, formate = FALSE, ndig = 2,
+                       summaryze = FALSE, use_n = FALSE,NAME = 'AVERAGE',
                        verbose = TRUE, ...){
   if(summaryze){
     if(verbose){
@@ -105,19 +109,19 @@ evaluation <- function(mo, ob, station = 'ALL', fair = NULL, table = NULL, wd = 
 
     if(formate){
       table$n         = as.integer(table$n)
-      table$Obs       = round(table$Obs,2)
-      table$Sim       = round(table$Sim,2)
-      table$r         = round(table$r,2)
-      table$FA2       = round(table$FA2,2)
-      table$RMSE      = round(table$RMSE,2)
-      table$MB        = round(table$MB,2)
-      table$`MFB (%)` = round(table$`MFB (%)`,2)
-      table$`MFE (%)` = round(table$`MFE (%)`,2)
-      table$`NMB (%)` = round(table$`NMB (%)`,2)
-      table$`NME (%)` = round(table$`NME (%)`,2)
-      table$ME        = round(table$ME,2)
-      table$IOA       = round(table$IOA,2)
-      table$GE        = round(table$GE,2)
+      table$Obs       = round(table$Obs,ndig)
+      table$Sim       = round(table$Sim,ndig)
+      table$r         = round(table$r,ndig)
+      table$FA2       = round(table$FA2,ndig)
+      table$RMSE      = round(table$RMSE,ndig)
+      table$MB        = round(table$MB,ndig)
+      table$`MFB (%)` = round(table$`MFB (%)`,ndig)
+      table$`MFE (%)` = round(table$`MFE (%)`,ndig)
+      table$`NMB (%)` = round(table$`NMB (%)`,ndig)
+      table$`NME (%)` = round(table$`NME (%)`,ndig)
+      table$ME        = round(table$ME,ndig)
+      table$IOA       = round(table$IOA,ndig)
+      table$GE        = round(table$GE,ndig)
     }
 
     return(table)
@@ -174,6 +178,25 @@ evaluation <- function(mo, ob, station = 'ALL', fair = NULL, table = NULL, wd = 
         RESULT <- rbind(table,RESULT)
         if(clean)
           RESULT <- RESULT[RESULT$n > 0,]
+
+        if(formate){
+          cat('formating...\n')
+          RESULT$n         = as.integer(RESULT$n)
+          RESULT$Obs       = round(RESULT$Obs,ndig)
+          RESULT$Sim       = round(RESULT$Sim,ndig)
+          RESULT$r         = round(RESULT$r,ndig)
+          RESULT$FA2       = round(RESULT$FA2,ndig)
+          RESULT$RMSE      = round(RESULT$RMSE,ndig)
+          RESULT$MB        = round(RESULT$MB,ndig)
+          RESULT$`MFB (%)` = round(RESULT$`MFB (%)`,ndig)
+          RESULT$`MFE (%)` = round(RESULT$`MFE (%)`,ndig)
+          RESULT$`NMB (%)` = round(RESULT$`NMB (%)`,ndig)
+          RESULT$`NME (%)` = round(RESULT$`NME (%)`,ndig)
+          RESULT$ME        = round(RESULT$ME,ndig)
+          RESULT$IOA       = round(RESULT$IOA,ndig)
+          RESULT$GE        = round(RESULT$GE,ndig)
+        }
+
         return(RESULT)
       }
     }
@@ -187,8 +210,28 @@ evaluation <- function(mo, ob, station = 'ALL', fair = NULL, table = NULL, wd = 
       }
       else{
         RESULT <- rbind(table,RESULT)
+
         if(clean)
           RESULT <- RESULT[RESULT$n > 0,]
+
+        if(formate){
+          cat('formating...\n')
+          RESULT$n         = as.integer(RESULT$n)
+          RESULT$Obs       = round(RESULT$Obs,ndig)
+          RESULT$Sim       = round(RESULT$Sim,ndig)
+          RESULT$r         = round(RESULT$r,ndig)
+          RESULT$FA2       = round(RESULT$FA2,ndig)
+          RESULT$RMSE      = round(RESULT$RMSE,ndig)
+          RESULT$MB        = round(RESULT$MB,ndig)
+          RESULT$`MFB (%)` = round(RESULT$`MFB (%)`,ndig)
+          RESULT$`MFE (%)` = round(RESULT$`MFE (%)`,ndig)
+          RESULT$`NMB (%)` = round(RESULT$`NMB (%)`,ndig)
+          RESULT$`NME (%)` = round(RESULT$`NME (%)`,ndig)
+          RESULT$ME        = round(RESULT$ME,ndig)
+          RESULT$IOA       = round(RESULT$IOA,ndig)
+          RESULT$GE        = round(RESULT$GE,ndig)
+        }
+
         return(RESULT)
       }
     }
@@ -246,8 +289,30 @@ evaluation <- function(mo, ob, station = 'ALL', fair = NULL, table = NULL, wd = 
   }
   else{
     RESULT <- crbind(table,RESULT,RESULT$n > 0)
-    if(clean)
+
+    if(clean){
       RESULT <- RESULT[RESULT$n > 0,]
+    }
+
+
+    if(formate){
+      cat('formating...\n')
+      RESULT$n         = as.integer(RESULT$n)
+      RESULT$Obs       = round(RESULT$Obs,ndig)
+      RESULT$Sim       = round(RESULT$Sim,ndig)
+      RESULT$r         = round(RESULT$r,ndig)
+      RESULT$FA2       = round(RESULT$FA2,ndig)
+      RESULT$RMSE      = round(RESULT$RMSE,ndig)
+      RESULT$MB        = round(RESULT$MB,ndig)
+      RESULT$`MFB (%)` = round(RESULT$`MFB (%)`,ndig)
+      RESULT$`MFE (%)` = round(RESULT$`MFE (%)`,ndig)
+      RESULT$`NMB (%)` = round(RESULT$`NMB (%)`,ndig)
+      RESULT$`NME (%)` = round(RESULT$`NME (%)`,ndig)
+      RESULT$ME        = round(RESULT$ME,ndig)
+      RESULT$IOA       = round(RESULT$IOA,ndig)
+      RESULT$GE        = round(RESULT$GE,ndig)
+    }
+
     return(RESULT)
   }
 }

@@ -11,13 +11,14 @@ evaluation(
   fair = NULL,
   table = NULL,
   wd = FALSE,
-  clean = FALSE,
   cutoff = NA,
   no_tz = FALSE,
-  summaryze = FALSE,
-  use_n = F,
-  formate = T,
   nobs = 8,
+  clean = FALSE,
+  formate = FALSE,
+  ndig = 2,
+  summaryze = FALSE,
+  use_n = FALSE,
   NAME = "AVERAGE",
   verbose = TRUE,
   ...
@@ -36,19 +37,21 @@ evaluation(
 
 \item{wd}{default is FALSE, see notes}
 
-\item{clean}{remove rows with zero observations}
-
 \item{cutoff}{minimum (optionally the maximum) valid value for observation}
 
 \item{no_tz}{ignore tz from input}
 
+\item{nobs}{minimum number of valid observations, default is 8}
+
+\item{clean}{remove rows with zero observations}
+
+\item{formate}{format the output for 2 digit (default)}
+
+\item{ndig}{number of digits for formate}
+
 \item{summaryze}{add a last line with the the average values and format the table}
 
 \item{use_n}{only for summaryze = TRUE, use n as weight to calculate the average}
-
-\item{formate}{works only with summaryzee, format the output for 2 digit (default)}
-
-\item{nobs}{minimum number of valid observations, default is 8}
 
 \item{NAME}{row.name for summaryze option}
 
@@ -69,6 +72,8 @@ station == 'ALL' make the function put all observations and model together,
 for this option a additional data.frame (or character containging the station names)
 can be used to perform a fair comparison, considering only stations (ie columns)
 in the fair data.frame and ob data.frame (or the name list).
+
+Special thanks to Kiarash and Libo to help to test the wind direction option.
 }
 \examples{
 model <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/model.Rds"))
