@@ -39,7 +39,8 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
                         y_adjust = 0,
                         ...){
 
-  attach(list(...), warn.conflicts = F)
+  # attach(list(...), warn.conflicts = F)
+
   # name <- attach(list(...), warn.conflicts = F)
   # on.exit(detach(name))
 
