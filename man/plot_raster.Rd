@@ -18,6 +18,8 @@ plot_raster(
   col = c("white", colorRampPalette(colors = c("#D1F5B1", "#FFDE24FC", "#C70000"))(39)),
   x_adjust = 0,
   y_adjust = 0,
+  zlim = c(cellStats(r, "min"), cellStats(r, "max")),
+  hard_zlim = TRUE,
   ...
 )
 }
@@ -47,6 +49,10 @@ plot_raster(
 \item{x_adjust}{to raster shift dx}
 
 \item{y_adjust}{to raster shift dy}
+
+\item{zlim}{zlimits to be passed to plot}
+
+\item{hard_zlim}{bolean, default TRUE, use the maximum color if value is higher than lim[2] and lower than lim[1]}
 
 \item{...}{arguments to be passing to stats and plot}
 }

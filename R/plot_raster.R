@@ -15,6 +15,8 @@
 #' @param col color
 #' @param x_adjust to raster shift dx
 #' @param y_adjust to raster shift dy
+#' @param zlim zlimits to be passed to plot
+#' @param hard_zlim bolean, default TRUE, use the maximum color if value is higher than lim[2] and lower than lim[1]
 #' @param ... arguments to be passing to stats and plot
 #'
 #' @import raster
@@ -37,7 +39,8 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
 
                         x_adjust = 0,
                         y_adjust = 0,
-                        hard_zlim = NA,
+                        zlim     = c(cellStats(r,'min'),cellStats(r,'max')),
+                        hard_zlim = TRUE,
                         ...){
 
   # attach(list(...), warn.conflicts = F)
@@ -58,8 +61,7 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
 
   if(FALSE) zlim = FALSE # do nothing / avoid warning
 
-  if(!is.na(hard_zlim[1])){
-    zlim = hard_zlim
+  if(hard_zlim){
     r[r[] < zlim[1] ] = zlim[1]
     r[r[] > zlim[2] ] = zlim[2]
   }
@@ -92,6 +94,7 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
            axe           = axe,
            axis.args     = arg,
            col           = col,
+           zlim          = zlim,
            ...)
     }else{
       plot(x             = r_log,
@@ -101,6 +104,7 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
            axis.args     = arg,
            zlim          = c(min, max),
            col           = col,
+           zlim          = zlim,
            ...)
     }
   }else{
@@ -109,6 +113,7 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
          legend.width  = legend.width,
          axe           = axe,
          col           = col,
+         zlim          = zlim,
          ...)
   }
   if(llaxis){
