@@ -37,6 +37,7 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
 
                         x_adjust = 0,
                         y_adjust = 0,
+                        hard_zlim = NA,
                         ...){
 
   # attach(list(...), warn.conflicts = F)
@@ -57,7 +58,8 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
 
   if(FALSE) zlim = FALSE # do nothing / avoid warning
 
-  if(!log & exists('zlim')){
+  if(!is.na(hard_zlim[1])){
+    zlim = hard_zlim
     r[r[] < zlim[1] ] = zlim[1]
     r[r[] > zlim[2] ] = zlim[2]
   }
