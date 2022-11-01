@@ -30,7 +30,7 @@
 #' @importFrom methods missingArg
 #'
 legend_range <- function(x, y,
-                         text.width=6, dig = c(2,2,2),
+                         text.width=NULL, dig = c(2,2,2),
                          xjust = 0.5,
                          horiz = TRUE,
                          y.intersp =0.1,
@@ -60,7 +60,6 @@ legend_range <- function(x, y,
     me <- paste(label_mean,formatC(mean(y,na.rm = TRUE), digits = dig[2], format = "f"),unit)
   }
   ma <- paste('Max:', formatC(max(x, na.rm = TRUE), digits = dig[3], format = "f"),unit)
-
 
   if(show.mean){
     le <- c(mi,me,ma)

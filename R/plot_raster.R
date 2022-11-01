@@ -36,17 +36,11 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
                                 colorRampPalette(colors = c("#D1F5B1",
                                                             "#FFDE24FC",
                                                             "#C70000"))(39)),
-
                         x_adjust = 0,
                         y_adjust = 0,
                         zlim     = c(cellStats(r,'min'),cellStats(r,'max')),
                         hard_zlim = TRUE,
                         ...){
-
-  # attach(list(...), warn.conflicts = F)
-
-  # name <- attach(list(...), warn.conflicts = F)
-  # on.exit(detach(name))
 
   if(proj){
     r <- projectRaster(r, crs="+proj=longlat +datum=WGS84 +no_defs")
@@ -58,8 +52,6 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
   if(y_adjust!=0){
     r <- raster::shift(x = r,dy=y_adjust)
   }
-
-  if(FALSE) zlim = FALSE # do nothing / avoid warning
 
   if(hard_zlim){
     r[r[] < zlim[1] ] = zlim[1]
@@ -81,7 +73,7 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
     }else{
       at     <- seq(round(min, 1),round(max, 1),by = 1)
     }
-    label  <- paste0('10^',at)
+    label <- paste0('10^',at)
     label <- parse(text = label)
     label[at == 0] = '  1'
 

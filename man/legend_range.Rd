@@ -7,7 +7,7 @@
 legend_range(
   x,
   y,
-  text.width = 6,
+  text.width = NULL,
   dig = c(2, 2, 2),
   xjust = 0.5,
   horiz = TRUE,
