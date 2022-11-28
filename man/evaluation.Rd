@@ -12,6 +12,7 @@ evaluation(
   table = NULL,
   wd = FALSE,
   cutoff = NA,
+  cutoff_NME = NA,
   no_tz = FALSE,
   nobs = 8,
   clean = FALSE,
@@ -38,6 +39,8 @@ evaluation(
 \item{wd}{default is FALSE, see notes}
 
 \item{cutoff}{minimum (optionally the maximum) valid value for observation}
+
+\item{cutoff_NME}{minimum (optionally the maximum) valid value for observation for NME}
 
 \item{no_tz}{ignore tz from input}
 

@@ -17,6 +17,7 @@
 #' @param formate format the output for 2 digit (default)
 #' @param ndig number of digits for formate
 #' @param cutoff minimum (optionally the maximum) valid value for observation
+#' @param cutoff_NME minimum (optionally the maximum) valid value for observation for NME
 #' @param no_tz ignore tz from input
 #' @param nobs minimum number of valid observations, default is 8
 #' @param NAME row.name for summaryze option
@@ -71,8 +72,8 @@
 #' print(table)
 
 evaluation <- function(mo, ob, station = 'ALL', fair = NULL, table = NULL,
-                       wd = FALSE, cutoff = NA, no_tz = FALSE, nobs = 8,
-                       clean = FALSE, formate = FALSE, ndig = 2,
+                       wd = FALSE, cutoff = NA, cutoff_NME = NA, no_tz = FALSE,
+                       nobs = 8, clean = FALSE, formate = FALSE, ndig = 2,
                        summaryze = FALSE, use_n = FALSE,NAME = 'AVERAGE',
                        verbose = TRUE, ...){
   if(summaryze){
@@ -266,7 +267,7 @@ evaluation <- function(mo, ob, station = 'ALL', fair = NULL, table = NULL,
   if(length(B[!is.na(B)]) > nobs & to_run){
     if(verbose)
       cat(station,'has',length(B[!is.na(B)]),'valid observations\n')
-    RESULT <- stats(A,B, cutoff=cutoff, wd = wd, nobs = nobs, ...)
+    RESULT <- stats(A,B, cutoff=cutoff,cutoff_NME=cutoff_NME, wd = wd, nobs = nobs, ...)
     row.names(RESULT) <- station
   }else{
     if(verbose & to_run)

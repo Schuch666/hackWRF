@@ -12,6 +12,7 @@
 #' @param cor color of scatterplot dots
 #' @param lim scatter plot limits
 #' @param cutoff (optionally the maximum) valid value for observation
+#' @param cutoff_NME (optionally the maximum) valid value for observation for NME
 #' @param nobs minimum number of observations
 #' @param verbose display additional information
 #' @param ... extra arguments passed to scatter plot
@@ -30,7 +31,7 @@
 #'
 
 stats <- function(mo,ob,spinup = 0, wd = FALSE, Mughal = FALSE,scatter = F,add = F,
-                  cor="#FF000088",lim = NA,cutoff = NA, nobs = 8,
+                  cor="#FF000088",lim = NA,cutoff = NA, cutoff_NME = NA, nobs = 8,
                   verbose = T, ...){
 
   MFBE <- function(mo,ob){
@@ -47,6 +48,61 @@ stats <- function(mo,ob,spinup = 0, wd = FALSE, Mughal = FALSE,scatter = F,add =
     ME  = NME * 1.0 / length(ob)
     MFB = MFB * 200 / length(ob)
     MFE = MFE * 200 / length(ob)
+    NME = NME * 100 / sum(ob,na.rm = T)
+    out <- cbind(MFB,MFE,NME,ME)
+    return(as.data.frame(out))
+  }
+
+  MFBE_cutoff <- function(mo,ob,nobs,cutoff = cutoff_NME){
+    MFB <- 0.0
+    MFE <- 0.0
+    NME <- 0.0
+    for(i in 1:length(ob)){
+      if(mo[i] - ob[i] != 0){
+        MFB = MFB +    (mo[i] - ob[i]) / (mo[i] + ob[i])
+        MFE = MFE + abs(mo[i] - ob[i]) / (mo[i] + ob[i])
+        NME = NME + abs(mo[i] - ob[i])
+      }
+    }
+    ME  = NME * 1.0 / length(ob)
+    ME  = NME * 1.0 / length(ob)
+    MFB = MFB * 200 / length(ob)
+    MFE = MFE * 200 / length(ob)
+
+    if(!is.na(cutoff[1])){
+      cat('using',cutoff[1],'for min NME cutoff\n')
+
+      mo  <- mo[ob >= cutoff[1]]
+      ob  <- ob[ob >= cutoff[1]]
+
+      cat(length(mo),'values left\n')
+
+      if(length(mo) < nobs){
+        RESULT <- stats((1:199)/100,(1:199)/100)
+        RESULT$n = 0
+        return(RESULT)
+      }
+    }
+    if(length(cutoff)>1){
+      cat('using',cutoff[2],'for max NME cutoff\n')
+
+      mo  <- mo[ob < cutoff[2]]
+      ob  <- ob[ob < cutoff[2]]
+
+      cat(length(mo),'values left\n')
+      if(length(mo) < nobs){
+        RESULT <- stats((1:199)/100,(1:199)/100)
+        RESULT$n = 0
+        return(RESULT)
+      }
+    }
+
+    NME <- 0.0
+    for(i in 1:length(ob)){
+      if(mo[i] - ob[i] != 0){
+        NME = NME + abs(mo[i] - ob[i])
+      }
+    }
     NME = NME * 100 / sum(ob,na.rm = T)
     out <- cbind(MFB,MFE,NME,ME)
     return(as.data.frame(out))
@@ -138,7 +194,11 @@ stats <- function(mo,ob,spinup = 0, wd = FALSE, Mughal = FALSE,scatter = F,add =
                             statistic = c("n", "FAC2","MB","RMSE", "r","NMB","IOA","MGE")) #"NMGE"
   # "NMGE" == NME
   ind$NMB <- ind$NMB * 100 # to transform in %
-  ind     <- cbind(ind,MFBE(DATA$WRF,DATA$observado))
+  if(is.na(cutoff_NME)){
+    ind     <- cbind(ind,MFBE(DATA$WRF,DATA$observado))
+  }else{
+    ind     <- cbind(ind,MFBE_cutoff(DATA$WRF,DATA$observado,nobs))
+  }
   # to calculate the new index of aggrement
   ind$IOA <- IOA(DATA$WRF,DATA$observado)
 

@@ -15,6 +15,7 @@ stats(
   cor = "#FF000088",
   lim = NA,
   cutoff = NA,
+  cutoff_NME = NA,
   nobs = 8,
   verbose = T,
   ...
@@ -40,6 +41,8 @@ stats(
 \item{lim}{scatter plot limits}
 
 \item{cutoff}{(optionally the maximum) valid value for observation}
+
+\item{cutoff_NME}{(optionally the maximum) valid value for observation for NME}
 
 \item{nobs}{minimum number of observations}
 
