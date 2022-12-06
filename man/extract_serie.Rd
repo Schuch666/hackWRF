@@ -16,7 +16,8 @@ extract_serie(
   use_ij = FALSE,
   latitude = "XLAT",
   longitude = "XLONG",
-  use_TFLAG = F,
+  use_TFLAG = FALSE,
+  use_datesec = FALSE,
   verbose = TRUE
 )
 }
@@ -45,6 +46,8 @@ extract_serie(
 
 \item{use_TFLAG}{use the variable TFLAG (CMAQ / smoke) instead of Times (WRF)}
 
+\item{use_datesec}{use the variable date and datesec (WACCM / CAM-Chem) instead of Times (WRF)}
+
 \item{verbose}{display additional information}
 }
 \description{
@@ -54,6 +57,10 @@ Read and extract data from a list of wrf output files and a table of lat/lon poi
 The field argument '4d' or '2dz' is used to read a 4d/3d variable droping the 3rd dimention (z).
 
 new = TRUE create a new file, new = FALSE append the data in a old file, and new = 'check' check if the file exist and append if the file exist and create if the file doesnt exist
+
+FOR CAMx time-series, use the options: use_TFLAG=T, latitude='latitude', longitude='longitude', new=T
+
+FOR WACCM time-series, use the options: use_datesec=T, latitude='lat', longitude='lon', new=T
 }
 \examples{
 cat('Example 1: INMET stations for 2015\n')
