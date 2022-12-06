@@ -14,11 +14,16 @@
 #' @param latitude name of latitude coordinade variable in the netcdf
 #' @param longitude name of longitude coordinade variable in the netcdf
 #' @param use_TFLAG use the variable TFLAG (CMAQ / smoke) instead of Times (WRF)
+#' @param use_datesec use the variable date and datesec (WACCM / CAM-Chem) instead of Times (WRF)
 #' @param verbose display additional information
 #'
 #' @note The field argument '4d' or '2dz' is used to read a 4d/3d variable droping the 3rd dimention (z).
 #'
 #' @note new = TRUE create a new file, new = FALSE append the data in a old file, and new = 'check' check if the file exist and append if the file exist and create if the file doesnt exist
+#'
+#' @note FOR CAMx time-series, use the options: use_TFLAG=T, latitude='latitude', longitude='longitude', new=T
+#'
+#' @note FOR WACCM time-series, use the options: use_datesec=T, latitude='lat', longitude='lon', new=T
 #'
 #' @import ncdf4
 #' @import eixport
@@ -51,7 +56,8 @@
 extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
                           prefix = 'serie',new = 'check', return.nearest = FALSE,
                           fast = FALSE, use_ij = FALSE,
-                          latitude = 'XLAT',longitude = 'XLONG', use_TFLAG = F,
+                          latitude = 'XLAT',longitude = 'XLONG',
+                          use_TFLAG = FALSE,use_datesec = FALSE,
                           verbose = TRUE){
 
   output_file  <- paste0(prefix,'.',variable,'.Rds')
@@ -68,6 +74,11 @@ extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
   lon   <- ncvar_get(wrf,longitude)
   if(verbose)
     cat('dim of lat/lon:',dim(lat),'\n')
+
+  if(length(dim(lat)) == 1){   # TEST for WACCM model
+    lat   <- matrix(lat, ncol = length(lon),nrow = length(lat), byrow = F)
+    lon   <- matrix(lon, ncol = length(lon),nrow = length(lat), byrow = T)
+  }
 
   if(length(dim(lat)) == 3){
     lat   <- lat[,,1,drop = T]
@@ -168,6 +179,16 @@ extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
     date_time <- paste0(as.character(day),' ',hour,':00:00')             # nocov
     times     <- as.POSIXlt(date_time, tz = "UTC",                       # nocov
                             format="%Y-%m-%d %H:%M:%OS", optional=FALSE) # nocov
+  }else if(use_datesec){
+    date      <- wrf_get(file = wrf$filename,name = 'date')              # nocov
+    datesec   <- wrf_get(file = wrf$filename,name = 'datesec')           # nocov
+    year      <- substr(x = date,start = 1,stop = 4)                     # nocov
+    month     <- substr(x = date,start = 5,stop = 6)                     # nocov
+    day       <- substr(x = date,start = 7,stop = 8)                     # nocov
+    date_time <- paste0(year,'-',month,'-',day,' ',                      # nocov
+                        datesec/3600,':00:00')                           # nocov
+    times     <- as.POSIXct(date_time, tz = "UTC",                       # nocov
+                            format="%Y-%m-%d %H:%M:%OS", optional=FALSE) # nocov
   }else{
     times   <- eixport::wrf_get(wrf$filename,name = 'time',verbose = F)
   }
@@ -219,9 +240,6 @@ extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
         lon   <- lon[,,1,1,drop = T]
       }
 
-      # stations <- nearest(point,lat,lon,fast)
-      # stations <- remove_outsiders(stations,lat)
-
       if(use_TFLAG){
         TFLAG <- eixport::wrf_get(file = wrf$filename,name = 'TFLAG')        # nocov
         TFLAG <- TFLAG[,1,,drop = T]                                         # nocov
@@ -233,7 +251,17 @@ extract_serie <- function(filelist, point, variable = 'o3',field = '4d',
         date_time <- paste0(as.character(day),' ',hour,':00:00')             # nocov
         times     <- as.POSIXlt(date_time, tz = "UTC",                       # nocov
                                 format="%Y-%m-%d %H:%M:%OS", optional=FALSE) # nocov
-      }else{
+      } else if(use_datesec){
+        date      <- wrf_get(file = wrf$filename,name = 'date')              # nocov
+        datesec   <- wrf_get(file = wrf$filename,name = 'datesec')           # nocov
+        year      <- substr(x = date,start = 1,stop = 4)                     # nocov
+        month     <- substr(x = date,start = 5,stop = 6)                     # nocov
+        day       <- substr(x = date,start = 7,stop = 8)                     # nocov
+        date_time <- paste0(year,'-',month,'-',day,' ',                      # nocov
+                            datesec/3600,':00:00')                           # nocov
+        times     <- as.POSIXct(date_time, tz = "UTC",                       # nocov
+                                format="%Y-%m-%d %H:%M:%OS", optional=FALSE) # nocov
+      } else {
         times   <- eixport::wrf_get(wrf$filename,name = 'time',verbose = F)
       }
 
