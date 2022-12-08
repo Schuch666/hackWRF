@@ -53,10 +53,7 @@ First create a new environment called rspatial *(or a better name)*:
 
 and to install some requisites:
 ```bash
-  conda install -c conda-forge r-sf -y
-  conda install -c conda-forge r-rgdal -y
-  conda install -c conda-forge r-lwgeom -y
-  conda install -c conda-forge r-raster -y
+  conda install -c conda-forge r-sf r-rgdal r-lwgeom r-raster -y
 ```
 
 ### Package installation
@@ -74,6 +71,9 @@ or remotes:
 # install.packages("remotes")
 remotes::install_github("schuch666/hackWRF")
 ```
+
+### Some examples:
+- [Examples page](https://github.com/Schuch666/hackWRF/tree/master/examples).
 
 ## Licence
 
