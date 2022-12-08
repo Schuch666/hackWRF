@@ -73,7 +73,7 @@ remotes::install_github("schuch666/hackWRF")
 ```
 
 ## some examples:
-- Examples [page](https://github.com/Schuch666/hackWRF/tree/master/examples).
+- [Examples page](https://github.com/Schuch666/hackWRF/tree/master/examples).
 
 ## Licence
 
