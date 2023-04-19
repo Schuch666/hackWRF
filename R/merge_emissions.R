@@ -40,25 +40,43 @@ merge_emission <- function(background,
                            verbose = T,
                            ...){
 
-  cat('Background emission:',background, '\n')
+  if(is.character(background)){
+    cat('Background emission:',background,'\n')
+    main_input  <- coef_backgroud * wrf_raster(background,name, verbose = F)
+  }else{
+    cat('Background emission from input \n')
+    main_input  <- coef_backgroud * background
+  }
   if(coef_backgroud != 1.0)
     cat('Background coefficient:',coef_backgroud,'\n')
-  cat('Auxiliar emission  :',auxiliar,'\n')
+
+  if(is.character(auxiliar)){
+    cat('Auxiliar emission  :',auxiliar,'\n')
+    if(is.na(aux_n2)){
+      aux_input <- coef_auxiliar * wrf_raster(auxiliar,  name, verbose = F)
+    }else{
+      cat('Auxiliar emission 2:',aux_n2,'\n')
+      if(coe_n2  != 1.0)
+        cat('Auxiliar coefficient 2:',coe_n2,'\n')
+      aux_input <- coef_auxiliar * wrf_raster(auxiliar,  name, verbose = F) +
+                   coe_n2        * wrf_raster(aux_n2,    name, verbose = F)
+    }
+  }else{
+    cat('Auxiliar emission from input \n')
+    if(is.na(aux_n2)){
+      aux_input <- coef_auxiliar * auxiliar
+    }else{
+      cat('Auxiliar emission 2 from input \n')
+      if(coe_n2  != 1.0)
+        cat('Auxiliar coefficient 2:',coe_n2,'\n')
+      aux_input <- coef_auxiliar * auxiliar + coe_n2 * aux_n2
+    }
+  }
+
   if(coef_auxiliar  != 1.0)
     cat('Auxiliar coefficient:',coef_auxiliar,'\n')
   if(!is.na(output))
     cat('Output file        :',output, '\n')
-
-  main_input  <- coef_backgroud * wrf_raster(background,name, verbose = F)
-  if(is.na(aux_n2)){
-    aux_input <- coef_auxiliar * wrf_raster(auxiliar,  name, verbose = F)
-  }else{
-    cat('Auxiliar emission 2:',aux_n2,'\n')
-    if(coe_n2  != 1.0)
-      cat('Auxiliar coefficient 2:',coe_n2,'\n')
-    aux_input <- coef_auxiliar * wrf_raster(auxiliar,  name, verbose = F) +
-                 coe_n2        * wrf_raster(aux_n2,    name, verbose = F)
-  }
 
   if(!is.na(output)){
     main_output <- wrf_raster(output,  name, verbose = F)

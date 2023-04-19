@@ -28,9 +28,9 @@ plot_raster(
 
 \item{log}{TRUE to plot in log-scale}
 
-\item{min}{minimum for log plot (default is -3)}
+\item{min}{log of minimum for plot (default is -3)}
 
-\item{max}{maximum for log plot}
+\item{max}{log of maximum for plot}
 
 \item{legend.shrink}{legend height (default is 0.98)}
 
