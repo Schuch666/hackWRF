@@ -5,8 +5,8 @@
 #'
 #' @param int interval in degrees
 #' @param side side to plot, see axis
-#' @param lmin condition (TRUE or FALSE) for combine x and y or return only x
-#' @param lmax message in case of bind is false (no binding)
+#' @param lmin minimum lat or lon
+#' @param lmax maximum lat or lon
 #' @param r a raster object (to projected versions)
 #' @param lty line type for grid_projected (default is 3)
 #' @param col line color for grid_projected (default is gray)
@@ -85,7 +85,7 @@ latitude_proj <- function(r, int = 10,side = 2,lmin = -80, lmax = 80, ...){
   crs(firstPoints) <- proj
   firstPoints_proj <- spTransform(x = firstPoints,CRSobj = CRS("+proj=longlat +datum=WGS84 +no_defs"))
 
-  M            <- matrix(data = coordinates(firstPoints_proj)[2],
+  M            <- matrix(data = coordinates(firstPoints_proj)[1],
                          nrow = length(vet_lon),
                          ncol = 2)
   M[,2]        <- seq(lmin,lmax,along.with = M[,2])

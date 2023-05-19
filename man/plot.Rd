@@ -33,9 +33,9 @@ grid_proj(
 
 \item{side}{side to plot, see axis}
 
-\item{lmin}{condition (TRUE or FALSE) for combine x and y or return only x}
+\item{lmin}{minimum lat or lon}
 
-\item{lmax}{message in case of bind is false (no binding)}
+\item{lmax}{maximum lat or lon}
 
 \item{...}{additional arguments passed to axis function}
 
