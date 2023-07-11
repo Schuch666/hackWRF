@@ -14,7 +14,7 @@
 last <- function(x) {
   if(is.data.frame(x)){
     return( x[nrow(x),] )
-  }else if(class(x) %in% 'RasterBrick'){
+  }else if('RasterBrick' %in% class(x)){
     return( x[[dim(x)[3]]] )
   }
   return( x[length(x)] )
