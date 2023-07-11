@@ -135,8 +135,10 @@ calculate_column <- function(file, var, met, verbose = F, ... ){
 
 calculate_ACC_RAIN <- function(file,map = file,last = TRUE,verbose = T){
 
-  rain1 <- wrf_raster(file,'RAINC', verbose = verbose, map = map ) # cumulus
-  rain2 <- wrf_raster(file,'RAINNC',verbose = verbose, map = map ) # grid scale
+  grid_info = map
+
+  rain1 <- wrf_raster(file,'RAINC', verbose = verbose, map = grid_info ) # cumulus
+  rain2 <- wrf_raster(file,'RAINNC',verbose = verbose, map = grid_info ) # grid scale
   rain  <- rain1 + rain2
   if(last){
     i = dim(rain)[3]

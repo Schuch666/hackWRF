@@ -17,7 +17,7 @@ calculate_CDNC(file, met, verbose = T, ...)
 
 calculate_column(file, var, met, verbose = F, ...)
 
-calculate_ACC_RAIN(file, map = file, last = FALSE, verbose = T)
+calculate_ACC_RAIN(file, map = file, last = TRUE, verbose = T)
 }
 \arguments{
 \item{file}{file name}
