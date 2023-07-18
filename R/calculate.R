@@ -14,7 +14,7 @@
 #' @import raster ncdf4
 #'
 
-calculate_DZ <- function(file, file2 = file, verbose = T){
+calculate_DZ <- function(file, file2 = file, as_raster = F, verbose = T){
   PHB    <- wrf_get(file = file,'PHB', verbose = verbose)
   PH     <- wrf_get(file = file2,'PH', verbose = verbose)
   Z      <- (PHB+PH)/9.817
@@ -22,7 +22,18 @@ calculate_DZ <- function(file, file2 = file, verbose = T){
   for(i in 1:(dim(Z)[3]-1)){
     dz[,,i] = Z[,,i+1] - Z[,,i]
   }
-  return(dz)
+  if(as_raster){
+    template <- wrf_raster(file = file,'PH',verbose = F)
+    dz       <- raster::brick(apply(dz, c(1,3), rev),
+                              xmn = extent(template)[1],
+                              xmx = extent(template)[2],
+                              ymn = extent(template)[3],
+                              ymx = extent(template)[4],
+                              crs = raster::crs(template,asText=TRUE))
+    return(dz)
+  }else{
+    return(dz)
+  }
 }
 
 #' @description functions read and to calculate Cloud water path

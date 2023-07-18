@@ -9,7 +9,7 @@
 \alias{calculate_ACC_RAIN}
 \title{Functions to calculate specific variables to model evaluation}
 \usage{
-calculate_DZ(file, file2 = file, verbose = T)
+calculate_DZ(file, file2 = file, as_raster = F, verbose = T)
 
 calculate_CWP(file, met, verbose = T, ...)
 
