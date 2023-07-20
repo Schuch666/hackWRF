@@ -7,26 +7,37 @@
 \alias{calculate_CDNC}
 \alias{calculate_column}
 \alias{calculate_ACC_RAIN}
+\alias{calculate_COT}
+\alias{calculate_CCN}
+\alias{calculate_AOD}
 \title{Functions to calculate specific variables to model evaluation}
 \usage{
-calculate_DZ(file, file2 = file, as_raster = F, verbose = T)
+calculate_DZ(file, file2 = file, as_raster = FALSE, verbose = TRUE)
 
-calculate_CWP(file, met, verbose = T, ...)
+calculate_CWP(file, met, verbose = TRUE, ...)
 
-calculate_CDNC(file, met, verbose = T, ...)
+calculate_CDNC(file, met, verbose = TRUE, ...)
 
-calculate_column(file, var, met, verbose = F, ...)
+calculate_column(file, var, met, verbose = FALSE, ...)
 
-calculate_ACC_RAIN(file, map = file, last = TRUE, verbose = T)
+calculate_ACC_RAIN(file, map = file, last = TRUE, verbose = TRUE)
+
+calculate_COT(file, file2 = file, verbose = TRUE)
+
+calculate_CCN(file, met = file, verbose = TRUE, ...)
+
+calculate_AOD(file, met = file, verbose = TRUE, ...)
 }
 \arguments{
-\item{file}{file name}
+\item{file}{file with TAUAER3}
 
-\item{file2}{file name (for PH)}
+\item{file2}{file with TAUCLDC variable}
+
+\item{as_raster}{to return a raster instead of a array}
 
 \item{verbose}{set TRUE to display additional information}
 
-\item{met}{file with meteorological variables (ALT, PH,PHBD)}
+\item{met}{file with meteorological variables (ALT, PH,PHB)}
 
 \item{...}{passed to calculate_DZ}
 
@@ -49,4 +60,10 @@ functions read and to calculate Cloud droplet number concentration
 functions read and to calculate column sum concentration
 
 functions read and to calculate column sum concentration
+
+functions read and to calculate Cloud optical thickness
+
+functions read and to calculate Cloud optical thickness
+
+functions read and to calculate Aerosol Optical Depth
 }

@@ -12,9 +12,9 @@ longitude(int = 10, side = 1, lmin = -180, lmax = 180, ...)
 
 latitude(int = 10, side = 2, lmin = -90, lmax = 90, ...)
 
-longitude_proj(r, int = 10, side = 1, lmin = -180, lmax = 180, ...)
+longitude_proj(r, int = 10, side = 1, lmin = -180, lmax = 180, offset = 0, ...)
 
-latitude_proj(r, int = 10, side = 2, lmin = -80, lmax = 80, ...)
+latitude_proj(r, int = 10, side = 2, lmin = -80, lmax = 80, offset = 0, ...)
 
 grid_proj(
   r,
@@ -40,6 +40,8 @@ grid_proj(
 \item{...}{additional arguments passed to axis function}
 
 \item{r}{a raster object (to projected versions)}
+
+\item{offset}{fine-adjust displacement for axis position}
 
 \item{lty}{line type for grid_projected (default is 3)}
 

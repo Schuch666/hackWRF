@@ -11,6 +11,7 @@
 #' @param show.mean set TRUE to hide mean value
 #' @param unit a string for units
 #' @param label_mean label in case y is provided
+#' @param ... extra arguments passed to legend
 #'
 #' @note for use with raster use before any change of projection
 #' @note text.width can vary depending on map dimensions
@@ -30,14 +31,16 @@
 #' @importFrom methods missingArg
 #'
 legend_range <- function(x, y,
-                         text.width=NULL, dig = c(2,2,2),
+                         text.width=NULL,
+                         dig = c(2,2,2),
                          xjust = 0.5,
                          horiz = TRUE,
                          y.intersp =0.1,
                          x.intersp =0.1,
                          show.mean = TRUE,
                          unit = "",
-                         label_mean = 'ALL:'){
+                         label_mean = 'ALL:',
+                         ...){
 
   if(class(x)[1] == 'Raster' ||
      class(x)[1] == 'RasterLayer' ||
@@ -73,5 +76,6 @@ legend_range <- function(x, y,
          horiz      = horiz,
          y.intersp  = y.intersp,
          x.intersp  = x.intersp,
-         text.width = text.width)
+         text.width = text.width,
+         ...)
 }

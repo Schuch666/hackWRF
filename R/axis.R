@@ -14,9 +14,10 @@
 #' @param lat_max for rid_projected (default is 30)
 #' @param lon_min for rid_projected (default is -160)
 #' @param lon_max for rid_projected (default is 160)
+#' @param offset fine-adjust displacement for axis position
 #' @param ... additional arguments passed to axis function
 #'
-#' @import sp
+#' @import sp raster
 #'
 #' @examples
 #' library(raster)
@@ -47,7 +48,7 @@ latitude <- function(int = 10,side = 2,lmin = -90, lmax = 90, ...){
 }
 #' @describeIn plot projected longitude axis
 #' @export
-longitude_proj <- function(r, int = 10, side = 1,lmin = -180, lmax = 180, ...){
+longitude_proj <- function(r, int = 10, side = 1,lmin = -180, lmax = 180, offset = 0, ...){
   vet_lat <- seq(lmin,lmax,by = int)
   lab_lat <- c(paste0(seq(-lmin,int,by=-int),"\u00baW"),'0',
                paste0(seq(int,lmax,by=int),"\u00baE"))
@@ -67,6 +68,8 @@ longitude_proj <- function(r, int = 10, side = 1,lmin = -180, lmax = 180, ...){
   vet_lat      <- SpatialLines(LinesList = list(linea))
   crs(vet_lat) <- "+proj=longlat +datum=WGS84 +no_defs"
 
+  if(offset!=0) vet_lat <- raster::shift(x = vet_lat, dx=offset)
+
   vet_lat_proj <- spTransform(x = vet_lat,CRSobj = CRS(proj))
   axis_coords  <- coordinates(vet_lat_proj)
 
@@ -74,7 +77,7 @@ longitude_proj <- function(r, int = 10, side = 1,lmin = -180, lmax = 180, ...){
 }
 #' @describeIn plot projected latitude axis
 #' @export
-latitude_proj <- function(r, int = 10,side = 2,lmin = -80, lmax = 80, ...){
+latitude_proj <- function(r, int = 10,side = 2,lmin = -80, lmax = 80, offset = 0, ...){
   vet_lon <- seq(lmin,lmax,by = int)
   lab_lon <- c(paste0(seq(-lmin,int,by=-int),"\u00baS"),'0',
                paste0(seq(int,lmax,by=int),"\u00baN"))
@@ -93,6 +96,8 @@ latitude_proj <- function(r, int = 10,side = 2,lmin = -80, lmax = 80, ...){
   linea        <- Lines(line1, ID = "a")
   vet_lon      <- SpatialLines(LinesList = list(linea))
   crs(vet_lon) <- "+proj=longlat +datum=WGS84 +no_defs"
+
+  if(offset!=0) vet_lon <- raster::shift(x = vet_lon, dy=offset)
 
   vet_lon_proj <- spTransform(x = vet_lon,CRSobj = CRS(proj))
   axis_coords  <- coordinates(vet_lon_proj)
