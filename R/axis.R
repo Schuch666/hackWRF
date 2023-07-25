@@ -14,10 +14,10 @@
 #' @param lat_max for rid_projected (default is 30)
 #' @param lon_min for rid_projected (default is -160)
 #' @param lon_max for rid_projected (default is 160)
-#' @param offset fine-adjust displacement for axis position
 #' @param ... additional arguments passed to axis function
 #'
 #' @import sp raster
+#' @importFrom stats approxfun
 #'
 #' @examples
 #' library(raster)
@@ -48,61 +48,50 @@ latitude <- function(int = 10,side = 2,lmin = -90, lmax = 90, ...){
 }
 #' @describeIn plot projected longitude axis
 #' @export
-longitude_proj <- function(r, int = 10, side = 1,lmin = -180, lmax = 180, offset = 0, ...){
+longitude_proj <- function(r, int = 10, side = 1,lmin = -180, lmax = 180, ...){
   vet_lat <- seq(lmin,lmax,by = int)
   lab_lat <- c(paste0(seq(-lmin,int,by=-int),"\u00baW"),'0',
                paste0(seq(int,lmax,by=int),"\u00baE"))
 
-  proj            <- raster::crs(r,asText=TRUE)
-  ponto           <- cbind(extent(r)[1],extent(r)[3]) # xmin ymin
-  firstPoints      <- SpatialPoints(coords = ponto)
+  proj             <- raster::crs(r,asText=TRUE)
+
+  usr <- par('usr')
+  tn <- 100
+  tx <- seq(usr[1], usr[2], length.out = tn)
+  ty <- rep(usr[3], tn)
+
+  pontos           <- cbind(x = tx, y = ty)
+  firstPoints      <- SpatialPoints(coords = pontos)
   crs(firstPoints) <- proj
-  firstPoints_proj <- spTransform(x = firstPoints,CRSobj = CRS("+proj=longlat +datum=WGS84 +no_defs"))
+  tt               <- spTransform(x = firstPoints,
+                                  CRSobj = CRS("+proj=longlat +datum=WGS84 +no_defs"))
+  axis_coords      <- coordinates(tt)
+  tfcn             <- approxfun(axis_coords[,1], tx)
 
-  M            <- matrix(data = coordinates(firstPoints_proj)[2],
-                         nrow = length(vet_lat),
-                         ncol = 2)
-  M[,1]        <- seq(lmin,lmax,along.with = M[,1])
-  line1        <- Line(M)
-  linea        <- Lines(line1, ID = "a")
-  vet_lat      <- SpatialLines(LinesList = list(linea))
-  crs(vet_lat) <- "+proj=longlat +datum=WGS84 +no_defs"
-
-  if(offset!=0) vet_lat <- raster::shift(x = vet_lat, dx=offset)
-
-  vet_lat_proj <- spTransform(x = vet_lat,CRSobj = CRS(proj))
-  axis_coords  <- coordinates(vet_lat_proj)
-
-  axis(side,at = axis_coords[[1]][[1]][,1],labels = lab_lat, ... )
+  axis(side,at = tfcn(vet_lat),labels = lab_lat, ... )
 }
 #' @describeIn plot projected latitude axis
 #' @export
-latitude_proj <- function(r, int = 10,side = 2,lmin = -80, lmax = 80, offset = 0, ...){
+latitude_proj <- function(r, int = 10,side = 2,lmin = -80, lmax = 80, ...){
   vet_lon <- seq(lmin,lmax,by = int)
   lab_lon <- c(paste0(seq(-lmin,int,by=-int),"\u00baS"),'0',
                paste0(seq(int,lmax,by=int),"\u00baN"))
 
   proj             <- raster::crs(r,asText=TRUE)
-  ponto            <- cbind(extent(r)[1],extent(r)[3]) # xmin ymin
-  firstPoints      <- SpatialPoints(coords = ponto)
+
+  usr <- par('usr')
+  tn  <- 100
+  tx  <- rep(usr[1], tn)
+  ty  <- seq(usr[3], usr[4], length.out=tn)
+  pontos           <- cbind(x = tx, y = ty)
+  firstPoints      <- SpatialPoints(coords = pontos)
   crs(firstPoints) <- proj
-  firstPoints_proj <- spTransform(x = firstPoints,CRSobj = CRS("+proj=longlat +datum=WGS84 +no_defs"))
+  tt               <- spTransform(x = firstPoints,
+                                  CRSobj = CRS("+proj=longlat +datum=WGS84 +no_defs"))
+  axis_coords      <- coordinates(tt)
+  tfcn             <- approxfun(axis_coords[,2], ty)
 
-  M            <- matrix(data = coordinates(firstPoints_proj)[1],
-                         nrow = length(vet_lon),
-                         ncol = 2)
-  M[,2]        <- seq(lmin,lmax,along.with = M[,2])
-  line1        <- Line(M)
-  linea        <- Lines(line1, ID = "a")
-  vet_lon      <- SpatialLines(LinesList = list(linea))
-  crs(vet_lon) <- "+proj=longlat +datum=WGS84 +no_defs"
-
-  if(offset!=0) vet_lon <- raster::shift(x = vet_lon, dy=offset)
-
-  vet_lon_proj <- spTransform(x = vet_lon,CRSobj = CRS(proj))
-  axis_coords  <- coordinates(vet_lon_proj)
-
-  axis(side,at = axis_coords[[1]][[1]][,2],labels = lab_lon, ... )
+  axis(side,at = tfcn(vet_lon),labels = lab_lon, ... )
 }
 #' @describeIn plot grid (lalitude and longitude) in a different projection
 #' @export
