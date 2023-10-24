@@ -7,7 +7,7 @@
 #' @param file model data.frame
 #' @param sep the field separator string, passed to write.table function
 #' @param dec he string to use for decimal points, passed to write.table function
-#' @param ... arguments passed to write.table functions
+#' @param ... arguments passed to write.table and write.csv functions
 #' @param verbose display additional information
 #'
 #' @importFrom utils read.csv write.csv read.table write.table
@@ -32,7 +32,7 @@ write.stat <- function(stat,file, sep = ';',dec = '.', verbose = FALSE, ...){
   if(verbose)
     cat('writing', file,'\n')
   if(substr(file,nchar(file)-3,nchar(file)) == '.csv'){
-    write.csv(x = stat, file = file)
+    write.csv(x = stat, file = file, ...)
   }else{
     write.table(x = stat, file = file, sep = sep, dec = dec, ...)
   }
