@@ -26,11 +26,11 @@ labels for latitude range from 180ºW to 0 to 180ºE and longitude from 90ºS to
 }
 \section{Functions}{
 \itemize{
-\item \code{longitude}: cool latitude
+\item \code{longitude()}: cool latitude
 
-\item \code{latitude}: cool longitude
+\item \code{latitude()}: cool longitude
+
 }}
-
 \examples{
 library(raster)
 br <- shapefile(paste0(system.file("extdata",package="hackWRF"),"/BR_states.shp"),verbose=FALSE)

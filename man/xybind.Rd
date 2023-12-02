@@ -23,11 +23,11 @@ This function perform a conditional cbind or rbind.
 }
 \section{Functions}{
 \itemize{
-\item \code{ccbind}: Perform a conditional cbind
+\item \code{ccbind()}: Perform a conditional cbind
 
-\item \code{crbind}: Perform a conditional rbind
+\item \code{crbind()}: Perform a conditional rbind
+
 }}
-
 \examples{
 a <- 1:10
 b <- 2:11

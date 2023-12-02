@@ -21,7 +21,8 @@ raster_to_ncdf <- function(r,na_value = 0){
   N_times <- dim(r)[3]
   a       <- array(na_value,c(dim(r)[2],dim(r)[1],N_times))
   for(i in 1:N_times){
-    a[,,i] <- as.matrix(t(raster::flip(r[[i]],2)))
+    flipado <- suppressWarnings(raster::flip(r[[i]],2))
+    a[,,i]  <- as.matrix(t(flipado))
   }
   return(a)
 }
