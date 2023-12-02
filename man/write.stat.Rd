@@ -17,7 +17,7 @@ write.stat(stat, file, sep = ";", dec = ".", verbose = FALSE, ...)
 
 \item{verbose}{display additional information}
 
-\item{...}{arguments passed to write.table functions}
+\item{...}{arguments passed to write.table and write.csv functions}
 }
 \description{
 Functions to write stats and evaluation output. If a file name ending with .csv

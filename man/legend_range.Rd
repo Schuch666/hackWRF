@@ -15,7 +15,8 @@ legend_range(
   x.intersp = 0.1,
   show.mean = TRUE,
   unit = "",
-  label_mean = "ALL:"
+  label_mean = "ALL:",
+  ...
 )
 }
 \arguments{
@@ -40,6 +41,8 @@ legend_range(
 \item{unit}{a string for units}
 
 \item{label_mean}{label in case y is provided}
+
+\item{...}{extra arguments passed to legend}
 }
 \description{
 Get the distance in kilometers between two points.

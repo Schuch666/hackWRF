@@ -42,8 +42,29 @@ points_color(
 Plot points with color
 }
 \examples{
-x <- sin(pi/8 * 1:15)
-barplot(x, col = value2color(x))
-box()
+library(raster)
+## some maps to include
+masp   <- raster::shapefile(paste0(system.file("extdata",package="hackWRF"),
+                            "/RMSP.shp"))
+br     <- raster::shapefile(paste0(system.file("extdata",package="hackWRF"),
+                            "/BR_states.shp"))
+
+## site-list w/ lat-lon
+stations <- readRDS(paste0(system.file("extdata",package="hackWRF"),
+                    "/stations.Rds"))
+
+## open a evaluation table
+sample <- read.stat(paste0(system.file("extdata", package = "hackWRF"),
+                           "/sample.csv"),verbose=TRUE)
+row.names(sample) <- c("Americana","Campinas","Congonhas")
+
+## combination of lat-lon and evaluation table
+coord  <- latlon(sample, coord = stations)
+
+## plot
+plot(NA, xlim = c(-47.75,-45.5), ylim = c(-24.7,-22.2),
+     xlab = 'lon',ylab = 'lat')
+points_color(x = coord$lon, y = coord$lat,z = coord$MB)
+lines(masp, col = 'gray');lines(br)
 
 }

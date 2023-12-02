@@ -4,8 +4,8 @@
 #'
 #' @param r raster
 #' @param log TRUE to plot in log-scale
-#' @param min minimum for log plot (default is -3)
-#' @param max maximum for log plot
+#' @param min log of minimum for plot (default is -3)
+#' @param max log of maximum for plot
 #' @param legend.shrink legend height (default is 0.98)
 #' @param legend.width legend width (default is 3)
 #' @param axe to plot axis
@@ -53,7 +53,7 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
     r <- raster::shift(x = r,dy=y_adjust)
   }
 
-  if(hard_zlim){
+  if(hard_zlim & !log){
     r[r[] < zlim[1] ] = zlim[1]
     r[r[] > zlim[2] ] = zlim[2]
   }
@@ -86,7 +86,6 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
            axe           = axe,
            axis.args     = arg,
            col           = col,
-           zlim          = zlim,
            ...)
     }else{
       plot(x             = r_log,
@@ -94,9 +93,8 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
            legend.width  = legend.width,
            axe           = axe,
            axis.args     = arg,
-           zlim          = c(min, max),
            col           = col,
-           zlim          = zlim,
+           zlim          = c(min,max),
            ...)
     }
   }else{
