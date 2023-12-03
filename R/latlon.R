@@ -22,7 +22,7 @@
 
 latlon <- function(data,coord = 'BR-AQ',proj = "+proj=longlat",verbose = T){
 
-  if(class(coord) == 'character'){
+  if(is.character(coord)){
     if(coord[1] == 'BR-AQ'){
       coord  <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/stations.Rds"))
     }else if(coord[1] == 'BR-METAR'){
