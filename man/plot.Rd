@@ -59,12 +59,6 @@ labels for latitude range from 180ºW to 0 to 180ºE and longitude from 90ºS to
 }
 \section{Functions}{
 \itemize{
-<<<<<<< HEAD
-\item \code{longitude()}: cool latitude
-
-\item \code{latitude()}: cool longitude
-
-=======
 \item \code{longitude()}: nice latitude axis
 
 \item \code{latitude()}: nice longitude axis
@@ -75,7 +69,6 @@ labels for latitude range from 180ºW to 0 to 180ºE and longitude from 90ºS to
 
 \item \code{grid_proj()}: grid (lalitude and longitude) in a different projection
 
->>>>>>> d52acd515482d6b90b038f31c9d8a47e2deef695
 }}
 \examples{
 library(raster)

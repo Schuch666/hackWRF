@@ -25,15 +25,31 @@ read_MODIS <- function(file, var, verbose = T){
 #' @description function to read MODIS products in HDF(4) format
 #' @export
 #' @name read_satellite
-#' @import raster
-#' @importFrom gdalUtils get_subdatasets
+#' @import raster ncdf4
 
 read_MODIS_HDF <- function(file, var, verbose = T){
 
   if(verbose) cat('opening',file,'...\n')
-  hdf <- get_subdatasets(file)
-  var <- grep(var,hdf,value = T)
-  r <- raster(var)
+  nc <- nc_open(file)
+
+  if(missingArg(var)){
+    var <- names(nc$var)
+    if(length(var) != 1){
+      if(verbose) cat('returning var names\n')
+      return(var)
+    }
+  }
+  VAR <- ncvar_get(nc, var)
+  VAR <- apply(VAR,1,rev)
+  VAR <- apply(VAR,2,rev)
+  r   <- raster(VAR,xmn=-180, xmx=180, ymn=-90, ymx=90,crs = "+proj=longlat +datum=WGS84 +no_defs")
+
+  scale_factor <- ncatt_get(nc,var,attname = 'scale_factor')
+  if(verbose)
+    cat('scale factor =', scale_factor$value,'\n')
+  r <- r / scale_factor$value
+
+  names(r) <- paste0('MODIS_hdf_',var)
   return(r)
 }
 
