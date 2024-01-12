@@ -96,7 +96,7 @@ latitude_proj <- function(r, int = 10,side = 2,lmin = -80, lmax = 80, ...){
 #' @describeIn plot grid (lalitude and longitude) in a different projection
 #' @export
 grid_proj <- function(r, int = 10, lty = 3, col = "#666666",
-                      lat_min = -80,  lat_max = 30,
+                      lat_min = -80,  lat_max = 80,
                       lon_min = -160, lon_max = 160,
                       ...){
   proj         <- raster::crs(r,asText=TRUE)

@@ -22,7 +22,7 @@ grid_proj(
   lty = 3,
   col = "#666666",
   lat_min = -80,
-  lat_max = 30,
+  lat_max = 80,
   lon_min = -160,
   lon_max = 160,
   ...
