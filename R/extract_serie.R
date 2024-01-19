@@ -43,6 +43,10 @@
 #' cat('Example 4: Brazilian Air Quality: CETESB (SP), RAMQAr (ES) and SMAC (RJ)\n')
 #' stations <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/stations.Rds"))
 #'
+#' cat('Example 5: AIRNET sites\n')
+#' stations <- readRDS(paste0(system.file("extdata",package="hackWRF"),"/aeronet.Rds"))
+#'
+#'
 #' files    <- dir(path = system.file("extdata",package="hackWRF"),
 #'                 pattern = 'wrf.day',
 #'                 full.names = TRUE)
