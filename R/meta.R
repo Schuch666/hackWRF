@@ -22,7 +22,7 @@
 #' meta(nc,var = "so2",att = "long_name")
 #'
 
-meta <- function(file = NA,var = 0, att = NA, action="read", value=NA, verbose=F){
+meta <- function(file = NA,var = '?', att = NA, action="read", value=NA, verbose=F){
   if(is.na(file[1])){
     cat("choose a file:\n") # nocov
     file <- file.choose()   # nocov

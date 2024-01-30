@@ -4,7 +4,7 @@
 \alias{meta}
 \title{Read and write metadata on a NetCDF file}
 \usage{
-meta(file = NA, var = 0, att = NA, action = "read", value = NA, verbose = F)
+meta(file = NA, var = "?", att = NA, action = "read", value = NA, verbose = F)
 }
 \arguments{
 \item{file}{file name}
