@@ -41,3 +41,21 @@ first <- function(x) {
   }
   return( x[1] )
 }
+
+#' return character with zero left
+#'
+#' @description return character with zero left
+#'
+#' @export
+#'
+#' @return character with zeros left
+#' @param x numerical input
+#' @param dig number of digits (defoult is 2)
+#'
+#' @examples
+#' a <- 1:66
+#' print(nd(a))
+#'
+nd <- function(x, dig = 2){
+  return(formatC(i,width=dig,format="d",flag = "0"))
+}
