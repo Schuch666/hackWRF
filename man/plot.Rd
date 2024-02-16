@@ -47,7 +47,7 @@ grid_proj(
 
 \item{lat_min}{for rid_projected (default is -80)}
 
-\item{lat_max}{for rid_projected (default is 30)  test}
+\item{lat_max}{for rid_projected (default is 30)}
 
 \item{lon_min}{for rid_projected (default is -160)}
 
