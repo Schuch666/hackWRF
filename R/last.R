@@ -57,5 +57,5 @@ first <- function(x) {
 #' print(nd(a))
 #'
 nd <- function(x, dig = 2){
-  return(formatC(i,width=dig,format="d",flag = "0"))
+  return(formatC(x,width=dig,format="d",flag = "0"))
 }
