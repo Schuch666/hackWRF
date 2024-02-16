@@ -35,8 +35,8 @@ latlon <- function(data,coord = 'BR-AQ',proj = "+proj=longlat",verbose = T){
       stop(coord,'data not found')
   }
 
-  data$lat <- rep(0,nrow(data))
-  data$lon <- rep(0,nrow(data))
+  data$lat <- rep(-0.0000000001,nrow(data))
+  data$lon <- rep(-0.0000000001,nrow(data))
 
   for(i in 1:length(row.names(data))){
     name <- row.names(data)[i]
@@ -55,7 +55,8 @@ latlon <- function(data,coord = 'BR-AQ',proj = "+proj=longlat",verbose = T){
                                    data     = data,
                                    match.ID = FALSE)
 
-  sp::proj4string(pontos) <- sp::CRS(proj)
+  pontos <- pontos[pontos$lat != -0.0000000001 & pontos$lon != -0.0000000001,]
 
+  sp::proj4string(pontos) <- sp::CRS(proj)
   return(pontos)
 }
