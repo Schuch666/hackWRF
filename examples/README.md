@@ -14,7 +14,7 @@ The script `process_stations.R` create a data.frame with the latitude and longit
 The bash script `post.sh` (a PBS job script for Cheyenne) is a high-level script that passes the folder and the variable name (and other arguments if needed) to the R-script `extract_metar.R` that extract values from domain d01, d02 and d03 (in series) using `metar-sites.Rds` information and create a tar file with the processed data. Each variable is extracted in parallel.
 
 ## 4. Perform model evaluation
-The R-script `all_tables.R` control the paths and other control variables and call `table_metar_T2.R`, `table_metar_Wind.R` and `table_metar_Q.R`.
+The R-script `all_tables.R` control the paths and other control variables and call `table_metar_T2.R`, `table_metar_Wind.R`, `table_metar_Q.R` and `table_metar_Rain.R`.
 
 Each script opens the extracted series from 3 domains and perform the unit conversion (T2, Q2) and calculate other variables (WS and WD).
 Open all downloaded METAR data and select the time to match the simulation period and perform the unit conversion (Q2) and other variables (Q2).
