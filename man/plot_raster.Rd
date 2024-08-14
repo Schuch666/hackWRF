@@ -20,6 +20,7 @@ plot_raster(
   y_adjust = 0,
   zlim = c(cellStats(r, "min"), cellStats(r, "max")),
   hard_zlim = TRUE,
+  legend = TRUE,
   ...
 )
 }
@@ -53,6 +54,8 @@ plot_raster(
 \item{zlim}{zlimits to be passed to plot}
 
 \item{hard_zlim}{bolean, default TRUE, use the maximum color if value is higher than lim[2] and lower than lim[1]}
+
+\item{legend}{false to supress legand (default is true)}
 
 \item{...}{arguments to be passing to stats and plot}
 }

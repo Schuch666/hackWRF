@@ -23,6 +23,13 @@
 #' @param w width for png function
 #' @param h height for png function
 #' @param pt fond size for png function
+#' @param int interval for latitude and logitude axis
+#' @param grid_int int passed to project_grid function
+#' @param grid_min_lat min_lat passed to project_grid function
+#' @param grid_max_lat max_lat passed to project_grid function
+#' @param force_max module of upper and lower limits for percentage plot
+#' @param ndig number of digits for lengend_range
+#' @param ... arguments passed to raster_plot
 #'
 #' @importFrom eixport wrf_raster
 #' @importFrom grDevices dev.off png
@@ -51,15 +58,20 @@ plot_diff <- function(a,b,file_a,file_b,
                       lim_1 = NA, lim_2 = NA,
                       lines_1, lines_2,
                       save,
-                      w = 800, h = 1200, pt = 18){
+                      w = 800, h = 1200, pt = 18,
+                      int = 10,
+                      grid_int = 15,
+                      grid_lat_min = -80,
+                      grid_lat_max = 80,
+                      force_max,
+                      ndig = 2,
+                      ...){
 
   if(missingArg(col))
-    col <- c("#1B2C62","#204385","#265CA9","#4082C2",
-             "#5DA9DB","#80C4EA","#A4DDF7","#C1E7F8",
-             "#DEF2FA","#F2FAFD","#FFFFFF","#FFFFFF",
-             "#FEFAE6","#FDF0B4","#FDDA7C","#FEBC48",
-             "#FB992F","#F7762B","#E84E29","#D72828",
-             "#B81B22","#97161A","#921519")
+    col <- c("#1B2C62","#204385","#265CA9","#4082C2","#5DA9DB",
+             "#80C4EA","#A4DDF7","#C1E7F8","#DEF2FA","#FFFFFF",
+             "#FFFFFF","#FDF0B4","#FDDA7C","#FEBC48","#FB992F",
+             "#F7762B","#E84E29","#D72828","#B81B22","#97161A")
   if(missingArg(col_1))
     col_1 = '#000000'
   if(missingArg(col_2))
@@ -67,9 +79,9 @@ plot_diff <- function(a,b,file_a,file_b,
 
   if(missingArg(a)){
     if(missingArg(map)){
-      x  <- calc(wrf_raster(file_a,var,verbose = T),operation)
+      x  <- raster::calc(wrf_raster(file_a,var,verbose = T),operation)
     }else{
-      x  <- calc(wrf_raster(file_a,var,map = map,verbose = T),operation)
+      x  <- raster::calc(wrf_raster(file_a,var,map = map,verbose = T),operation)
     }
   }else{
     x = a
@@ -77,9 +89,9 @@ plot_diff <- function(a,b,file_a,file_b,
 
   if(missingArg(b)){
     if(missingArg(map)){
-      y  <- calc(wrf_raster(file_b,var,verbose = T),operation)
+      y  <- raster::calc(wrf_raster(file_b,var,verbose = T),operation)
     }else{
-      y  <- calc(wrf_raster(file_b,var,map = map,verbose = T),operation)
+      y  <- raster::calc(wrf_raster(file_b,var,map = map,verbose = T),operation)
     }
   }else{
     y = b
@@ -91,10 +103,16 @@ plot_diff <- function(a,b,file_a,file_b,
 
   diff <- x - y
   rel  <- 100 * diff / (y + 0.00000000001)
+  # rel  <- 100 * diff / (y + 1.00000000001)
 
-  if(is.na(lim_1))
+  if(!missingArg(force_max)){
+    rel[rel > force_max] = force_max
+    # rel[rel < -force_max] = -force_max
+  }
+
+  if(is.na(lim_1[1]))
     lim_1 = cellStats(diff,'range')
-  if(is.na(lim_2))
+  if(is.na(lim_2[1]))
     lim_2 = cellStats(rel,'range')
 
   lim_1[1] <- -max(abs(range(lim_1)))
@@ -118,26 +136,28 @@ plot_diff <- function(a,b,file_a,file_b,
 
   par(mfrow=c(2,1),mar=c(2.5,2.5,2,1))
 
-  plot_raster(diff,axe = F, col = col,zlim = lim_1)
-  longitude_proj(x);latitude_proj(x)
-  grid_proj(x,lty = 2,col = col_2,int = 15)
+  plot_raster(diff,axe = F, col = col,zlim = lim_1,...)
+  longitude_proj(x,int = int);latitude_proj(x,int = int)
+  grid_proj(x,lty = 2,col = col_2,
+            int = grid_int,lat_min = grid_lat_min, lat_max = grid_lat_max)
   if(!missingArg(lines_2))
     lines(map2_proj,col = col_2)
   if(!missingArg(lines_1))
     lines(map1_proj, col = col_1)
-  legend_range(diff,dig = c(6,6,6))
+  legend_range(diff,dig = c(ndig,ndig,ndig))
   mtext(units_1,adj = 1,cex = 1.2)
   mtext(bquote(.(var)),adj = 0,line = 0.25)
   title(title,line = 0.6)
 
-  plot_raster(rel,axe = F, col = col,zlim = lim_2)
-  longitude_proj(x);latitude_proj(x)
-  grid_proj(x,lty = 2,col = col_2,int = 15)
+  plot_raster(rel,axe = F, col = col,zlim = lim_2,...)
+  longitude_proj(x,int = int);latitude_proj(x,int = int)
+  grid_proj(x,lty = 2,col = col_2,
+            int = grid_int,lat_min = grid_lat_min, lat_max = grid_lat_max)
   if(!missingArg(lines_2))
     lines(map2_proj,col = col_2)
   if(!missingArg(lines_1))
     lines(map1_proj, col = col_1)
-  legend_range(rel,dig = c(4,4,4))
+  legend_range(rel,dig = c(ndig,ndig,ndig))
   mtext(units_2,adj = 1)
   mtext(bquote(.(var)),adj = 0, line = 0.25)
 

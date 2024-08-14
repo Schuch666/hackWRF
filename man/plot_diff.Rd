@@ -25,7 +25,14 @@ plot_diff(
   save,
   w = 800,
   h = 1200,
-  pt = 18
+  pt = 18,
+  int = 10,
+  grid_int = 15,
+  grid_lat_min = -80,
+  grid_lat_max = 80,
+  force_max,
+  ndig = 2,
+  ...
 )
 }
 \arguments{
@@ -70,6 +77,20 @@ plot_diff(
 \item{h}{height for png function}
 
 \item{pt}{fond size for png function}
+
+\item{int}{interval for latitude and logitude axis}
+
+\item{grid_int}{int passed to project_grid function}
+
+\item{force_max}{module of upper and lower limits for percentage plot}
+
+\item{ndig}{number of digits for lengend_range}
+
+\item{...}{arguments passed to raster_plot}
+
+\item{grid_min_lat}{min_lat passed to project_grid function}
+
+\item{grid_max_lat}{max_lat passed to project_grid function}
 }
 \description{
 Plot difference (absolute and relative) of A - B single layer raster objects

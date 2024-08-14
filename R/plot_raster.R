@@ -17,6 +17,7 @@
 #' @param y_adjust to raster shift dy
 #' @param zlim zlimits to be passed to plot
 #' @param hard_zlim bolean, default TRUE, use the maximum color if value is higher than lim[2] and lower than lim[1]
+#' @param legend false to supress legand (default is true)
 #' @param ... arguments to be passing to stats and plot
 #'
 #' @import raster
@@ -40,6 +41,7 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
                         y_adjust = 0,
                         zlim     = c(cellStats(r,'min'),cellStats(r,'max')),
                         hard_zlim = TRUE,
+                        legend = TRUE,
                         ...){
 
   if(proj){
@@ -79,32 +81,61 @@ plot_raster <- function(r, log = FALSE, min = -3, max,
 
     arg <- list(at=at, labels=label)
 
-    if(missing(max)){
-      plot(x             = r_log,
+    if(legend){
+      if(missing(max)){
+        plot(x             = r_log,
+             legend.shrink = legend.shrink,
+             legend.width  = legend.width,
+             axe           = axe,
+             axis.args     = arg,
+             col           = col,
+             ...)
+      }else{
+        plot(x             = r_log,
+             legend.shrink = legend.shrink,
+             legend.width  = legend.width,
+             axe           = axe,
+             axis.args     = arg,
+             col           = col,
+             zlim          = c(min,max),
+             ...)
+      }
+    }else{
+      if(missing(max)){
+        plot(x             = r_log,
+             axe           = axe,
+             axis.args     = arg,
+             col           = col,
+             legend        = FALSE,
+             ...)
+      }else{
+        plot(x             = r_log,
+             axe           = axe,
+             axis.args     = arg,
+             col           = col,
+             zlim          = c(min,max),
+             legend        = FALSE,
+             ...)
+      }
+    }
+
+  }else{
+    if(legend){
+      plot(x             = r,
            legend.shrink = legend.shrink,
            legend.width  = legend.width,
            axe           = axe,
-           axis.args     = arg,
            col           = col,
+           zlim          = zlim,
            ...)
     }else{
-      plot(x             = r_log,
-           legend.shrink = legend.shrink,
-           legend.width  = legend.width,
+      plot(x             = r,
            axe           = axe,
-           axis.args     = arg,
            col           = col,
-           zlim          = c(min,max),
+           zlim          = zlim,
+           legend        = FALSE,
            ...)
     }
-  }else{
-    plot(x             = r,
-         legend.shrink = legend.shrink,
-         legend.width  = legend.width,
-         axe           = axe,
-         col           = col,
-         zlim          = zlim,
-         ...)
   }
   if(llaxis){
     latitude(int  = int)
