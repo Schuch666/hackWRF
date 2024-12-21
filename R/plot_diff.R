@@ -25,8 +25,8 @@
 #' @param pt fond size for png function
 #' @param int interval for latitude and logitude axis
 #' @param grid_int int passed to project_grid function
-#' @param grid_min_lat min_lat passed to project_grid function
-#' @param grid_max_lat max_lat passed to project_grid function
+#' @param grid_lat_min min_lat passed to project_grid function
+#' @param grid_lat_max max_lat passed to project_grid function
 #' @param force_max module of upper and lower limits for percentage plot
 #' @param ndig number of digits for lengend_range
 #' @param ... arguments passed to raster_plot
