@@ -1,0 +1,12 @@
+citHeader("To cite hackWRF use:")
+
+bibentry(bibtype = "Article",
+  title = "{eva3dm: A R-package for model evaluation of 3D weather and air quality models}",
+  author = person("Daniel", "Schuch"),
+  year = "2025",
+  journal = "The Journal of Open Source Software",
+  url = "https://joss.theoj.org/papers/10.21105/joss.07797",
+  pages = 6,
+  doi = "10.21105/joss.07797")
+
+citFooter("Thanks for using hackWRF, considere to use eva3dm")
