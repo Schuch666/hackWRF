@@ -1,8 +1,8 @@
 Package: hackWRF
 Type: Package
-Title: Functions to work with WRF, NetCDF and model evaluation
+Title: Functions to Work with WRF, NetCDF and Model Evaluation
 Date: 2024-01-12
-Version: 0.5.1
+Version: 0.5.2
 Authors@R: c(
   person(given = "Daniel",
          family = "Schuch",

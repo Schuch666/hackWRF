@@ -82,15 +82,15 @@ plot_diff(
 
 \item{grid_int}{int passed to project_grid function}
 
+\item{grid_lat_min}{min_lat passed to project_grid function}
+
+\item{grid_lat_max}{max_lat passed to project_grid function}
+
 \item{force_max}{module of upper and lower limits for percentage plot}
 
 \item{ndig}{number of digits for lengend_range}
 
 \item{...}{arguments passed to raster_plot}
-
-\item{grid_min_lat}{min_lat passed to project_grid function}
-
-\item{grid_max_lat}{max_lat passed to project_grid function}
 }
 \description{
 Plot difference (absolute and relative) of A - B single layer raster objects
