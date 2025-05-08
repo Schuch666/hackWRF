@@ -1,5 +1,5 @@
 # hackWRF
-*hackWRF* is the predecessor of [*eva3dm*](https://github.com/Schuch666/eva3dm) R-package and include functions to work with WRF, NetCDF and model evaluation. This package is not in development anymore, most of the functionality is included in the new package available on [CRAN](https://CRAN.R-project.org/package=eva3dm) and [Github](https://github.com/Schuch666/eva3dm).
+**hackWRF** is the predecessor of [**eva3dm**](https://github.com/Schuch666/eva3dm) R-package and include functions to work with WRF, NetCDF and model evaluation. This package is not in development anymore, most of the functionality is included in the new package available on [CRAN](https://CRAN.R-project.org/package=eva3dm) and [Github](https://github.com/Schuch666/eva3dm).
 
 For more information and citation (for both packages):
 
