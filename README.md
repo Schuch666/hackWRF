@@ -1,5 +1,10 @@
 # hackWRF
-An R-package with functions to work with WRF, NetCDF and model evaluation.
+*hackWRF* is the predecessor of [*eva3dm*](https://github.com/Schuch666/eva3dm) R-package and include functions to work with WRF, NetCDF and model evaluation. This package is not in development anymore, most of the functionality is included in the new package available on [CRAN](https://CRAN.R-project.org/package=eva3dm) and [Github](https://github.com/Schuch666/eva3dm).
+
+For more information and citation (for both packages):
+
+Schuch. (2025). eva3dm: A R-package for model evaluation of 3D weather and air quality models. *Journal of Open Source Software*, 10(108),
+7797. [https://doi.org/10.21105/joss.07797](https://doi.org/10.21105/joss.07797)
 
 The functions include:
 - `meta()` a function to read and write metadata on NetCDF files;
