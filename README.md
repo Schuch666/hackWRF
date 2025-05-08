@@ -3,8 +3,8 @@
 
 For more information and citation (for both packages):
 
-Schuch. (2025). eva3dm: A R-package for model evaluation of 3D weather and air quality models. *Journal of Open Source Software*, 10(108),
-7797. [https://doi.org/10.21105/joss.07797](https://doi.org/10.21105/joss.07797)
+**[1]** *Schuch. (2025). eva3dm: A R-package for model evaluation of 3D weather and air quality models. **Journal of Open Source Software**, 10(108),
+7797. [https://doi.org/10.21105/joss.07797](https://doi.org/10.21105/joss.07797)*
 
 The functions include:
 - `meta()` a function to read and write metadata on NetCDF files;
